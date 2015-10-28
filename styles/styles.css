@@ -1,0 +1,99 @@
+.text {
+  font-family: 'Volkhov', serif;
+  color: white;
+  margin: 5%;
+}
+
+.black {
+  color:black;
+}
+
+.grid-sizer,
+.grid-item {
+  width: 45%;
+  float: left;
+  max-width: 100%;
+}
+
+#projects {
+  background: rgba(255,255,255, 0.6);
+  display:inline-block;
+}
+
+.img-thumbnail {
+  opacity: 1;
+  margin: 5%;
+}
+
+path.arc {
+  cursor: move;
+  fill: #fff;
+}
+
+.node circle {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+#welcome, #projects, #about {
+  border-style: solid;
+  border-radius: 10px;
+}
+#welcome {
+  background: rgba(30,30,30,0.9);
+  height:100%;
+}
+
+#d3bubbleChart {
+  z-index: 1;
+  margin-top: -10%;
+  position: absolute;
+}
+
+#about {
+  background: rgba(255,255,255, 0.6);
+}
+
+#contact {
+  margin-bottom:5%;
+  margin-left:10%;
+  margin-top: 5%;
+}
+
+.myPhoto {
+  float:left;
+  margin: 5%;
+}
+
+body {
+  background-image: url('../assets/background2.jpg');
+}
+
+/*#immedia-summary, #koupler-summary {
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  display: table;
+  margin: 10%;
+  width: 90%;
+  padding: 1em;
+  left: 0;
+  top: 15%;
+  opacity: 0;
+}
+
+#immedia-summary span, #koupler-summary span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#immedia-preview:hover #immedia-summary,
+#koupler-preview:hover #koupler-summary {
+  opacity: 1;
+}*/
