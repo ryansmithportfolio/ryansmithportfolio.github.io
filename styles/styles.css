@@ -4,6 +4,12 @@
   margin: 5%;
 }
 
+.welcome-text {
+  font-family: 'Volkhov', serif;
+  color: white;
+  margin-left: 5%;
+}
+
 .black {
   color:black;
 }
@@ -25,6 +31,12 @@
   margin: 5%;
 }
 
+/*.projects-row-1,
+.projects-row-2,
+.projects-row-3 {
+  display: inline-block;
+}*/
+
 path.arc {
   cursor: move;
   fill: #fff;
@@ -45,7 +57,7 @@ img {
   border-radius: 10px;
 }
 #welcome {
-  background: rgba(30,30,30,0.9);
+  background: rgba(30,30,30,0.8);
   height:100%;
 }
 

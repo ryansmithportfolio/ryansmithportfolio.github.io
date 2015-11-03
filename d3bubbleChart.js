@@ -26,14 +26,14 @@ var d3data = {
 
 /* To make the canvas responsive, the browser window's inner width and height will
 determine the canvas's width and height, respectively. */
-var width = window.innerWidth/1.3;
-var height = window.innerHeight/1.3;
+var width = window.innerWidth;
+var height = window.innerHeight;
 
 /* The pack layout will provide us with appropriately sized and place bubble nodes. */
 var bubble = d3.layout.pack()
   .sort(null)
-  .size([width, height])
-  .padding(1.5)
+  /* Resize this to fit all displays */
+  .size([width/1.2, width/1.8])
 
 var svg = d3.select('#d3bubbleChart').append('svg')
   .attr({
@@ -60,7 +60,7 @@ function update(data) {
   /* Append nodes as circles filled with an image (SVG's use defs and patterns to 
     incorporate images in the canvas) */
   node.append('circle')
-    .attr('r', function(d) { return 130/d.value; })
+    .attr('r', function(d) { return 120/d.value; })
     .style('fill', function(d) {
       defs.append('svg:pattern')
         .attr('id', 'tile-img' + d.title)
@@ -86,6 +86,24 @@ function update(data) {
       // var lineMovement = [
       //   { 'x' : d.x, 'y' : d.y }, 
       //   { 'x' : d.x + 100, 'y' : d.y - (150/d.value) - 10 }, 
+      //   // { 'x' : d.x + 250, 'y' : d.y - (150/d.value) - 10 }
+      // ]
+      // var line = d3.svg.line()
+      //   .x(function(d) { return d.x})
+      //   .y(function(d) { return d.y})
+      //   .interpolate('linear')
+      // svg.append('path')
+      //   .transition()
+      //   .duration(500)
+      //   // .delay(200)
+      //   .attr('d', line(lineMovement))
+      //   .attr('stroke', 'white')
+      //   .attr('stroke-width', 2)
+      //   .style('stroke-dasharray', ('3, 3'))
+      // // d3.select(this).select('circle')
+      // var lineMovement = [
+      //   // { 'x' : d.x, 'y' : d.y }, 
+      //   { 'x' : d.x + 100, 'y' : d.y - (150/d.value) - 10 }, 
       //   { 'x' : d.x + 250, 'y' : d.y - (150/d.value) - 10 }
       // ]
       // var line = d3.svg.line()
@@ -95,12 +113,11 @@ function update(data) {
       // svg.append('path')
       //   .transition()
       //   .duration(500)
-      //   .delay(200)
+      //   // .delay(200)
       //   .attr('d', line(lineMovement))
       //   .attr('stroke', 'white')
       //   .attr('stroke-width', 2)
       //   .style('stroke-dasharray', ('3, 3'))
-      // d3.select(this).select('circle')
       //   .style({
       //     'stroke': 'steelblue',
       //     'stroke-width': '2px',
@@ -115,7 +132,7 @@ function update(data) {
         .attr('stroke', 'white')
     })
     .on('mouseout', function(d) {
-      // d3.selectAll('path').remove();
+      d3.selectAll('path').remove();
       d3.select(this)
         .transition()
         .duration(400)
