@@ -14,7 +14,6 @@
   color:black;
 }
 
-.grid-sizer,
 .grid-item {
   width: 45%;
   float: left;
@@ -26,9 +25,14 @@
   display:inline-block;
 }
 
-.img-thumbnail {
+figure {
   opacity: 1;
   margin: 5%;
+}
+
+figcaption {
+  font-family: 'Volkhov', serif;
+  margin: 1%;
 }
 
 /*.projects-row-1,
@@ -86,26 +90,3 @@ body {
   background-image: url('../assets/background2.jpg');
 }
 
-/*#immedia-summary, #koupler-summary {
-  position: absolute;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  display: table;
-  margin: 10%;
-  width: 90%;
-  padding: 1em;
-  left: 0;
-  top: 15%;
-  opacity: 0;
-}
-
-#immedia-summary span, #koupler-summary span {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-}
-
-#immedia-preview:hover #immedia-summary,
-#koupler-preview:hover #koupler-summary {
-  opacity: 1;
-}*/
