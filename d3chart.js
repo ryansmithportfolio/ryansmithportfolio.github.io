@@ -1,94 +1,84 @@
-// var d3data = {
-//       title: 'projection1',
-//       priority: 10,
-//       img: './assets/wheel',
-//       children: [
-//         {
-//           title: 'immedia',
-//           url: 'https://www.immedia.xyz',
-//           description: 'your real-time encyclopedia',
-//           priority: 1,
-//         },
-//         {
-//           title: 'koupler',
-//           url: 'https://www.immedia.xyz',
-//           description: 'a meeting site for couples', 
-//           priority: 1.5,
-//         },
-//         {
-//           title: 'deep space',
-//           url: 'https://mtcrushmore.github.io',
-//           description: 'solar system creator', 
-//           priority: 2.5,
-//         },
-//         {
-//           title: 'fudwize',
-//           url: 'https://fudwize.herokuapp.xyz',
-//           description: 'connecting foodbanks and restaurants', 
-//           priority: 1.5,
-//         },
-//         {
-//           title: 'gram',
-//           url: 'https://github.com/mtcrushmore/gram',
-//           description: 'real-time whiteboard and chat', 
-//           priority: 2.5,
-//         },
-//       ]
-// };
 
 /* The data represents each section of the page, with different priorities
 given to more important sections (priorities will help determine node radius size
 later) */
 var d3data = {
-      title: 'projection1',
+      title: 'javascript',
       priority: 6,
       img: './assets/background2.jpg',
       children: [
         {
-          title: 'about',
+          title: 'node',
           img: './assets/background2.jpg',
-          priority: 10,
+          priority: 20,
           children: [
             {
               title: 'about',
               img: './assets/background2.jpg',
               priority: 2,
+              click: true,
             }
           ]
         },
         {
-          title: 'contact',
+          title: 'D3',
           img: './assets/background2.jpg',
-          priority: 10,
+          priority: 20,
+          children: [
+            {
+              title: 'react',
+              img: './assets/background2.jpg',
+              priority: 15,
+            }
+          ]
+        },
+        {
+          title: 'angular',
+          img: './assets/background2.jpg',
+          priority: 20,
           children: [
             {
               title: 'contact',
               img: './assets/background2.jpg',
               priority: 1.4,
+              click: true,
             }
           ]
         },
         {
-          title: 'projects',
+          title: 'css',
           img: './assets/background2.jpg',
-          priority: 10,
+          priority: 20,
+          children: [
+            {
+              title: 'html',
+              img: './assets/background2.jpg',
+              priority: 15,
+            }
+          ]
+        },
+        {
+          title: 'sql',
+          img: './assets/background2.jpg',
+          priority: 20,
           children: [
             {
               title: 'projects',
               img: './assets/background2.jpg',
               priority: 1.2,
+              click: true,
             }
           ]
         },
         // {
         //   title: 'blog',
         //   img: './assets/background2.jpg',
-        //   priority: 10,
+        //   priority: 20,
         //   children: [
         //     {
         //       title: 'blog',
         //       img: './assets/background2.jpg',
-        //       priority: 1.5,
+        //       priority: 15,
         //     }
         //   ]
         // },
@@ -104,6 +94,7 @@ var d3data = {
         //     }
         //   ]
         // },
+
         // {
         //   title: 'blog',
         //   img: './assets/background2.jpg',
@@ -123,21 +114,21 @@ var root = d3data;
 var width = window.innerWidth;
 var height = window.innerHeight;
 
-var centerX = width/2;
-var centerY = height/3;
+var centerX = width/2.8;
+var centerY = height/2.5;
 
-var rotation = 180;
+var rotation = -270;
 
 var update = function(root, rotation) {
 
   d3.select('svg').remove();
 
   var cluster = d3.layout.cluster()
-    .size([width/4, height/3])
+    .size([width/(width/250), height/(height/200)])
     // .sort(null)
 
   var diagonal = d3.svg.diagonal.radial()
-    .projection(function(d) { return [d.y, d.x/rotation * Math.PI]; })
+    .projection(function(d) { return [d.y, d.x/180 * Math.PI]; })
 
   var svg = d3.select('#d3chart').append('svg:svg')
     .attr({
@@ -174,21 +165,13 @@ var update = function(root, rotation) {
       class: 'node',
       // transform: function(d) { return 'rotate(' + (d.x - 90) + ')translate(' + d.y + ')'; }
     })
-    .on('click', function(d) {
-      console.log('clicked!')
-      console.log(d)
-      toggle(d);
-    })
 
   node.append('svg:circle')
     .attr('r', function(d) { return 1e-6; })
 
   var nodeUpdate = node.transition()
     .duration(1500)
-    // .attr('transform', function (d) {
-    //   return 'translate(' + d.y + ',' + d.x + ')';
-    // })
-    .attr('transform', function(d) { return 'rotate(' + (d.x - rotation) + ')translate(' + d.y + ')'; })
+    .attr('transform', function(d) { return 'rotate(' + (d.x - rotation) + ')translate(' + (d.y + 20) + ')'; })
     .select('circle')
     .attr('r', function(d) { 
       if (d._children) { return 200; }
@@ -212,6 +195,61 @@ var update = function(root, rotation) {
         return 'url(#tile-img' + d.title + ')'
     })
 
+    node.append('text')
+      .attr({
+        class: 'text',
+        class: 'nodeText'
+      })
+      .attr({
+        x: function(d) { 
+          return -20 
+        },
+        y: function(d) { return + (100/d.priority) + 20 }, 
+        stroke: 'white',
+        opacity: function(d) { if (!d.click) return 0; },
+        strokeWidth: '2px',
+        transform: function(d) {
+          if (d.click) return 'rotate(' + (-rotation) + ')'
+        }
+      })
+      .text(function(d) { return d.title })
+
+    /* Assign mouse events. I was experimenting with drawing lines on mouseover to
+    a description of the section. Work in progress. */
+    svg.selectAll('.node')
+      .on('mouseover', function(d) {
+        d3.select(this)
+          .transition()
+          .duration(400)
+          .attr('opacity', 0.6)
+        d3.select(this).select('text')
+          .transition()
+          .duration(400)
+          .attr('stroke', 'white')
+          .attr('opacity', 1)
+      })
+      .on('mouseout', function(d) {
+        d3.selectAll('path').remove();
+        d3.select(this)
+          .transition()
+          .duration(400)
+          .attr('opacity', 1)
+        d3.select(this).select('text')
+          .transition()
+          .duration(400)
+          .attr('stroke', 'teal')
+      })
+      /* A click event will bring the user to the appropriate section on the page. */
+      .on('click', function(d) {
+        if (d.click) {
+          element = document.getElementById(d.title)
+          alignWithTop = true;
+          element.scrollIntoView(alignWithTop);
+        } else {
+          toggle(d);
+        }
+      })
+
   // var nodeExit = node.exit().transition()
   //   .duration(500)
   //   .attr('transform', function(d) {
@@ -222,14 +260,14 @@ var update = function(root, rotation) {
 update(root, rotation);
 
 function toggle(d) {
-  // if (d.children) {
-  //   d._children = d.children;
-  //   d.children = null;
-  // }
-  // if (d._children) {
-  //   d.children = d._children;
-  //   d._children = null;
-  // }
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  }
+  if (d._children) {
+    d.children = d._children;
+    d._children = null;
+  }
   rotation = rotation - 90
   update(root, rotation);
 }

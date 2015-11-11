@@ -35,17 +35,6 @@ figcaption {
   margin: 1%;
 }
 
-/*.projects-row-1,
-.projects-row-2,
-.projects-row-3 {
-  display: inline-block;
-}*/
-
-path.arc {
-  cursor: move;
-  fill: #fff;
-}
-
 .node circle {
   cursor: pointer;
 }
@@ -63,9 +52,10 @@ img {
 #welcome {
   background: rgba(30,30,30,0.8);
   height:100%;
+  overflow: scroll;
 }
 
-#d3bubbleChart {
+#d3chart {
   z-index: 1;
   margin-top: -10%;
   position: absolute;
