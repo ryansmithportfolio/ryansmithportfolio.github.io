@@ -7,6 +7,18 @@ var d3data = {
       priority: 6,
       img: './assets/background2.jpg',
       children: [
+      {
+        title: 'D3',
+        img: './assets/background2.jpg',
+        priority: 20,
+        children: [
+          {
+            title: 'bootstrap',
+            img: './assets/background2.jpg',
+            priority: 15,
+          }
+        ]
+      },
         {
           title: 'node',
           img: './assets/background2.jpg',
@@ -21,7 +33,19 @@ var d3data = {
           ]
         },
         {
-          title: 'D3',
+          title: 'express',
+          img: './assets/background2.jpg',
+          priority: 20,
+          children: [
+            {
+              title: 'gulp',
+              img: './assets/background2.jpg',
+              priority: 15,
+            }
+          ]
+        },
+        {
+          title: 'mysql',
           img: './assets/background2.jpg',
           priority: 20,
           children: [
@@ -51,14 +75,26 @@ var d3data = {
           priority: 20,
           children: [
             {
-              title: 'html',
+              title: 'html5',
               img: './assets/background2.jpg',
               priority: 15,
             }
           ]
         },
         {
-          title: 'sql',
+          title: 'mongoDB',
+          img: './assets/background2.jpg',
+          priority: 20,
+          children: [
+            {
+              title: 'mocha',
+              img: './assets/background2.jpg',
+              priority: 15,
+            }
+          ]
+        },
+        {
+          title: 'git',
           img: './assets/background2.jpg',
           priority: 20,
           children: [
@@ -70,43 +106,18 @@ var d3data = {
             }
           ]
         },
-        // {
-        //   title: 'blog',
-        //   img: './assets/background2.jpg',
-        //   priority: 20,
-        //   children: [
-        //     {
-        //       title: 'blog',
-        //       img: './assets/background2.jpg',
-        //       priority: 15,
-        //     }
-        //   ]
-        // },
-        // {
-        //   title: 'blog',
-        //   img: './assets/background2.jpg',
-        //   priority: 10,
-        //   children: [
-        //     {
-        //       title: 'blog',
-        //       img: './assets/background2.jpg',
-        //       priority: 1.5,
-        //     }
-        //   ]
-        // },
-
-        // {
-        //   title: 'blog',
-        //   img: './assets/background2.jpg',
-        //   priority: 10,
-        //   children: [
-        //     {
-        //       title: 'blog',
-        //       img: './assets/background2.jpg',
-        //       priority: 1.5,
-        //     }
-        //   ]
-        // },
+        {
+          title: 'socket.io',
+          img: './assets/background2.jpg',
+          priority: 20,
+          children: [
+            {
+              title: 'jquery',
+              img: './assets/background2.jpg',
+              priority: 15,
+            }
+          ]
+        },
       ]
 };
 
@@ -124,7 +135,7 @@ var update = function(root, rotation) {
   d3.select('svg').remove();
 
   var cluster = d3.layout.cluster()
-    .size([width/(width/250), height/(height/200)])
+    .size([width/(width/250), height/(height/250)])
     // .sort(null)
 
   var diagonal = d3.svg.diagonal.radial()
@@ -142,7 +153,7 @@ var update = function(root, rotation) {
     .attr('class', 'arc')
     .attr('d', d3.svg.arc()
       .innerRadius(centerY)
-      .outerRadius(centerY)
+      .outerRadius(centerY + 1)
       .startAngle(0)
       .endAngle(2 * Math.PI)
       )
@@ -152,6 +163,8 @@ var update = function(root, rotation) {
   var link = svg.selectAll('path.link')
     .data(cluster.links(nodes))
     .enter().append('svg:path')
+    .transition()
+    .duration(2000)
     .attr({
       class: 'link',
       d: diagonal,
@@ -170,7 +183,8 @@ var update = function(root, rotation) {
     .attr('r', function(d) { return 1e-6; })
 
   var nodeUpdate = node.transition()
-    .duration(1500)
+    .duration(2500)
+    .delay(500)
     .attr('transform', function(d) { return 'rotate(' + (d.x - rotation) + ')translate(' + (d.y + 20) + ')'; })
     .select('circle')
     .attr('r', function(d) { 
@@ -187,10 +201,10 @@ var update = function(root, rotation) {
           if (d.img) { return d.img; }
         })
         .attr({
-          x: 0,
+          x: -20,
           y: -50,
-          width: 400,
-          height: 400,
+          width: 300,
+          height: 300,
         })
         return 'url(#tile-img' + d.title + ')'
     })
@@ -209,7 +223,7 @@ var update = function(root, rotation) {
         opacity: function(d) { if (!d.click) return 0; },
         strokeWidth: '2px',
         transform: function(d) {
-          if (d.click) return 'rotate(' + (-rotation) + ')'
+          if (d.click) return 'rotate(' + (-d.x + rotation) + ')'
         }
       })
       .text(function(d) { return d.title })
