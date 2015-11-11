@@ -90,3 +90,9 @@ body {
   background-image: url('../assets/background2.jpg');
 }
 
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 0px;
+}
+
