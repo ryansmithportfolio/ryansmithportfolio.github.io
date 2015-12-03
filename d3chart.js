@@ -5,28 +5,28 @@ later) */
 var d3data = {
       title: 'javascript',
       priority: 6,
-      img: './assets/background2.jpg',
+      img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
       children: [
-      {
-        title: 'D3',
-        img: './assets/background2.jpg',
-        priority: 20,
-        children: [
-          {
-            title: 'bootstrap',
-            img: './assets/background2.jpg',
-            priority: 15,
-          }
-        ]
-      },
+      // {
+      //   title: 'D3',
+      //   img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
+      //   priority: 20,
+      //   children: [
+      //     {
+      //       title: 'bootstrap',
+      //       img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
+      //       priority: 15,
+      //     }
+      //   ]
+      // },
         {
           title: 'node',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'about',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 2,
               click: true,
             }
@@ -34,36 +34,36 @@ var d3data = {
         },
         {
           title: 'express',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'gulp',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 15,
             }
           ]
         },
         {
           title: 'mysql',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'react',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 15,
             }
           ]
         },
         {
           title: 'angular',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'contact',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 1.4,
               click: true,
             }
@@ -71,53 +71,53 @@ var d3data = {
         },
         {
           title: 'css',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'html5',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 15,
             }
           ]
         },
         {
           title: 'mongoDB',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'mocha',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 15,
             }
           ]
         },
         {
           title: 'git',
-          img: './assets/background2.jpg',
+          img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
           priority: 20,
           children: [
             {
               title: 'projects',
-              img: './assets/background2.jpg',
+              img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
               priority: 1.2,
               click: true,
             }
           ]
         },
-        {
-          title: 'socket.io',
-          img: './assets/background2.jpg',
-          priority: 20,
-          children: [
-            {
-              title: 'jquery',
-              img: './assets/background2.jpg',
-              priority: 15,
-            }
-          ]
-        },
+        // {
+        //   title: 'socket.io',
+        //   img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
+        //   priority: 20,
+        //   children: [
+        //     {
+        //       title: 'jquery',
+        //       img: 'https://allsizewallpapers.files.wordpress.com/2012/07/hd-jelly-bean-abstract-wallpaper-2560x1600.jpg',
+        //       priority: 15,
+        //     }
+        //   ]
+        // },
       ]
 };
 
@@ -126,16 +126,16 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 
 var centerX = width/2.8;
-var centerY = height/2.5;
+var centerY = height/2;
 
-var rotation = -270;
+var rotation = -240;
 
 var update = function(root, rotation) {
 
   d3.select('svg').remove();
 
   var cluster = d3.layout.cluster()
-    .size([width/(width/250), height/(height/250)])
+    .size([width/4, height/4])
     // .sort(null)
 
   var diagonal = d3.svg.diagonal.radial()
@@ -163,8 +163,6 @@ var update = function(root, rotation) {
   var link = svg.selectAll('path.link')
     .data(cluster.links(nodes))
     .enter().append('svg:path')
-    .transition()
-    .duration(2000)
     .attr({
       class: 'link',
       d: diagonal,
@@ -173,23 +171,24 @@ var update = function(root, rotation) {
 
   var node = svg.selectAll('g.node')
     .data(nodes)
-    .enter().append('svg:g')
+    
+  var nodeEnter = node.enter().append('svg:g')
     .attr({
       class: 'node',
       // transform: function(d) { return 'rotate(' + (d.x - 90) + ')translate(' + d.y + ')'; }
     })
 
-  node.append('svg:circle')
+  nodeEnter.append('svg:circle')
     .attr('r', function(d) { return 1e-6; })
 
   var nodeUpdate = node.transition()
     .duration(2500)
-    .delay(500)
+    // .delay(500)
     .attr('transform', function(d) { return 'rotate(' + (d.x - rotation) + ')translate(' + (d.y + 20) + ')'; })
     .select('circle')
     .attr('r', function(d) { 
       if (d._children) { return 200; }
-      return 100/d.priority; 
+      return 70/d.priority; 
     })
     .style('fill', function(d) {
       defs.append('svg:pattern')
@@ -201,15 +200,15 @@ var update = function(root, rotation) {
           if (d.img) { return d.img; }
         })
         .attr({
-          x: -20,
-          y: -50,
+          x: -100,
+          y: -100,
           width: 300,
           height: 300,
         })
         return 'url(#tile-img' + d.title + ')'
     })
 
-    node.append('text')
+    nodeEnter.append('text')
       .attr({
         class: 'text',
         class: 'nodeText'
@@ -264,11 +263,11 @@ var update = function(root, rotation) {
         }
       })
 
-  // var nodeExit = node.exit().transition()
-  //   .duration(500)
-  //   .attr('transform', function(d) {
-  //     return 'translate(' + d.parent.y + ',' + d.parent.x + ')';
-  //   })
+  var nodeExit = node.exit().transition()
+    .duration(500)
+    .attr('transform', function(d) {
+      return 'translate(' + d.parent.y + ',' + d.parent.x + ')';
+    })
 }
 
 update(root, rotation);
