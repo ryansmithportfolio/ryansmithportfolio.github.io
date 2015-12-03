@@ -19,15 +19,17 @@
         <div id='d3chart'></div>
       </div>
 
-
+    <div id='content'>
+      <!-- <div id='navbar'></div> -->
       <div id='projects' class='wow fadeIn'>
 
         <h3 class='text black'>click on a project to view</h3>
         <div class='grid-item col-md-6'>
 
-          <!-- <a href='http://www.immedia.xyz' target='_blank'> -->
+          
             <figure>
-              <img class='img-thumbnail projects-row-1' src='./assets/immedia2.png'>
+              <a href='http://www.immedia.xyz' target='_blank'>
+              <img class='img-thumbnail projects-row-1' src='./assets/immedia2.png'></a>
               <figcaption>Immedia: Your Real-Time Encyclopedia (with Chrome Extension)</br>
                 <a href='http://www.immedia.xyz' target='_blank'>[ website ]</a>
                 <a href='https://github.com/The-Undefineds/immedia' target='_blank'>[ github ]</a>
@@ -35,7 +37,7 @@
                   [ chrome extension ]
               </figcaption>
             </figure>
-          <!-- </a> -->
+          
            
           <a href='https://github.com/Short-Stacks/koupler' target='_blank'>
             <figure>
@@ -53,7 +55,7 @@
           </a>
 
         </div>
-        <div class='grid-item'>
+        <div class='grid-item col-md-6'>
           <a href='http://fudwize.herokuapp.com' target='_blank'>
             <figure>
               <img class='img-thumbnail projects-row-1' src='./assets/fudwize.png'>
@@ -81,7 +83,7 @@
 
     <div id='about' class='wow fadeInUp'>
         <img src='./assets/rsmith.jpg' class='img-circle myPhoto'>
-        <h4 class='text black'><p>There is nothing better than thinking up something and then making it a reality. For me, it's making tools to help others create, connect, and share. After working in the education world for several years (including over a year in SE Asia teaching English), I moved out toSan Francisco to pursue software engineering.</p>
+        <h4 class='text black about-text'><p>There is nothing better than thinking up something and then making it a reality. For me, it's making tools to help others create, connect, and share. After working in the education world for several years (including over a year in SE Asia teaching English), I moved out to San Francisco to pursue software engineering.</p>
 
           <p>Feel free to view some applications I've worked on. Specializing in Javascript, I've worked the full stack, from AngularJS, React, jQuery and D3 on the front-end, all the way back to Node, Express, MySQL and MongoDB on the back-end. Feel free to contact me about projects, opportunities, or ideas.</p>
 
@@ -90,22 +92,27 @@
         </h4>
         
     </div>
+  
       
     <div id='contact' class='wow fadeInUp'>
-      <a href='./assets/ryan-smith-resume.pdf' class='text' target='_blank'>resume</a>
-      <a href='@mailto:ryanthesmith@gmail.com' class='text'>email</a>
-      <a href='https://github.com/mtcrushmore' class='text' target='_blank'>github</a>
-      <a href='http://linkedin.com/in/helloimryansmith' class='text' target='_blank'>linkedin</a>
+      <a class='col-md-3' href='./assets/ryan-smith-resume.pdf' class='text' target='_blank'>resume</a>
+      <a class='col-md-3' href='@mailto:ryanthesmith@gmail.com' class='text'><img src='http://www.laribollita.com/wp-content/uploads/2015/01/email_icon-6cdb85b33d97b5c92cfe70edebd74901.png' width='25%'></a>
+      <a class='col-md-3' href='https://github.com/mtcrushmore' class='text' target='_blank'><img src='http://www.aha.io/assets/integration_logos/github-bb449e0ffbacbcb7f9c703db85b1cf0b.png' width='30%'></a>
+      <a class='col-md-3' href='http://linkedin.com/in/helloimryansmith' class='text' target='_blank'><img src='http://www.plughitzlive.com/images/news/logos/linkedin.png' width='25%'></a>
     </div>
+  </div>
+
 
   </body>
 
   <script src='components/d3/d3.min.js'></script>
   <script src='components/jquery/dist/jquery.min.js'></script>
   <script src='components/wow/dist/wow.min.js'></script>
+  <!-- // <script src='components/parallax/parallax.min.js'></script> -->
 
   
   <script src='app.js'></script>
   <script src='d3chart.js'></script>
+  <script src='navbar.js'></script>
 
 </html>

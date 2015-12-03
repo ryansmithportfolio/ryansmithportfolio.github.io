@@ -1,3 +1,10 @@
+body {
+  display: inline-block;
+  /*position: relative;*/
+  background: url('https://c1.staticflickr.com/1/4/6919680_75bcadc52b_b.jpg');
+  background-size: cover;
+}
+
 .text {
   font-family: 'Volkhov', serif;
   color: white;
@@ -20,19 +27,28 @@
   max-width: 100%;
 }
 
+#content {
+  position: relative;
+  top: 800px;
+  background-image: url('http://7-themes.com/data_images/out/36/6894141-blurred.jpg');
+  background-size: cover;
+}
+
 #projects {
-  background: rgba(255,255,255, 0.6);
-  display:inline-block;
+  /*background: rgba(255,255,255, 0.6);*/
+  display: inline-block;
 }
 
 figure {
   opacity: 1;
   margin: 5%;
+  /*height: 70%;*/
 }
 
 figcaption {
   font-family: 'Volkhov', serif;
   margin: 1%;
+  color: white;
 }
 
 .node circle {
@@ -45,30 +61,47 @@ img {
   display: block;
 }
 
-#welcome, #projects, #about {
+/*#welcome, #projects, #about {
   border-style: solid;
   border-radius: 10px;
-}
-#welcome {
-  background: rgba(30,30,30,0.6);
-  height:100%;
-  overflow: scroll;
-}
+}*/
 
-#d3chart {
-  z-index: 1;
-  margin-top: -10%;
-  position: absolute;
+#welcome {
+  /*background: rgba(30,30,30,0.6);*/
+  width: 100%;
+  height: 100%;
+  /*position: absolute;*/
+  /*overflow: scroll;*/
+  position: fixed;
 }
 
 #about {
-  background: rgba(255,255,255, 0.6);
+  background: rgba(255,255,255, 0.8);
+  margin-top: 5%;
+  position: relative;
+  padding: 2%;
+}
+
+.about-text {
+  margin: 100px;
 }
 
 #contact {
-  margin-bottom:5%;
+  margin-bottom:10%;
   margin-left:10%;
-  margin-top: 5%;
+  margin-top: 7%;
+  height: 100%;
+  width: 100%;
+  /*position: fixed;*/
+  /*float: bottom;*/
+  display: inline-block;
+  z-index: 1;
+}
+
+#d3chart {
+  /*z-index: 0;*/
+  margin-top: -10%;
+  /*position: fixed;*/
 }
 
 .myPhoto {
@@ -76,13 +109,10 @@ img {
   margin: 5%;
 }
 
-body {
-  background-image: url('../assets/background2.jpg');
-}
-
 .link, .arc {
   fill: none;
   stroke: #ccc;
   stroke-width: 0px;
 }
+
 
