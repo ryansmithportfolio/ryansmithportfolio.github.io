@@ -255,9 +255,11 @@ var update = function(root, rotation) {
       /* A click event will bring the user to the appropriate section on the page. */
       .on('click', function(d) {
         if (d.click) {
-          element = document.getElementById(d.title)
-          alignWithTop = true;
-          element.scrollIntoView(alignWithTop);
+          // element = document.getElementById(d.title);
+
+          $('html, body').animate({
+            scrollTop: $('#' + d.title).offset().top
+          }, 1000);
         } else {
           toggle(d);
         }
