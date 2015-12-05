@@ -3,6 +3,7 @@ body {
   /*position: relative;*/
   background: url('https://c1.staticflickr.com/1/4/6919680_75bcadc52b_b.jpg');
   background-size: cover;
+  height: 100%;
 }
 
 .text {
@@ -37,22 +38,7 @@ body {
 #projects {
   /*background: rgba(255,255,255, 0.6);*/
   display: inline-block;
-}
-
-figure {
-  opacity: 1;
-  margin: 5%;
-  height: 50%;
-}
-
-.koupler {
-  margin-top: 25%;
-}
-
-figcaption {
-  font-family: 'Volkhov', serif;
-  margin: 1%;
-  color: white;
+  width:100%;
 }
 
 .node circle {
@@ -106,6 +92,18 @@ img {
   fill: none;
   stroke: #ccc;
   stroke-width: 0px;
+}
+
+li {
+  margin-left: -7%;
+}
+
+.project-title {
+  font-family: 'Raleway', sans-serif;
+}
+
+.project {
+  margin-top: 5%;
 }
 
 .col-md-3 {
