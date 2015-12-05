@@ -182,7 +182,7 @@ var update = function(root, rotation) {
     .attr('r', function(d) { return 1e-6; })
 
   var nodeUpdate = node.transition()
-    .duration(2500)
+    .duration(3000)
     // .delay(500)
     .attr('transform', function(d) { return 'rotate(' + (d.x - rotation) + ')translate(' + (d.y + 20) + ')'; })
     .select('circle')
