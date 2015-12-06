@@ -34,7 +34,7 @@ var bubble = d3.layout.pack()
   .sort(null)
   .size([width/1.2, height])
 
-var svg = d3.select('#d3bubbleChart').append('svg')
+var svg = d3.select('#d3chart').append('svg')
   .attr({
     height: height,
     width: width,
