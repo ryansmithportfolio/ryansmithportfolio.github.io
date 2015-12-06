@@ -32,8 +32,7 @@ var height = window.innerHeight;
 /* The pack layout will provide us with appropriately sized and place bubble nodes. */
 var bubble = d3.layout.pack()
   .sort(null)
-  /* Resize this to fit all displays */
-  .size([width/1.2, width/1.8])
+  .size([width/1.2, height])
 
 var svg = d3.select('#d3bubbleChart').append('svg')
   .attr({
