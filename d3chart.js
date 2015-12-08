@@ -130,12 +130,15 @@ var centerY = height/2;
 
 var rotation = -240;
 
-var update = function(root, rotation) {
+var update = function(root, rotation, duration, scrollTop) {
+
+  if (scrollTop === undefined) { scrollTop = 1; };
+  // else { scrollTop = scrollTop / height; }; 
 
   d3.select('svg').remove();
 
   var cluster = d3.layout.cluster()
-    .size([width/4, height/4])
+    .size([width/4, (height - scrollTop)/4])
     // .sort(null)
 
   var diagonal = d3.svg.diagonal.radial()
@@ -182,7 +185,7 @@ var update = function(root, rotation) {
     .attr('r', function(d) { return 1e-6; })
 
   var nodeUpdate = node.transition()
-    .duration(3000)
+    .duration(duration)
     // .delay(500)
     .attr('transform', function(d) { return 'rotate(' + (d.x - rotation) + ')translate(' + (d.y + 20) + ')'; })
     .select('circle')
@@ -259,20 +262,29 @@ var update = function(root, rotation) {
 
           $('html, body').animate({
             scrollTop: $('#' + d.title).offset().top
-          }, 1000);
+          }, 2000);
         } else {
           toggle(d);
         }
       })
 
-  var nodeExit = node.exit().transition()
-    .duration(500)
-    .attr('transform', function(d) {
-      return 'translate(' + d.parent.y + ',' + d.parent.x + ')';
-    })
+  // var nodeExit = node.exit().transition()
+  //   .duration(500)
+  //   .attr('transform', function(d) {
+  //     return 'translate(' + d.parent.y + ',' + d.parent.x + ')';
+  //   })
 }
 
-update(root, rotation);
+update(root, rotation, 3000);
+
+$(document).on('scroll', function() {
+  var scrollTop = $(document).scrollTop();
+  console.log(scrollTop);
+  if (scrollTop) {
+    rotation = rotation - 5;
+    update(root, rotation, 0, scrollTop);
+  };
+});
 
 function toggle(d) {
   if (d.children) {
