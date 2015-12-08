@@ -296,6 +296,6 @@ function toggle(d) {
     d._children = null;
   }
   rotation = rotation - 90
-  update(root, rotation);
+  update(root, rotation, 3000);
 }
 
