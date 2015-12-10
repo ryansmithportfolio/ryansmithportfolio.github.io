@@ -1,8 +1,5 @@
 body {
   display: inline-block;
-  /*position: relative;*/
-  /*background-image: url('../assets/background2.jpg');*/
-  /*background-size: cover;*/
   height: 100%;
 }
 
@@ -12,44 +9,14 @@ body {
   margin: 5%;
 }
 
-.welcome-text {
-  font-family: 'Volkhov', serif;
-  color: white;
-  margin-left: 5%;
-}
-
 .black {
   color:black;
-}
-
-.grid-item {
-  width: 45%;
-  float: left;
-  max-width: 100%;
-}
-
-#content {
-  position: relative;
-  top: 1000px;
-  background-image: url('http://7-themes.com/data_images/out/36/6894141-blurred.jpg');
-  background-size: cover;
-}
-
-#projects {
-  /*background: rgba(255,255,255, 0.6);*/
-  /*top: 1000px;*/
-  display: inline-block;
-  width:100%;
 }
 
 canvas {
   width: 100%;
   z-index: -1;
   position: fixed;
-}
-
-.nodes circle {
-  cursor: pointer;
 }
 
 img {
@@ -61,15 +28,16 @@ img {
 #welcome {
   width: 100%;
   height: 100%;
-/*  background: url('https://c1.staticflickr.com/1/4/6919680_75bcadc52b_b.jpg');
-  background-size: cover;*/
   background: rgba(30,30,30,0.6);
-/*  background-image: url('http://www.freebiesgallery.com/wp-content/uploads/2014/02/blurred-background-2.jpg');
-  background-size: cover;*/
   position: fixed;
   overflow: scroll;
 }
 
+.welcome-text {
+  font-family: 'Volkhov', serif;
+  color: white;
+  margin-left: 5%;
+}
 
 .portrait {
   margin: 0 auto;
@@ -99,8 +67,31 @@ img {
   margin-right: 18%;
 }
 
+#content {
+  position: relative;
+  top: 1000px;
+  background-image: url('http://7-themes.com/data_images/out/36/6894141-blurred.jpg');
+  background-size: cover;
+}
+
+#projects {
+  display: inline-block;
+  width:100%;
+}
+
+.project-title {
+  font-family: 'Raleway', sans-serif;
+}
+
+.project {
+  margin-top: 5%;
+}
+
+.col-md-3 {
+  margin-top: 5%;
+}
+
 #about {
-  /*background: rgba(255,255,255, 0.7);*/
   background: url('http://maintenance.io/wp-content/uploads/2014/09/Blurred-Background1.jpg');
   margin-top: 5%;
   position: relative;
@@ -118,11 +109,6 @@ img {
   height: 100%;
   width: 100%;
   display: inline-block;
-  /*z-index: 1;*/
-}
-
-#d3chart {
-  margin-top: -10%;
 }
 
 .myPhoto {
@@ -130,26 +116,8 @@ img {
   margin: 5%;
 }
 
-.link, .arc {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 0px;
-}
-
 li {
   margin-left: -7%;
-}
-
-.project-title {
-  font-family: 'Raleway', sans-serif;
-}
-
-.project {
-  margin-top: 5%;
-}
-
-.col-md-3 {
-  margin-top: 5%;
 }
 
 .open {
@@ -263,7 +231,7 @@ li {
 
 .opened li { margin-right: 168px; }
 
-rect {
+/*rect {
   fill: none;
   pointer-events: all;
 }
@@ -271,7 +239,7 @@ rect {
 circle {
   fill: none;
   stroke-width: 2.5px;
-}
+}*/
 
 /*.link {
   fill: none;
@@ -285,12 +253,25 @@ circle {
   stroke-width: 1.5px;
 }*/
 
-text {
+/*text {
   font: 14px sans-serif white;
   fill: white;
-  /*color: white;*/
   pointer-events: none;
-}
+}*/
+
+/*.nodes circle {
+  cursor: pointer;
+}*/
+
+/*.link, .arc {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 0px;
+}*/
+
+/*#d3chart {
+  margin-top: -10%;
+}*/
 
 
 

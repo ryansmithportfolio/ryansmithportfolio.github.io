@@ -32,7 +32,7 @@ $(document).ready(function() {
     event.stopPropagation();
   });
 
-})
+});
   
 var smoothScrollTo = function(elem) {
   $('html, body').animate({
