@@ -2,8 +2,12 @@ $(document).ready(function() {
   
   new WOW().init();
 
+  $('.link-welcome').on('click', function() {
+    smoothScrollTo('body', 1000);
+  });
+
   $('.link-portfolio').on('click', function() {
-    smoothScrollTo('#projects', 500);
+    smoothScrollTo('#projects', 1000);
   });
 
   $('.link-contact').on('click', function() {
