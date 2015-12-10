@@ -120,7 +120,8 @@ img {
 }
 
 .about-text {
-  margin: 100px;
+  margin: 5%;
+  margin-top: 15%;
 }
 
 #contact {
@@ -135,11 +136,11 @@ img {
 .myPhoto {
   float:left;
   margin: 5%;
-  margin-top: 10%;
+  margin-top: 15%;
 }
 
 li {
-  margin-left: -5%;
+  margin-left: -7%;
 }
 
 .open {
