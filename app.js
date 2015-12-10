@@ -3,11 +3,11 @@ $(document).ready(function() {
   new WOW().init();
 
   $('.link-portfolio').on('click', function() {
-    smoothScrollTo('#projects');
+    smoothScrollTo('#projects', 500);
   });
 
   $('.link-contact').on('click', function() {
-    smoothScrollTo('#about');
+    smoothScrollTo('#about', 1000);
   });
 
   $('.bxslider').bxSlider({
@@ -34,10 +34,10 @@ $(document).ready(function() {
 
 });
   
-var smoothScrollTo = function(elem) {
+var smoothScrollTo = function(elem, duration) {
   $('html, body').animate({
     scrollTop: $(elem).offset().top
-  }, 200);
+  }, duration);
 };
 
 

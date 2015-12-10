@@ -25,6 +25,11 @@ img {
   display: block;
 }
 
+#navbar {
+  position: fixed;
+  z-index: 3;
+}
+
 #welcome {
   width: 100%;
   height: 100%;
@@ -34,7 +39,8 @@ img {
 }
 
 .welcome-text {
-  font-family: 'Volkhov', serif;
+  /*font-family: 'Volkhov', serif;*/
+  font-family: 'Raleway', sans-serif;
   color: white;
   margin-left: 5%;
 }
@@ -70,9 +76,6 @@ img {
 #content {
   position: relative;
   top: 1000px;
-  /*backround: white;*/
-  /*background-image: url('http://7-themes.com/data_images/out/36/6894141-blurred.jpg');*/
-  /*background-size: cover;*/
 }
 
 #projects {
