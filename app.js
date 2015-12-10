@@ -7,6 +7,10 @@ $(document).ready(function() {
     captions: true
   });
 
+  particlesJS.load('particles-js', './assets/particles.json', function() {
+    console.log('callback - particles.js config loaded');
+  });
+
 
   $('.open').on('click', function(event){
     $(this).addClass('opened');

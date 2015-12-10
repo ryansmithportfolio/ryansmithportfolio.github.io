@@ -30,7 +30,8 @@ var d3data = {
               priority: 2,
               click: true,
             }
-          ]
+          ],
+          parent: this,
         },
         {
           title: 'express',
@@ -127,6 +128,7 @@ var height = window.innerHeight;
 
 var centerX = width/2.8;
 var centerY = height/2;
+var colors = d3.scale.category20c();
 
 var rotation = -240;
 
@@ -195,32 +197,38 @@ var update = function(root, rotation, duration, scrollTop) {
     })
     .style('fill', function(d) {
       defs.append('svg:pattern')
-        .attr('id', 'tile-img' + d.title)
+        .attr('id', 'tile-img')
         .attr('width', '20')
         .attr('height', '20')
         .append('svg:image')
-        .attr('xlink:href', function() {
-          if (d.img) { return d.img; }
-        })
+        .attr('xlink:href', './assets/background2.jpg')
         .attr({
           x: -100,
           y: -100,
           width: 300,
           height: 300,
         })
-        return 'url(#tile-img' + d.title + ')'
+        return 'url(#tile-img)'
     })
+    // .style('fill', function(d) {
+    //   if (d.click) return'rgba(30,30,30,0.8)';
+    //   return '#85144B';
+    // })
+    // .style('fill', function(d, i)  {
+    //   return colors(i);
+    // })
 
     nodeEnter.append('text')
       .attr({
         class: 'text',
-        class: 'nodeText'
+        class: 'nodeText',
+        'text-anchor': 'middle'
       })
       .attr({
-        x: function(d) { 
-          return -20 
-        },
-        y: function(d) { return + (100/d.priority) + 20 }, 
+      //   x: function(d) { 
+      //     return -20 
+      //   },
+      //   y: function(d) { return + (100/d.priority) - 60 }, 
         stroke: 'white',
         opacity: function(d) { if (!d.click) return 0; },
         strokeWidth: '2px',
@@ -238,11 +246,11 @@ var update = function(root, rotation, duration, scrollTop) {
           .transition()
           .duration(400)
           .attr('opacity', 0.6)
-        d3.select(this).select('text')
-          .transition()
-          .duration(400)
-          .attr('stroke', 'white')
-          .attr('opacity', 1)
+        // d3.select(this).select('text')
+        //   .transition()
+        //   .duration(400)
+        //   .attr('stroke', 'white')
+        //   .attr('opacity', 1)
       })
       .on('mouseout', function(d) {
         d3.selectAll('path').remove();
@@ -281,7 +289,7 @@ $(document).on('scroll', function() {
   var scrollTop = $(document).scrollTop();
   console.log(scrollTop);
   if (scrollTop) {
-    rotation = rotation - 5;
+    rotation = rotation - 10;
     update(root, rotation, 0, scrollTop);
   };
 });
@@ -296,6 +304,6 @@ function toggle(d) {
     d._children = null;
   }
   rotation = rotation - 90
-  update(root, rotation);
+  update(root, rotation, 2000);
 }
 
