@@ -57,6 +57,8 @@ img {
 .portrait {
   margin: 0 auto;
   width: 20%;
+  z-index:-2;
+  position: relative;
 }
 
 #welcome-panel {
@@ -65,12 +67,16 @@ img {
   margin-top: -12%;
   background: white;
   padding: 20px;
+  z-index: -3;
+  position: relative;
 }
 
 .welcome-link {
   color: black;
   font-size: 20px;
   cursor: pointer;
+  z-index: 0;
+  position: relative;
 }
 
 .left {
@@ -129,6 +135,7 @@ img {
 .myPhoto {
   float:left;
   margin: 5%;
+  margin-top: 10%;
 }
 
 li {
