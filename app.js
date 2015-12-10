@@ -37,7 +37,7 @@ $(document).ready(function() {
 var smoothScrollTo = function(elem) {
   $('html, body').animate({
     scrollTop: $(elem).offset().top
-  }, 1000);
+  }, 500);
 };
 
 
