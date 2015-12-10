@@ -1,7 +1,7 @@
 body {
   display: inline-block;
   /*position: relative;*/
-  /*background-image: url('../assets/background2.jpg');*/
+  background-image: url('../assets/background2.jpg');
   /*background-size: cover;*/
   height: 100%;
 }
@@ -61,9 +61,9 @@ img {
   height: 100%;
 /*  background: url('https://c1.staticflickr.com/1/4/6919680_75bcadc52b_b.jpg');
   background-size: cover;*/
-  background: rgba(30,30,30,1);
-  /*background-image: url('http://7-themes.com/data_images/out/36/6894141-blurred.jpg');*/
-  /*background-size: cover;*/
+  background: rgba(30,30,30,0.6);
+/*  background-image: url('http://www.freebiesgallery.com/wp-content/uploads/2014/02/blurred-background-2.jpg');
+  background-size: cover;*/
   position: fixed;
 }
 
@@ -258,6 +258,11 @@ text {
   fill: white;
   /*color: white;*/
   pointer-events: none;
+}
+
+.portrait {
+  margin: 0 auto;
+  width: 200px;
 }
 
 
