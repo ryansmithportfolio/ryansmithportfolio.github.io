@@ -2,6 +2,14 @@ $(document).ready(function() {
   
   new WOW().init();
 
+  $('.link-portfolio').on('click', function() {
+    smoothScrollTo('#projects');
+  });
+
+  $('.link-contact').on('click', function() {
+    smoothScrollTo('#about');
+  });
+
   $('.bxslider').bxSlider({
     mode: 'fade',
     captions: true
@@ -26,7 +34,11 @@ $(document).ready(function() {
 
 })
   
-
+var smoothScrollTo = function(elem) {
+  $('html, body').animate({
+    scrollTop: $(elem).offset().top
+  }, 1000);
+};
 
 
 

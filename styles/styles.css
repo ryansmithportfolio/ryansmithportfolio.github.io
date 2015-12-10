@@ -1,7 +1,7 @@
 body {
   display: inline-block;
   /*position: relative;*/
-  background-image: url('../assets/background2.jpg');
+  /*background-image: url('../assets/background2.jpg');*/
   /*background-size: cover;*/
   height: 100%;
 }
@@ -37,6 +37,7 @@ body {
 
 #projects {
   /*background: rgba(255,255,255, 0.6);*/
+  /*top: 1000px;*/
   display: inline-block;
   width:100%;
 }
@@ -66,6 +67,36 @@ img {
 /*  background-image: url('http://www.freebiesgallery.com/wp-content/uploads/2014/02/blurred-background-2.jpg');
   background-size: cover;*/
   position: fixed;
+  overflow: scroll;
+}
+
+
+.portrait {
+  margin: 0 auto;
+  width: 20%;
+}
+
+#welcome-panel {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: -11%;
+  background: white;
+  padding: 20px;
+}
+
+.welcome-link {
+  color: black;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.left {
+  margin-left: 20%;
+}
+
+.right {
+  float: right;
+  margin-right: 18%;
 }
 
 #about {
@@ -193,7 +224,7 @@ li {
 
 .sub-menu li:nth-child(5) { -webkit-transition-delay: 0.25s; }
 
-.sub-menu li a {
+.menu-text {
   color: #fff;
   font-family: 'Lato', Arial, Helvetica, sans-serif;
   font-size: 16px;
@@ -261,10 +292,6 @@ text {
   pointer-events: none;
 }
 
-.portrait {
-  margin: 0 auto;
-  width: 200px;
-}
 
 
 
