@@ -303,7 +303,8 @@ function toggle(d) {
     d.children = d._children;
     d._children = null;
   }
-  rotation = rotation - 90
+  rotation = rotation - 90;
   update(root, rotation, 2000);
+
 }
 
