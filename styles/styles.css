@@ -88,6 +88,11 @@ img {
   margin-right: 18%;
 }
 
+#effect-radios {
+  margin-left: 5%;
+  top: 90%;
+}
+
 #content {
   /*padding-top: 5%;*/
   position: relative;
