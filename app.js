@@ -26,34 +26,34 @@ $(document).ready(function() {
   });
 
   /* Upon effect radio selection, canvas on welcome div will re-render to chosen effect */
-  var currentEffect = 'particles';
+  // var currentEffect = 'particles';
 
-  $('.radio-inline').on('click', function() {
+  // $('.radio-inline').on('click', function() {
 
-    var effect = $('#effect-radios input:radio:checked').val();
+  //   var effect = $('#effect-radios input:radio:checked').val();
     
-    if (effect === 'particles' && currentEffect != 'particles') {
-      $('#effect').empty();
-      particlesJS.load('effect', './assets/particles.json', function() {
-        console.log('callback - particles.js config loaded');
-      });
-    } else if (effect === 'color-trail' && currentEffect != 'color-trail') {
-      $('#effect').empty();
-      $('#effect').getScript('particleMouse.js', function() {
-        console.log('color-trail is loaded');
-      });
-    } else if (effect === 'wavy-gravy' && currentEffect != 'wavy-gravy') {
-      $('#effect').empty();
-      $('#effect').getScript('steamGraph.js', function() {
-        console.log('wavy-gravy is loaded');
-      });
-    }
+  //   if (effect === 'particles' && currentEffect != 'particles') {
+  //     $('#effect').empty();
+  //     particlesJS.load('effect', './assets/particles.json', function() {
+  //       console.log('callback - particles.js config loaded');
+  //     });
+  //   } else if (effect === 'color-trail' && currentEffect != 'color-trail') {
+  //     $('#effect').empty();
+  //     $('#effect').getScript('particleMouse.js', function() {
+  //       console.log('color-trail is loaded');
+  //     });
+  //   } else if (effect === 'wavy-gravy' && currentEffect != 'wavy-gravy') {
+  //     $('#effect').empty();
+  //     $('#effect').getScript('steamGraph.js', function() {
+  //       console.log('wavy-gravy is loaded');
+  //     });
+  //   }
 
-    currentEffect = effect;
+  //   currentEffect = effect;
 
-  });
+  // });
 
-  particlesJS.load('effect', './assets/particles.json', function() {
+  particlesJS.load('particles-js', './assets/particles.json', function() {
     console.log('callback - particles.js config loaded');
   });
     
