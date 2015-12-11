@@ -39,18 +39,22 @@ $(document).ready(function() {
       });
     } else if (effect === 'color-trail' && currentEffect != 'color-trail') {
       $('#effect').empty();
-      $('#effect').load('particleMouse.js', function() {
+      $('#effect').getScript('particleMouse.js', function() {
         console.log('color-trail is loaded');
       });
     } else if (effect === 'wavy-gravy' && currentEffect != 'wavy-gravy') {
       $('#effect').empty();
-      $('#effect').load('steamGraph.js', function() {
+      $('#effect').getScript('steamGraph.js', function() {
         console.log('wavy-gravy is loaded');
       });
     }
 
     currentEffect = effect;
 
+  });
+
+  particlesJS.load('effect', './assets/particles.json', function() {
+    console.log('callback - particles.js config loaded');
   });
     
   /* Activate the slider used to showcase individual projects */
