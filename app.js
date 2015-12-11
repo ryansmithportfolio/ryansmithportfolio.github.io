@@ -1,5 +1,9 @@
 $(document).ready(function() {
   
+  particlesJS.load('particles-js', './assets/particles.json', function() {
+    console.log('callback - particles.js config loaded');
+  });
+  
   /*Initialize WoW.js, allowing for smooth element transition 
   effects when added to the class of that element*/
   new WOW().init();
@@ -52,10 +56,6 @@ $(document).ready(function() {
   //   currentEffect = effect;
 
   // });
-
-  particlesJS.load('particles-js', './assets/particles.json', function() {
-    console.log('callback - particles.js config loaded');
-  });
     
   /* Activate the slider used to showcase individual projects */
   $('.bxslider').bxSlider({
@@ -63,9 +63,7 @@ $(document).ready(function() {
     captions: true
   });
 
-  particlesJS.load('particles-js', './assets/particles.json', function() {
-    console.log('callback - particles.js config loaded');
-  });
+
 
   /* Defines classes of nav-bar elements during click events */
   $('.open').on('click', function(event){
