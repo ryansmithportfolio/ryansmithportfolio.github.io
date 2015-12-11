@@ -75,8 +75,8 @@ img {
   color: black;
   font-size: 20px;
   cursor: pointer;
-  z-index: 200;
-  position: relative;
+/*  z-index: 0;
+  position: relative;*/
 }
 
 .left {
