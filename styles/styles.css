@@ -94,7 +94,6 @@ img {
 }
 
 #content {
-  /*padding-top: 5%;*/
   position: relative;
   top: 1000px;
 }
@@ -115,6 +114,14 @@ img {
 
 .col-md-3 {
   margin-top: 5%;
+}
+
+.contact-text {
+  font-family: 'Raleway', sans-serif;
+  color: white;
+  position: absolute;
+  margin: 20px;
+  margin-top: -5%;
 }
 
 #about {
@@ -145,7 +152,7 @@ img {
 }
 
 li {
-  margin-left: -7%;
+  margin-left: -39px;
 }
 
 .open {
