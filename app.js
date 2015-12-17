@@ -1,8 +1,8 @@
+particlesJS.load('particles-js', './assets/particles.json', function() {
+  console.log('callback - particles.js config loaded');
+});
+
 $(document).ready(function() {
-  
-  particlesJS.load('particles-js', './assets/particles.json', function() {
-    console.log('callback - particles.js config loaded');
-  });
   
   /*Initialize WoW.js, allowing for smooth element transition 
   effects when added to the class of that element*/
