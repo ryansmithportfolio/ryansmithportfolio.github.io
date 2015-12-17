@@ -1,0 +1,127 @@
+body {
+	background: #466368;
+	background: radial-gradient(#648880, #293f50);
+}
+
+h2 {
+    font-family: 'Indie Flower';
+	color: white;
+}
+
+h5 {
+	color:white;
+	}
+
+form {
+    display: inline-block;
+}
+
+#button{
+	cursor: pointer;
+    display: inline-block;
+    height:auto;
+	width:auto;
+	background-color: #6699FF;
+	font-family:arial;
+	font-weight:bold;
+	color:#ffffff;
+	border-radius: 5px;
+	text-align:center;
+	margin-top:2px;
+	padding: 5px;
+}
+
+h1 {
+    height:40px;
+	width:200px;
+}
+
+ol {
+    list-style-type: none;
+	position: relative;
+	left: -20px;
+}
+
+ol li {
+	cursor: pointer;
+	background: #eeeeee;
+	border-radius: 5px;
+	border: 1px solid black;
+	margin: 3px;
+	padding: 0.4em;
+	font-size: 1em;
+	height: 100%;
+	font-family: Verdana, Arial, Sans-Serif;
+}
+
+h3, h4 {
+	font-size: 120%;
+    height:auto;
+	width:auto;
+	border-color: black;
+}
+
+h1{
+	background-color: #6699FF;
+	border-radius: 50px;
+}
+
+#startButton {
+	cursor: pointer;
+	background-color: #66CC66;
+	border-radius:10px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+ 
+#pauseButton {
+	cursor: pointer;
+	background-color: #FFCC33;
+	border-radius:10px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+#resetButton {
+	cursor: pointer;
+	background-color: #FF9933;
+	border-radius:10px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+ 
+ h1, h3, h4 {
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	font-family:arial;
+	font-weight:bold;
+	color:white;
+	border-radius: 5px;
+	text-align:center;
+	margin-top:2px;
+ }
+ 
+.list {
+	font-family:garamond;
+	color:black;
+}
+
+.highlight {
+    opacity: 0.5;
+}
+
+.carry {
+	box-shadow:0 0 2px #000;
+	}
+	
+.hidden {
+	background: white;
+	border: white;
+}

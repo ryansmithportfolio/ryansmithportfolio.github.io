@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>To Do</title>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script type="text/javascript" src="pompom.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<h2>Pom-Pom (your productivity cheerleader)</h2>
+		<h5>Based on the <a href="http://en.wikipedia.org/wiki/Pomodoro_Technique" style="color: white" target="_blank">Pomodoro technique</a>, Pom-Pom encourages you to work hard for 25 minutes while using its handy task list, then take a short break. Rinse, repeat, and watch your productivity go through the roof!</h5>
+		<h1>25 : 00</h1>
+		<h4><div id="startButton">Start Timer</div></h4>
+		<h3><div id="resetButton">Reset Timer</div></h3>
+		<h2>To Do</h2>
+		<form name="checkListForm">
+			<input type="text" name="checkListItem"/>
+		</form>
+		<div id="button">Add!</div>
+		<br/>
+		<ol class="list1" class="sortable">
+			<li>Click the Add! button or press Enter to add tasks to your "To Do" list.</li>
+		</ol>
+		<h2>In Progress</h2>
+		<ol class="list2" class="sortable">
+			<li>You can drag tasks to different lists, or simply click on them.</li>
+		</ol>
+		<h2>Completed</h2>
+		<ol class="list3" class="sortable">
+			<li>When your task has been completed, send it down here. Nice work!</li>
+		</ol>
+	</body>
+</html>
