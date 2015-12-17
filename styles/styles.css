@@ -34,10 +34,6 @@ img {
   background: rgba(30,30,30,0.8);
 }
 
-#projects, #about {
-  padding-top: 80px;
-}
-
 #welcome {
   top: 80px;
   width: 100%;
@@ -96,6 +92,14 @@ img {
 #content {
   position: relative;
   top: 1000px;
+}
+
+.container-fluid {
+  margin: -17px;
+}
+
+#projects, #about {
+  padding-top: 80px;
 }
 
 #projects {
