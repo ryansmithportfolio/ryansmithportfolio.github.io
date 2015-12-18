@@ -55,6 +55,7 @@ img {
   width: 20%;
   /*z-index:-2;*/
   position: relative;
+  border: solid white 2px;
 }
 
 #welcome-panel {
@@ -68,20 +69,28 @@ img {
 }
 
 .welcome-link {
+  background: white;
+  padding: 1.5%;
+  width: 50%;
+  margin: 0 auto;
   color: black;
   font-size: 20px;
   cursor: pointer;
+  text-align: center;
 /*  z-index: 0;
   position: relative;*/
 }
 
 .left {
-  margin-left: 15%;
+  float: left;
+  margin-top: -10%;
+  /*margin-left: 15%;*/
 }
 
 .right {
   float: right;
-  margin-right: 18%;
+  margin-top: -16%;
+  /*margin-right: 18%;*/
 }
 
 #effect-radios {
