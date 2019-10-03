@@ -64,16 +64,14 @@ img {
   margin-top: -12.5%;
   background: white;
   padding: 1.5%;
-/*  z-index: -2;
-  position: relative;*/
 }
 
-.welcome-link {
+.welcome-link,
+.welcome-link:hover {
   color: black;
   font-size: 20px;
   cursor: pointer;
-/*  z-index: 0;
-  position: relative;*/
+  text-decoration: none;
 }
 
 .left {
@@ -144,7 +142,7 @@ img {
   margin-bottom:10%;
   margin-left:10%;
   /*margin-top: 7%;*/
-  height: 100%;
+  height: 200px;
   width: 100%;
   display: inline-block;
 }
@@ -245,7 +243,8 @@ li {
 
 .sub-menu li:nth-child(5) { -webkit-transition-delay: 0.25s; }
 
-.menu-text {
+.menu-text,
+.menu-text:hover {
   color: #fff;
   font-family: 'Lato', Arial, Helvetica, sans-serif;
   font-size: 16px;
@@ -254,6 +253,7 @@ li {
   float: left;
   line-height: 40px;
   margin-top: 20px;
+  text-decoration: none!important;
 }
 
 .opened .sub-menu {
