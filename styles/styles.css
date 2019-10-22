@@ -98,13 +98,17 @@ img {
 }
 
 #projects, #about {
-  padding-top: 80px;
+  /*padding-top: 80px;*/
 }
 
 #projects {
   display: inline-block;
   background-color: #F0F0F0;
   width:100%;
+}
+
+#projects #decision-tree {
+  height: 475px;
 }
 
 .project-title {
