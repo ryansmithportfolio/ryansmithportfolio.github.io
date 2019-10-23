@@ -206,7 +206,7 @@ li {
 
 .open span:nth-child(1) {
   margin-top: 10px;
-  z-index: 9;
+  /*z-index: 9;*/
 }
 
 .open span:nth-child(2) { margin-top: 25px; }

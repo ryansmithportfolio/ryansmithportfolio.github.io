@@ -18,11 +18,11 @@ $(document).ready(function() {
 
   /* Define link classes as well as destination element and duration of smooth scroll */
   $('.link-welcome').on('click', function() {
-    smoothScrollTo('body', 1000);
+    smoothScrollTo('body', 500);
   });
 
   $('.link-portfolio').on('click', function() {
-    smoothScrollTo('#projects', 1000);
+    smoothScrollTo('#projects', 500);
   });
 
   // $('.link-contact').on('click', function() {
