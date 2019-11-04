@@ -21,7 +21,7 @@ $(document).ready(function() {
     smoothScrollTo('body', 500);
   });
 
-  $('.link-portfolio').on('click', function() {
+  $('.link-portfolio, #down-to-projects').on('click', function() {
     smoothScrollTo('#projects', 500);
   });
 

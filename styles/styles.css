@@ -90,7 +90,7 @@ img {
 
 #content {
   position: relative;
-  top: 1000px;
+  top: 94%;
 }
 
 .container-fluid {
@@ -98,13 +98,25 @@ img {
 }
 
 #projects, #about {
-  /*padding-top: 80px;*/
+  padding-top: 20px;
 }
 
 #projects {
   display: inline-block;
   background-color: #F0F0F0;
   width:100%;
+}
+
+#down-to-projects {
+  background-color: #F0F0F0;
+  font-family: 'Raleway', sans-serif;
+  height: 60px;
+  padding-top: 20px;
+  cursor: pointer;
+}
+
+#down-arrow {
+  margin-right: 20px;
 }
 
 #projects #decision-tree {
