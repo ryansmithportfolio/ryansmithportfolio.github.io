@@ -102,7 +102,7 @@ img {
 }
 
 #projects {
-  display: inline-block;
+  display: block;
   background-color: #F0F0F0;
   width:100%;
 }
