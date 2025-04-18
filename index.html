@@ -1,92 +1,212 @@
 <html>
   <head>
     <title>Ryan Smith, Full Stack Software Engineer</title>
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <meta name="MobileOptimized" content="width" />
     <meta name="HandheldFriendly" content="true" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
     <meta name="MobileOptimized" content="width" />
     <meta name="HandheldFriendly" content="true" />
 
-    <link rel='stylesheet' type='text/css' href='components/wow/css/libs/animate.css' />
-    <link rel='stylesheet' type='text/css' href='components/bootstrap/dist/css/bootstrap.min.css' />
-    <link rel='stylesheet' type='text/css' href='styles/styles.css' />
-    <link href="components/jquery.bxslider/jquery.bxslider.css" rel="stylesheet" />
-    <link href='https://fonts.googleapis.com/css?family=Volkhov' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-
-
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="components/wow/css/libs/animate.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="components/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="styles/styles.css" />
+    <link
+      href="components/jquery.bxslider/jquery.bxslider.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Volkhov"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
 
   <body>
-      <div id='navbar'>
-        <h1 class='welcome-text'>ryan smith</h1>
-        <div class='open'><span class='cls'></span>
-          <span>
-            <ul class='sub-menu'>
-              <li class='link-welcome'><p class='menu-text'>to the top!</p></li>
-              <li class='link-portfolio'><p class='menu-text'>portfolio</p></li>
-              <li class='link-resume'>
-                <a class='menu-text' href='./assets/ryan-smith-resume-2024.pdf' target='_blank'>resume</a>
-              </li>
-            </ul>
-          </span>
-          <span class='cls'></span>
-        </div>
+    <div id="navbar">
+      <h1 class="welcome-text">ryan smith</h1>
+      <div class="open">
+        <span class="cls"></span>
+        <span>
+          <ul class="sub-menu">
+            <li class="link-welcome"><p class="menu-text">to the top!</p></li>
+            <li class="link-portfolio"><p class="menu-text">portfolio</p></li>
+            <li class="link-resume">
+              <a
+                class="menu-text"
+                href="./assets/ryan-smith-resume-2025.pdf"
+                target="_blank"
+                >resume</a
+              >
+            </li>
+          </ul>
+        </span>
+        <span class="cls"></span>
       </div>
-      
-      <div id='welcome'>
+    </div>
 
-        <div id="particles-js"></div>
-        <h3 class='welcome-text sub-text'>full stack software engineer</h3>
-        
-        <img class='img-circle portrait' src='./assets/ryan-smith.jpg'>
-        <div id='welcome-panel'>
-          <span class='welcome-text welcome-link left link-portfolio'>portfolio</span>
-          <span class='welcome-text welcome-link right link-contact'>
-            <a class='welcome-link' href='./assets/ryan-smith-resume-2023.pdf' target='_blank'>resume</a>
-          </span>
-        </div>
-        <!-- <div id='d3chart'> -->
-<!--         <div id='effect-radios'>
+    <div id="welcome">
+      <div id="particles-js"></div>
+      <h3 class="welcome-text sub-text">full stack software engineer</h3>
+
+      <img class="img-circle portrait" src="./assets/ryan-smith.jpg" />
+      <div id="welcome-panel">
+        <span class="welcome-text welcome-link left link-portfolio"
+          >portfolio</span
+        >
+        <span class="welcome-text welcome-link right link-contact">
+          <a
+            class="welcome-link"
+            href="./assets/ryan-smith-resume-2023.pdf"
+            target="_blank"
+            >resume</a
+          >
+        </span>
+      </div>
+      <!-- <div id='d3chart'> -->
+      <!--         <div id='effect-radios'>
           <h4 class='welcome-text'>Choose Effect:</h4>
           <span class='radio-inline welcome-text'><input type='radio' name='optradio' value='particles'>particles</span>
           <span class='radio-inline welcome-text'><input type='radio' name='optradio' value='color-trail'>color trail</span>
           <span class='radio-inline welcome-text'><input type='radio' name='optradio' value='wavy-gravy'>wavy gravy</span>
         </div> -->
-        
+    </div>
+
+    <div id="content" class="container-fluid">
+      <div class="text-center" id="down-to-projects">
+        <span class="glyphicon glyphicon-chevron-down" id="down-arrow"></span
+        >projects
       </div>
-      
 
-      <div id='content' class='container-fluid'>
+      <div id="projects">
+        <div class="project col-md-6" id="decision-tree">
+          <h3 class="project-title">
+            Decision Tree: Interactive Hierarchy in Motion
+          </h3>
+          <a href="projects/decision-tree/index.html" target="_blank"
+            >[ website ]</a
+          >
+          <a href="https://github.com/mtcrushmore/decision-tree" target="_blank"
+            >[ github ]</a
+          >
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/decision-tree/dt-1.jpg"
+                title="Make your own interactive tree graph. I used React, Redux, and D3 to create this."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/decision-tree/dt-2.jpg"
+                title="Freely create and edit nodes to fit your needs. Mark as complete or delete, or MOVE nodes around the tree."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/decision-tree/dt-3.jpg"
+                title="Collapse nodes into easy-to-view subtrees. The more subnodes, the bigger the collapsed node will be."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/decision-tree/dt-4.jpg"
+                title="All interactions are redux actions, with a pre-state, dispatched action, and post-state."
+              />
+            </li>
+          </ul>
+        </div>
 
-        <div class='text-center' id='down-to-projects'><span class='glyphicon glyphicon-chevron-down' id='down-arrow'></span>projects</div>
+        <div class="project col-md-6" id="decision-tree">
+          <h3 class="project-title">
+            Decision Tree: Interactive Hierarchy in Motion
+          </h3>
+          <a href="projects/decision-tree/index.html" target="_blank"
+            >[ website ]</a
+          >
+          <a href="https://github.com/mtcrushmore/decision-tree" target="_blank"
+            >[ github ]</a
+          >
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/decision-tree/dt-1.jpg"
+                title="Make your own interactive tree graph. I used React, Redux, and D3 to create this."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/decision-tree/dt-2.jpg"
+                title="Freely create and edit nodes to fit your needs. Mark as complete or delete, or MOVE nodes around the tree."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/decision-tree/dt-3.jpg"
+                title="Collapse nodes into easy-to-view subtrees. The more subnodes, the bigger the collapsed node will be."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/decision-tree/dt-4.jpg"
+                title="All interactions are redux actions, with a pre-state, dispatched action, and post-state."
+              />
+            </li>
+          </ul>
+        </div>
 
-        <div id='projects'>
-
-          <div class='project col-md-6' id='decision-tree'><h3 class='project-title'>Decision Tree: Interactive Hierarchy in Motion</h3>
-            <a href='projects/decision-tree/index.html' target='_blank'>[ website ]</a>
-            <a href='https://github.com/mtcrushmore/decision-tree' target='_blank'>[ github ]</a>
-            <ul class="bxslider">
-              <li><img src="assets/decision-tree/dt-1.jpg" title='Make your own interactive tree graph. I used React, Redux, and D3 to create this.' /></li>
-              <li><img src="assets/decision-tree/dt-2.jpg" title='Freely create and edit nodes to fit your needs. Mark as complete or delete, or MOVE nodes around the tree.' /></li>
-              <li><img src="assets/decision-tree/dt-3.jpg" title="Collapse nodes into easy-to-view subtrees. The more subnodes, the bigger the collapsed node will be." /></li>
-              <li><img src="assets/decision-tree/dt-4.jpg" title="All interactions are redux actions, with a pre-state, dispatched action, and post-state." /></li>
-            </ul>
+        <div class="project col-md-6">
+          <h3 class="project-title">
+            Hi-Fidelity E-commerce Wireframes Using Figma
+          </h3>
+          <div style="height: 30px">
+            Part of a project to develop a loyalty program for an e-commerce
+            site
           </div>
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/product-school/figma-1.jpg"
+                title="Product Listing Page"
+              />
+            </li>
+            <li>
+              <img
+                src="assets/product-school/figma-2.jpg"
+                title="Corporate Admin Dashboard"
+              />
+            </li>
+            <li>
+              <img
+                src="assets/product-school/figma-3.jpg"
+                title="Prototype of Landing Page & Login/Signup Workflows"
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div class='project col-md-6'><h3 class='project-title'>Hi-Fidelity E-commerce Wireframes Using Figma</h3>
-            <div style="height: 30px">Part of a project to develop a loyalty program for an e-commerce site</div>
-            <ul class="bxslider">
-              <li><img src="assets/product-school/figma-1.jpg" title='Product Listing Page' /></li>
-              <li><img src="assets/product-school/figma-2.jpg" title='Corporate Admin Dashboard' /></li>
-              <li><img src="assets/product-school/figma-3.jpg" title='Prototype of Landing Page & Login/Signup Workflows' /></li>
-            </ul>
-          </div>
-
-          <!-- <div class='project col-md-6'><h3 class='project-title'>Product School Final Presentation: A Loyalty Program</h3>
+        <!-- <div class='project col-md-6'><h3 class='project-title'>Product School Final Presentation: A Loyalty Program</h3>
             <a href='assets/product-school/product-school-presentation.pdf' target='_blank'>[ view full pdf ]</a>
             <ul class="bxslider">
               <li><img src="assets/product-school/product-school-presentation-main.jpg" title='A new loyalty program for a hospitality company.' /></li>
@@ -97,77 +217,170 @@
             </ul>
           </div> -->
 
-          <div class='project col-md-6'><h3 class='project-title'>Immedia: A Real-Time Encyclopedia</h3>
-            <a href='https://github.com/The-Undefineds/immedia' target='_blank'>[ github ]</a>
-            <a href='https://chrome.google.com/webstore/detail/immedia/ddmeolhbdfjcojlhhbhlanflfgpcfdeg?hl=en-US&gl=US' target='_blank'>
-              [ chrome extension ]</a>
-            <ul class="bxslider">
-              <li><img src="assets/immedia/immedia1.jpg" title='A news, social media, and wiki aggregator from 10 API endpoints, all tested using Mocha.' /></li>
-              <li><img src="assets/immedia/immedia2.jpg" title='Gorgeous, interactive content graphs and embedded content from the likes of Twitter and YouTube using D3.js & React.' /></li>
-              <li><img src="assets/immedia/immedia3.jpg" title="A Chrome extension that embeds on all Wikipedia articles, blending Wikipedia's depth with Immedia's recency." /></li>
-            </ul>
-          </div>
+        <div class="project col-md-6">
+          <h3 class="project-title">Immedia: A Real-Time Encyclopedia</h3>
+          <a href="https://github.com/The-Undefineds/immedia" target="_blank"
+            >[ github ]</a
+          >
+          <a
+            href="https://chrome.google.com/webstore/detail/immedia/ddmeolhbdfjcojlhhbhlanflfgpcfdeg?hl=en-US&gl=US"
+            target="_blank"
+          >
+            [ chrome extension ]</a
+          >
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/immedia/immedia1.jpg"
+                title="A news, social media, and wiki aggregator from 10 API endpoints, all tested using Mocha."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/immedia/immedia2.jpg"
+                title="Gorgeous, interactive content graphs and embedded content from the likes of Twitter and YouTube using D3.js & React."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/immedia/immedia3.jpg"
+                title="A Chrome extension that embeds on all Wikipedia articles, blending Wikipedia's depth with Immedia's recency."
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div class='project col-md-6'><h3 class='project-title'>Scheduled Reports of Sensitive Data</h3>
-            <a href='assets/ryan-smith-scheduled-reports.pdf' target='_blank'>[ view full pdf ]</a>
-            <ul class="bxslider">
-              <li><img src="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg" title='I made this slide deck for an interview, highlighting architectural decisions I contributed heavily to deliver scheduled reports of sensitive data to clients while working for an e-commerce company.' /></li>
-            </ul>
-          </div>
+        <div class="project col-md-6">
+          <h3 class="project-title">Scheduled Reports of Sensitive Data</h3>
+          <a href="assets/ryan-smith-scheduled-reports.pdf" target="_blank"
+            >[ view full pdf ]</a
+          >
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg"
+                title="I made this slide deck for an interview, highlighting architectural decisions I contributed heavily to deliver scheduled reports of sensitive data to clients while working for an e-commerce company."
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div class='project col-md-6'><h3 class='project-title'>Experealization: A Travel Blog</h3>
-            <a href='http://experealization.wordpress.com' target='_blank'>[ website ]</a>
-            <ul class="bxslider">
-              <li><img src='assets/experealization/exp1.jpg' title='Travel and work blog from my nearly two years in SouthEast Asia.'/></li>
-              <li><img src='assets/experealization/exp2.jpg' title='Designed using Wordpress, the blog chronicles stories and photography across seven countries.'/></li>
-              <li><img src='assets/experealization/exp3.jpg' title='This site sparked my interest in web design.'/></li>
-            </ul>
-          </div>
+        <div class="project col-md-6">
+          <h3 class="project-title">Experealization: A Travel Blog</h3>
+          <a href="http://experealization.wordpress.com" target="_blank"
+            >[ website ]</a
+          >
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/experealization/exp1.jpg"
+                title="Travel and work blog from my nearly two years in SouthEast Asia."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/experealization/exp2.jpg"
+                title="Designed using Wordpress, the blog chronicles stories and photography across seven countries."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/experealization/exp3.jpg"
+                title="This site sparked my interest in web design."
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div class='project col-md-6'><h3 class='project-title'>Gram: Real-Time Whiteboarding & Chat</h3>
-            <a href='https://github.com/mtcrushmmore/gram' target='_blank'>[ github ]</a>
-            <ul class="bxslider">
-              <li><img src='assets/gram/gram1.jpg' title='Gram is a real-time whiteboarding and chatting tool. When connected to the server, a user can contribute to both the whiteboarding and chat, and all users are updated in real-time. This app was built over the course of one-and-a-half workdays as part of a coding challenge.'/></li>
-              <li><img src='assets/gram/gram2.jpg' title='To achieve this cross-browser and cross-device functionality, Gram uses Node/Express and Socket.io on the back-end, and HTML5 Canvas, jQuery, and Socket.io on the front-end. '/></li>
-            </ul>
-          </div>
+        <div class="project col-md-6">
+          <h3 class="project-title">Gram: Real-Time Whiteboarding & Chat</h3>
+          <a href="https://github.com/mtcrushmmore/gram" target="_blank"
+            >[ github ]</a
+          >
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/gram/gram1.jpg"
+                title="Gram is a real-time whiteboarding and chatting tool. When connected to the server, a user can contribute to both the whiteboarding and chat, and all users are updated in real-time. This app was built over the course of one-and-a-half workdays as part of a coding challenge."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/gram/gram2.jpg"
+                title="To achieve this cross-browser and cross-device functionality, Gram uses Node/Express and Socket.io on the back-end, and HTML5 Canvas, jQuery, and Socket.io on the front-end. "
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div class='project col-md-6'><h3 class='project-title'>Learnable: College Prep</h3>
-            <a target='_blank'>[ website ]</a>
-            <ul class="bxslider">
-              <li><img src='assets/learnable/learnable2.jpg' title='Using Wordpress & plugins, I designed a site for Learnable complete with responsive nav bars, contact forms, sliders for images & testimonials, and sign-up forms.'/></li>
-            </ul>
-          </div>
+        <div class="project col-md-6">
+          <h3 class="project-title">Learnable: College Prep</h3>
+          <a target="_blank">[ website ]</a>
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/learnable/learnable2.jpg"
+                title="Using Wordpress & plugins, I designed a site for Learnable complete with responsive nav bars, contact forms, sliders for images & testimonials, and sign-up forms."
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div class='project col-md-6'><h3 class='project-title'>Pom-Pom: Stay on Task</h3>
-            <a href='projects/pom-pom/pompom.html' target='_blank'>[ website ]</a>
-            <ul class="bxslider">
-              <li><img src='assets/pompom/pompom1.jpg' title='Set a timer, add tasks to the list, and note your progress along the way. When the time is finished, a short break timer will automatically start. Rinse & repeat.'/></li>
-              <li><img src='assets/pompom/pompom2.jpg' title='Simply click items in the list to move it to the next, or drag & drop. You can pause the timer if you need to. Built with jQuery & jQuery UI.'/></li>
-            </ul>
-          </div>
+        <div class="project col-md-6">
+          <h3 class="project-title">Pom-Pom: Stay on Task</h3>
+          <a href="projects/pom-pom/pompom.html" target="_blank">[ website ]</a>
+          <ul class="bxslider">
+            <li>
+              <img
+                src="assets/pompom/pompom1.jpg"
+                title="Set a timer, add tasks to the list, and note your progress along the way. When the time is finished, a short break timer will automatically start. Rinse & repeat."
+              />
+            </li>
+            <li>
+              <img
+                src="assets/pompom/pompom2.jpg"
+                title="Simply click items in the list to move it to the next, or drag & drop. You can pause the timer if you need to. Built with jQuery & jQuery UI."
+              />
+            </li>
+          </ul>
+        </div>
 
-          <div id='contact' class='wow fadeInUp project'>
-            <a class='col-md-6' href='http://linkedin.com/in/helloimryansmith' alt='linkedIn' class='text' target='_blank'><img src='assets/footer/linkedin.png' width='45%' style='margin:-3% 0 0 5%'></a>
-            <a class='col-md-6' href='https://github.com/magnanim0use' alt='github' class='text' target='_blank'><img src='assets/footer/github.png' width='25%' style='margin: -8% 25% 0 0'></a>
-          </div>
-
-        </div>  
-  </div>
-
-
+        <div id="contact" class="wow fadeInUp project">
+          <a
+            class="col-md-6"
+            href="http://linkedin.com/in/helloimryansmith"
+            alt="linkedIn"
+            class="text"
+            target="_blank"
+            ><img
+              src="assets/footer/linkedin.png"
+              width="45%"
+              style="margin: -3% 0 0 5%"
+          /></a>
+          <a
+            class="col-md-6"
+            href="https://github.com/magnanim0use"
+            alt="github"
+            class="text"
+            target="_blank"
+            ><img
+              src="assets/footer/github.png"
+              width="25%"
+              style="margin: -8% 25% 0 0"
+          /></a>
+        </div>
+      </div>
+    </div>
   </body>
 
-  <script src='components/d3/d3.min.js'></script>
-  <script src='components/jquery/dist/jquery.min.js'></script>
-  <script src='components/wow/dist/wow.min.js'></script>
+  <script src="components/d3/d3.min.js"></script>
+  <script src="components/jquery/dist/jquery.min.js"></script>
+  <script src="components/wow/dist/wow.min.js"></script>
   <script src="components/jquery.bxslider/jquery.bxslider.min.js"></script>
   <script src="components/particles.js-master/particles.js"></script>
 
-  
-  <script src='app.js'></script>
+  <script src="app.js"></script>
   <!-- // <script src='particleMouse.js'></script> -->
   <!-- // <script src='d3chart.js'></script> -->
   <!-- // <script src='steamGraph.js'></script> -->
-
 </html>
