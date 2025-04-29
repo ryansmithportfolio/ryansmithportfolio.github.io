@@ -30,12 +30,45 @@ $(document).ready(function () {
     smoothScrollTo('#content', 500);
   });
 
+  // Function to open project modal
+  function openProjectModal(projectId) {
+    const project = $(`#${projectId}`);
+    if (project.length) {
+      const slides = [];
+      project.find('.project-slides .slide').each(function () {
+        const slide = $(this);
+        slides.push({
+          image: slide.data('image'),
+          title: slide.data('title'),
+        });
+      });
+
+      projectModal.open({
+        title: project.find('.project-title').text(),
+        description: project.find('.project-description').text(),
+        slides: slides,
+      });
+
+      // Scroll to the project
+      smoothScrollTo(project, 500);
+    }
+  }
+
+  // Check URL hash on page load
+  const hash = window.location.hash.substring(1);
+  if (hash) {
+    openProjectModal(hash);
+  }
+
   // Handle project image clicks
   $('.project').on('click', '.project-main-image', function () {
     const project = $(this).closest('.project');
-    const slides = [];
+    const projectId = project.attr('id');
 
-    // Get all slides from the project's hidden slides container
+    // Update URL without page reload
+    history.pushState(null, '', `#${projectId}`);
+
+    const slides = [];
     project.find('.project-slides .slide').each(function () {
       const slide = $(this);
       slides.push({
@@ -44,12 +77,21 @@ $(document).ready(function () {
       });
     });
 
-    // Open modal with project data
     projectModal.open({
       title: project.find('.project-title').text(),
       description: project.find('.project-description').text(),
       slides: slides,
     });
+  });
+
+  // Handle hash changes
+  $(window).on('hashchange', function () {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+      openProjectModal(hash);
+    } else {
+      projectModal.close();
+    }
   });
 
   // $('.link-contact').on('click', function() {
