@@ -49,6 +49,10 @@ img {
   font-family: 'Raleway', sans-serif;
   color: white;
   margin-left: 5%;
+  /* margin-top: 10px; */
+}
+
+.welcome-text.sub-text {
   margin-top: 10px;
 }
 
