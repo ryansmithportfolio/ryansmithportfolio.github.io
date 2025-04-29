@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Ryan Smith, Full Stack Software Engineer</title>
@@ -16,15 +17,16 @@
     <meta name="MobileOptimized" content="width" />
     <meta name="HandheldFriendly" content="true" />
 
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
     <link
       rel="stylesheet"
       type="text/css"
       href="components/wow/css/libs/animate.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="components/bootstrap/dist/css/bootstrap.min.css"
     />
     <link rel="stylesheet" type="text/css" href="styles/styles.css" />
     <link
@@ -86,7 +88,7 @@
       </div>
     </div>
 
-    <div id="content" class="container-fluid">
+    <div id="content">
       <div class="text-center" id="down-to-projects">
         <span class="glyphicon glyphicon-chevron-down" id="down-arrow"></span
         >projects
@@ -97,220 +99,303 @@
           <h3 class="project-title">
             Trifecta: A Low-Code App Development Framework
           </h3>
-          <div style="height: 30px">
+          <div class="project-description">
             A secure, composable backend, frontend builder, and workflow engine.
           </div>
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/trifecta/summary2.jpg"
-                style="height: 420px"
-                title="In this sample app developed with Trifecta, after task creation, a webhook triggers an automated AI-driven workflow to provide task suggestions and relevant links, and then post them as a comment on the task. The right image shows the drag and drop workflow builder used by the task creator on the left."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/trifecta/webhook_slack_stacked.jpg"
-                title="Creating a secure webhook triggers automated workflows, like AI generated task suggesetions, and even a Slack update with relevant links to keep you in the loop."
-              />
-            </li>
-          </ul>
+          <img
+            src="assets/trifecta/summary2.jpg"
+            class="project-main-image"
+            alt="Trifecta Framework"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/trifecta/summary2.jpg"
+                data-title="In this sample app developed with Trifecta, after task creation, a webhook triggers an automated AI-driven workflow to provide task suggestions and relevant links, and then post them as a comment on the task. The right image shows the drag and drop workflow builder used by the task creator on the left."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/trifecta/webhook_slack_stacked.jpg"
+                data-title="Creating a secure webhook triggers automated workflows, like AI generated task suggesetions, and even a Slack update with relevant links to keep you in the loop."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6" id="decision-tree">
           <h3 class="project-title">
             Decision Tree: Interactive Hierarchy in Motion
           </h3>
-          <a href="projects/decision-tree/index.html" target="_blank"
-            >[ website ]</a
-          >
-          <a href="https://github.com/mtcrushmore/decision-tree" target="_blank"
-            >[ github ]</a
-          >
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/decision-tree/dt-1.jpg"
-                title="Make your own interactive tree graph. I used React, Redux, and D3 to create this."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/decision-tree/dt-2.jpg"
-                title="Freely create and edit nodes to fit your needs. Mark as complete or delete, or MOVE nodes around the tree."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/decision-tree/dt-3.jpg"
-                title="Collapse nodes into easy-to-view subtrees. The more subnodes, the bigger the collapsed node will be."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/decision-tree/dt-4.jpg"
-                title="All interactions are redux actions, with a pre-state, dispatched action, and post-state."
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            An interactive tree visualization tool built with React, Redux, and
+            D3.js.
+          </div>
+          <div class="project-links">
+            <a href="projects/decision-tree/index.html" target="_blank"
+              >[ website ]</a
+            >
+            <a
+              href="https://github.com/mtcrushmore/decision-tree"
+              target="_blank"
+              >[ github ]</a
+            >
+          </div>
+          <img
+            src="assets/decision-tree/dt-1.jpg"
+            class="project-main-image"
+            alt="Decision Tree Visualization"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/decision-tree/dt-1.jpg"
+                data-title="Make your own interactive tree graph. I used React, Redux, and D3 to create this."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/decision-tree/dt-2.jpg"
+                data-title="Freely create and edit nodes to fit your needs. Mark as complete or delete, or MOVE nodes around the tree."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/decision-tree/dt-3.jpg"
+                data-title="Collapse nodes into easy-to-view subtrees. The more subnodes, the bigger the collapsed node will be."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/decision-tree/dt-4.jpg"
+                data-title="All interactions are redux actions, with a pre-state, dispatched action, and post-state."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">
             Hi-Fidelity E-commerce Wireframes Using Figma
           </h3>
-          <div style="height: 30px">
+          <div class="project-description">
             Part of a project to develop a loyalty program for an e-commerce
-            site
+            site.
           </div>
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/product-school/figma-1.jpg"
-                title="Product Listing Page"
-              />
-            </li>
-            <li>
-              <img
-                src="assets/product-school/figma-2.jpg"
-                title="Corporate Admin Dashboard"
-              />
-            </li>
-            <li>
-              <img
-                src="assets/product-school/figma-3.jpg"
-                title="Prototype of Landing Page & Login/Signup Workflows"
-              />
-            </li>
-          </ul>
+          <img
+            src="assets/product-school/figma-1.jpg"
+            class="project-main-image"
+            alt="E-commerce Wireframes"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/product-school/figma-1.jpg"
+                data-title="Product Listing Page"
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/product-school/figma-2.jpg"
+                data-title="Corporate Admin Dashboard"
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/product-school/figma-3.jpg"
+                data-title="Prototype of Landing Page & Login/Signup Workflows"
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">Immedia: A Real-Time Encyclopedia</h3>
-          <a href="https://github.com/The-Undefineds/immedia" target="_blank"
-            >[ github ]</a
-          >
-          <a
-            href="https://chrome.google.com/webstore/detail/immedia/ddmeolhbdfjcojlhhbhlanflfgpcfdeg?hl=en-US&gl=US"
-            target="_blank"
-          >
-            [ chrome extension ]</a
-          >
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/immedia/immedia1.jpg"
-                title="A news, social media, and wiki aggregator from 10 API endpoints, all tested using Mocha."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/immedia/immedia2.jpg"
-                title="Gorgeous, interactive content graphs and embedded content from the likes of Twitter and YouTube using D3.js & React."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/immedia/immedia3.jpg"
-                title="A Chrome extension that embeds on all Wikipedia articles, blending Wikipedia's depth with Immedia's recency."
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            A news, social media, and wiki aggregator that combines real-time
+            updates with Wikipedia's depth.
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/The-Undefineds/immedia" target="_blank"
+              >[ github ]</a
+            >
+            <a
+              href="https://chrome.google.com/webstore/detail/immedia/ddmeolhbdfjcojlhhbhlanflfgpcfdeg?hl=en-US&gl=US"
+              target="_blank"
+              >[ chrome extension ]</a
+            >
+          </div>
+          <img
+            src="assets/immedia/immedia1.jpg"
+            class="project-main-image"
+            alt="Immedia Interface"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/immedia/immedia1.jpg"
+                data-title="A news, social media, and wiki aggregator from 10 API endpoints, all tested using Mocha."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/immedia/immedia2.jpg"
+                data-title="Gorgeous, interactive content graphs and embedded content from the likes of Twitter and YouTube using D3.js & React."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/immedia/immedia3.jpg"
+                data-title="A Chrome extension that embeds on all Wikipedia articles, blending Wikipedia's depth with Immedia's recency."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">Scheduled Reports of Sensitive Data</h3>
-          <a href="assets/ryan-smith-scheduled-reports.pdf" target="_blank"
-            >[ view full pdf ]</a
-          >
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg"
-                title="I made this slide deck for an interview, highlighting architectural decisions I contributed heavily to deliver scheduled reports of sensitive data to clients while working for an e-commerce company."
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            An architectural deep dive into delivering scheduled reports of
+            sensitive data to clients.
+          </div>
+          <div class="project-links">
+            <a href="assets/ryan-smith-scheduled-reports.pdf" target="_blank"
+              >[ view full pdf ]</a
+            >
+          </div>
+          <img
+            src="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg"
+            class="project-main-image"
+            alt="Scheduled Reports Architecture"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg"
+                data-title="I made this slide deck for an interview, highlighting architectural decisions I contributed heavily to deliver scheduled reports of sensitive data to clients while working for an e-commerce company."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">Experealization: A Travel Blog</h3>
-          <a href="http://experealization.wordpress.com" target="_blank"
-            >[ website ]</a
-          >
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/experealization/exp1.jpg"
-                title="Travel and work blog from my nearly two years in SouthEast Asia."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/experealization/exp2.jpg"
-                title="Designed using Wordpress, the blog chronicles stories and photography across seven countries."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/experealization/exp3.jpg"
-                title="This site sparked my interest in web design."
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            A travel and work blog chronicling stories and photography across
+            seven countries in Southeast Asia.
+          </div>
+          <div class="project-links">
+            <a href="http://experealization.wordpress.com" target="_blank"
+              >[ website ]</a
+            >
+          </div>
+          <img
+            src="assets/experealization/exp1.jpg"
+            class="project-main-image"
+            alt="Travel Blog"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/experealization/exp1.jpg"
+                data-title="Travel and work blog from my nearly two years in SouthEast Asia."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/experealization/exp2.jpg"
+                data-title="Designed using Wordpress, the blog chronicles stories and photography across seven countries."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/experealization/exp3.jpg"
+                data-title="This site sparked my interest in web design."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">Gram: Real-Time Whiteboarding & Chat</h3>
-          <a href="https://github.com/mtcrushmmore/gram" target="_blank"
-            >[ github ]</a
-          >
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/gram/gram1.jpg"
-                title="Gram is a real-time whiteboarding and chatting tool. When connected to the server, a user can contribute to both the whiteboarding and chat, and all users are updated in real-time. This app was built over the course of one-and-a-half workdays as part of a coding challenge."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/gram/gram2.jpg"
-                title="To achieve this cross-browser and cross-device functionality, Gram uses Node/Express and Socket.io on the back-end, and HTML5 Canvas, jQuery, and Socket.io on the front-end. "
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            A collaborative whiteboarding and chat tool built with Node/Express
+            and Socket.io.
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/mtcrushmmore/gram" target="_blank"
+              >[ github ]</a
+            >
+          </div>
+          <img
+            src="assets/gram/gram1.jpg"
+            class="project-main-image"
+            alt="Gram Whiteboarding"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/gram/gram1.jpg"
+                data-title="Gram is a real-time whiteboarding and chatting tool. When connected to the server, a user can contribute to both the whiteboarding and chat, and all users are updated in real-time. This app was built over the course of one-and-a-half workdays as part of a coding challenge."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/gram/gram2.jpg"
+                data-title="To achieve this cross-browser and cross-device functionality, Gram uses Node/Express and Socket.io on the back-end, and HTML5 Canvas, jQuery, and Socket.io on the front-end."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">Learnable: College Prep</h3>
-          <a target="_blank">[ website ]</a>
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/learnable/learnable2.jpg"
-                title="Using Wordpress & plugins, I designed a site for Learnable complete with responsive nav bars, contact forms, sliders for images & testimonials, and sign-up forms."
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            A responsive website for a college preparation service featuring
+            contact forms and testimonials.
+          </div>
+          <img
+            src="assets/learnable/learnable2.jpg"
+            class="project-main-image"
+            alt="Learnable Website"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/learnable/learnable2.jpg"
+                data-title="Using Wordpress & plugins, I designed a site for Learnable complete with responsive nav bars, contact forms, sliders for images & testimonials, and sign-up forms."
+              ></div>
+            </div>
+          </div>
         </div>
 
         <div class="project col-md-6">
           <h3 class="project-title">Pom-Pom: Stay on Task</h3>
-          <a href="projects/pom-pom/pompom.html" target="_blank">[ website ]</a>
-          <ul class="bxslider">
-            <li>
-              <img
-                src="assets/pompom/pompom1.jpg"
-                title="Set a timer, add tasks to the list, and note your progress along the way. When the time is finished, a short break timer will automatically start. Rinse & repeat."
-              />
-            </li>
-            <li>
-              <img
-                src="assets/pompom/pompom2.jpg"
-                title="Simply click items in the list to move it to the next, or drag & drop. You can pause the timer if you need to. Built with jQuery & jQuery UI."
-              />
-            </li>
-          </ul>
+          <div class="project-description">
+            A productivity tool featuring task management and timed work
+            sessions with breaks.
+          </div>
+          <img
+            src="assets/pompom/pompom1.jpg"
+            class="project-main-image"
+            alt="Pom-Pom Task Manager"
+          />
+          <div style="display: none">
+            <div class="project-slides">
+              <div
+                class="slide"
+                data-image="assets/pompom/pompom1.jpg"
+                data-title="Set a timer, add tasks to the list, and note your progress along the way. When the time is finished, a short break timer will automatically start. Rinse & repeat."
+              ></div>
+              <div
+                class="slide"
+                data-image="assets/pompom/pompom2.jpg"
+                data-title="Simply click items in the list to move it to the next, or drag & drop. You can pause the timer if you need to. Built with jQuery & jQuery UI."
+              ></div>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="projects/pom-pom/pompom.html" target="_blank"
+              >[ website ]</a
+            >
+          </div>
         </div>
 
         <div id="contact" class="wow fadeInUp project">
@@ -339,16 +424,17 @@
         </div>
       </div>
     </div>
+
+    <script src="components/d3/d3.min.js"></script>
+    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/wow/dist/wow.min.js"></script>
+    <script src="components/jquery.bxslider/jquery.bxslider.min.js"></script>
+    <script src="components/particles.js-master/particles.js"></script>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="components/modal.js"></script>
+    <script src="app.js"></script>
   </body>
-
-  <script src="components/d3/d3.min.js"></script>
-  <script src="components/jquery/dist/jquery.min.js"></script>
-  <script src="components/wow/dist/wow.min.js"></script>
-  <script src="components/jquery.bxslider/jquery.bxslider.min.js"></script>
-  <script src="components/particles.js-master/particles.js"></script>
-
-  <script src="app.js"></script>
-  <!-- // <script src='particleMouse.js'></script> -->
-  <!-- // <script src='d3chart.js'></script> -->
-  <!-- // <script src='steamGraph.js'></script> -->
 </html>
