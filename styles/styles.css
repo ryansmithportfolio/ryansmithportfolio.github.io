@@ -35,6 +35,10 @@ img {
   background: rgba(30, 30, 30, 0.8);
 }
 
+#navbar .welcome-text {
+  margin-top: 10px;
+}
+
 #welcome {
   top: 80px;
   width: 100%;

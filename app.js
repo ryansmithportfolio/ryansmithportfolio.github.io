@@ -27,7 +27,7 @@ $(document).ready(function () {
   });
 
   $('.link-portfolio, #down-to-projects').on('click', function () {
-    smoothScrollTo('#projects', 500);
+    smoothScrollTo('#content', 500);
   });
 
   // Handle project image clicks
