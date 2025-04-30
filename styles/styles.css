@@ -165,10 +165,12 @@ img {
   opacity: 0.4;
   position: relative;
   z-index: 1;
+  filter: blur(2px);
 }
 
 .project:hover .project-main-image {
   opacity: 1;
+  filter: blur(0);
 }
 
 .project:hover .project-title {
