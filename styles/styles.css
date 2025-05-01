@@ -439,6 +439,10 @@ li {
   overflow: hidden;
 }
 
+.modal-content .slide {
+  padding: 0 80px;
+}
+
 .modal-close {
   position: absolute;
   right: 20px;
