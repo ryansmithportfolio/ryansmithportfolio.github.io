@@ -503,7 +503,7 @@ li {
 
 /* Carousel styles */
 .modal .carousel {
-  margin-bottom: 0;
+  margin-bottom: 60px;
   margin-top: -25px;
   background: #f8f8f8;
 }
