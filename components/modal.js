@@ -42,7 +42,28 @@ class ProjectModal {
 
   open(projectData) {
     this.modalTitle.textContent = projectData.title;
-    this.modalDescription.textContent = projectData.description;
+
+    // Create description container
+    const descriptionContainer = document.createElement('div');
+    descriptionContainer.className = 'modal-description';
+
+    // Add description text
+    const descriptionText = document.createElement('p');
+    descriptionText.textContent = projectData.description;
+    descriptionContainer.appendChild(descriptionText);
+
+    // Add project links if they exist
+    const projectLinks = projectData.links;
+    if (projectLinks) {
+      const linksContainer = document.createElement('div');
+      linksContainer.className = 'project-links';
+      linksContainer.innerHTML = projectLinks;
+      descriptionContainer.appendChild(linksContainer);
+    }
+
+    // Clear and update modal description
+    this.modalDescription.innerHTML = '';
+    this.modalDescription.appendChild(descriptionContainer);
 
     // Create carousel
     const carouselId = 'projectCarousel';
@@ -148,3 +169,35 @@ class ProjectModal {
 
 // Initialize for use in main app
 window.ProjectModal = ProjectModal;
+
+function createModalContent(data) {
+  const modalContent = $('<div class="modal-content"></div>');
+  const modalTitle = $('<h2 class="modal-title"></h2>').text(data.title);
+  const modalDescription = $('<div class="modal-description"></div>');
+  const descriptionText = $('<p></p>').text(data.description);
+  modalDescription.append(descriptionText);
+
+  // Add project links if they exist
+  if (data.links) {
+    const linksContainer = $('<div class="project-links"></div>').html(
+      data.links
+    );
+    modalDescription.append(linksContainer);
+  }
+
+  const sliderContainer = $('<div class="slider-container"></div>');
+  const slider = $('<ul class="bxslider"></ul>');
+
+  data.slides.forEach((slide) => {
+    const slideItem = $('<li></li>');
+    const slideImage = $('<img />').attr('src', slide.image);
+    const slideTitle = $('<p class="slide-title"></p>').text(slide.title);
+    slideItem.append(slideImage, slideTitle);
+    slider.append(slideItem);
+  });
+
+  sliderContainer.append(slider);
+  modalContent.append(modalTitle, modalDescription, sliderContainer);
+
+  return modalContent;
+}

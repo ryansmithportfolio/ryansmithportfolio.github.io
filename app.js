@@ -43,9 +43,13 @@ $(document).ready(function () {
         });
       });
 
+      // Get project links if they exist
+      const links = project.find('.project-links').html();
+
       projectModal.open({
         title: project.find('.project-title').text(),
         description: project.find('.project-description').text(),
+        links: links,
         slides: slides,
       });
 
@@ -77,9 +81,13 @@ $(document).ready(function () {
       });
     });
 
+    // Get project links if they exist
+    const links = project.find('.project-links').html();
+
     projectModal.open({
       title: project.find('.project-title').text(),
       description: project.find('.project-description').text(),
+      links: links,
       slides: slides,
     });
   });
