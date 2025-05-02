@@ -573,6 +573,10 @@ li {
   transform: scale(1.2);
 }
 
+.modal .carousel-inner {
+  border-radius: 10px;
+}
+
 /* Animation for modal opening */
 @keyframes modalFadeIn {
   from {
