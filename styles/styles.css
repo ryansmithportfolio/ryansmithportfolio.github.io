@@ -140,6 +140,7 @@ img {
 
 .project-title {
   font-family: 'Major Mono Display', monospace;
+  /* font-weight: 600; */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -194,10 +195,11 @@ img {
 }
 
 .project-subtitle {
-  font-size: 16px;
+  font-size: 20px;
+  font-weight: 100;
   margin-top: 10px;
-  font-family: monospace;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  font-family: 'Jura', monospace;
+  text-shadow: none;
 }
 
 .col-md-3 {
