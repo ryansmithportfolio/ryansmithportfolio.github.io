@@ -81,7 +81,9 @@ img {
   color: black;
   font-size: 20px;
   cursor: pointer;
+  position: relative;
   text-decoration: none;
+  z-index: 2;
 }
 
 .img-circle {
