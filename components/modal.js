@@ -172,21 +172,26 @@ class ProjectModal {
           const video = item.querySelector('video');
           if (video) {
             if (item.classList.contains('active')) {
-              // Wait for video to be ready before playing
-              console.log('[Modal] Found video in active slide:', video);
+              // Only play if not already playing and video is ready
               if (video.readyState >= 2) {
-                console.log('[Modal] Calling play() on video');
-                video.play();
+                video.play().catch((e) => {
+                  if (e.name !== 'AbortError') console.error(e);
+                });
               } else {
+                // Wait for the video to be ready
                 video.addEventListener('loadeddata', function onReady() {
-                  console.log('[Modal] loadeddata event, calling play()');
-                  video.play();
+                  video.play().catch((e) => {
+                    if (e.name !== 'AbortError') console.error(e);
+                  });
                   video.removeEventListener('loadeddata', onReady);
                 });
               }
             } else {
-              video.pause();
-              video.currentTime = 0;
+              // Only pause if not already paused
+              if (!video.paused) {
+                video.pause();
+                video.currentTime = 0;
+              }
             }
           }
         });
@@ -194,14 +199,6 @@ class ProjectModal {
       carouselEl.addEventListener('slid.bs.carousel', handleVideoPlayback);
       // Play video on initial open if first slide is video
       handleVideoPlayback();
-      // Fallback: try to play video again after 300ms
-      setTimeout(() => {
-        const active = carouselEl.querySelector('.carousel-item.active video');
-        if (active) {
-          console.log('[Modal] Fallback: trying play() after 300ms');
-          active.play();
-        }
-      }, 300);
     }, 0);
   }
 
