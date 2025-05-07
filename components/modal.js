@@ -94,11 +94,16 @@ class ProjectModal {
       const slideDiv = document.createElement('div');
       slideDiv.className = `carousel-item ${index === 0 ? 'active' : ''}`;
 
-      // Add image
-      const img = document.createElement('img');
-      img.src = slide.image;
-      img.className = 'd-block w-100';
-      slideDiv.appendChild(img);
+      if (slide.video) {
+        // Render video HTML
+        slideDiv.innerHTML = slide.video;
+      } else if (slide.image) {
+        // Render image
+        const img = document.createElement('img');
+        img.src = slide.image;
+        img.className = 'd-block w-100';
+        slideDiv.appendChild(img);
+      }
 
       // Add caption if exists
       if (slide.title) {
@@ -156,6 +161,48 @@ class ProjectModal {
       keyboard: true, // Allow keyboard navigation
       touch: true, // Allow swipe on touch devices
     });
+
+    // After carousel is initialized, handle video play/pause on slide change
+    setTimeout(() => {
+      const carouselEl = carousel;
+      if (!carouselEl) return;
+      function handleVideoPlayback() {
+        const items = carouselEl.querySelectorAll('.carousel-item');
+        items.forEach((item) => {
+          const video = item.querySelector('video');
+          if (video) {
+            if (item.classList.contains('active')) {
+              // Wait for video to be ready before playing
+              console.log('[Modal] Found video in active slide:', video);
+              if (video.readyState >= 2) {
+                console.log('[Modal] Calling play() on video');
+                video.play();
+              } else {
+                video.addEventListener('loadeddata', function onReady() {
+                  console.log('[Modal] loadeddata event, calling play()');
+                  video.play();
+                  video.removeEventListener('loadeddata', onReady);
+                });
+              }
+            } else {
+              video.pause();
+              video.currentTime = 0;
+            }
+          }
+        });
+      }
+      carouselEl.addEventListener('slid.bs.carousel', handleVideoPlayback);
+      // Play video on initial open if first slide is video
+      handleVideoPlayback();
+      // Fallback: try to play video again after 300ms
+      setTimeout(() => {
+        const active = carouselEl.querySelector('.carousel-item.active video');
+        if (active) {
+          console.log('[Modal] Fallback: trying play() after 300ms');
+          active.play();
+        }
+      }, 300);
+    }, 0);
   }
 
   close() {

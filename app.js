@@ -37,10 +37,18 @@ $(document).ready(function () {
       const slides = [];
       project.find('.project-slides .slide').each(function () {
         const slide = $(this);
-        slides.push({
-          image: slide.data('image'),
-          title: slide.data('title'),
-        });
+        const videoElem = slide.find('video');
+        if (videoElem.length) {
+          slides.push({
+            video: videoElem.prop('outerHTML'),
+            title: slide.data('title') || '',
+          });
+        } else {
+          slides.push({
+            image: slide.data('image'),
+            title: slide.data('title'),
+          });
+        }
       });
 
       // Get project links if they exist
@@ -75,10 +83,18 @@ $(document).ready(function () {
     const slides = [];
     project.find('.project-slides .slide').each(function () {
       const slide = $(this);
-      slides.push({
-        image: slide.data('image'),
-        title: slide.data('title'),
-      });
+      const videoElem = slide.find('video');
+      if (videoElem.length) {
+        slides.push({
+          video: videoElem.prop('outerHTML'),
+          title: slide.data('title') || '',
+        });
+      } else {
+        slides.push({
+          image: slide.data('image'),
+          title: slide.data('title'),
+        });
+      }
     });
 
     // Get project links if they exist
@@ -124,4 +140,28 @@ $(document).ready(function () {
     $('.open').removeClass('opened');
     event.stopPropagation();
   });
+
+  // Trifecta landing page video hover logic
+  const trifectaContainer = document.querySelector(
+    '#trifecta .project-main-image-container'
+  );
+  if (trifectaContainer) {
+    const img = trifectaContainer.querySelector('.project-main-image');
+    const video = trifectaContainer.querySelector('.project-main-video');
+    trifectaContainer.addEventListener('mouseenter', () => {
+      if (img) img.style.display = 'none';
+      if (video) {
+        video.style.display = 'block';
+        video.currentTime = 0;
+        video.play();
+      }
+    });
+    trifectaContainer.addEventListener('mouseleave', () => {
+      if (img) img.style.display = 'block';
+      if (video) {
+        video.pause();
+        video.style.display = 'none';
+      }
+    });
+  }
 });
