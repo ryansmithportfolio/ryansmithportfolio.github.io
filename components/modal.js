@@ -163,22 +163,19 @@ class ProjectModal {
     });
 
     // After carousel is initialized, handle video play/pause on slide change
-    setTimeout(() => {
-      const carouselEl = carousel;
-      if (!carouselEl) return;
+    const carouselEl = carousel;
+    if (carouselEl) {
       function handleVideoPlayback() {
         const items = carouselEl.querySelectorAll('.carousel-item');
         items.forEach((item) => {
           const video = item.querySelector('video');
           if (video) {
             if (item.classList.contains('active')) {
-              // Only play if not already playing and video is ready
               if (video.readyState >= 2) {
                 video.play().catch((e) => {
                   if (e.name !== 'AbortError') console.error(e);
                 });
               } else {
-                // Wait for the video to be ready
                 video.addEventListener('loadeddata', function onReady() {
                   video.play().catch((e) => {
                     if (e.name !== 'AbortError') console.error(e);
@@ -187,7 +184,6 @@ class ProjectModal {
                 });
               }
             } else {
-              // Only pause if not already paused
               if (!video.paused) {
                 video.pause();
                 video.currentTime = 0;
@@ -197,9 +193,8 @@ class ProjectModal {
         });
       }
       carouselEl.addEventListener('slid.bs.carousel', handleVideoPlayback);
-      // Play video on initial open if first slide is video
       handleVideoPlayback();
-    }, 0);
+    }
   }
 
   close() {
