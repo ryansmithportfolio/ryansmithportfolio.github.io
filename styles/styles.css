@@ -158,13 +158,17 @@ img {
   display: none;
 }
 
+.project-main-image,
+.project-main-video-preview {
+  transition: opacity 0.3s;
+}
+
 .project-main-image {
   /* width: 85%; */
   height: 400px;
   display: block;
   margin: 0 auto;
   cursor: pointer;
-  transition: opacity 0.3s ease;
   opacity: 0.4;
   position: relative;
   z-index: 1;

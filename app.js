@@ -147,20 +147,27 @@ $(document).ready(function () {
   );
   if (trifectaContainer) {
     const img = trifectaContainer.querySelector('.project-main-image');
-    const video = trifectaContainer.querySelector('.project-main-video');
+    const video = trifectaContainer.querySelector(
+      '.project-main-video-preview'
+    );
+    let videoStarted = false;
+
     trifectaContainer.addEventListener('mouseenter', () => {
-      if (img) img.style.display = 'none';
+      if (img) img.style.opacity = '0';
       if (video) {
-        video.style.display = 'block';
-        video.currentTime = 0;
+        video.style.opacity = '1';
+        if (!videoStarted) {
+          video.currentTime = 0;
+          videoStarted = true;
+        }
         video.play();
       }
     });
     trifectaContainer.addEventListener('mouseleave', () => {
-      if (img) img.style.display = 'block';
+      if (img) img.style.opacity = '1';
       if (video) {
         video.pause();
-        video.style.display = 'none';
+        video.style.opacity = '0';
       }
     });
   }

@@ -127,11 +127,33 @@
           <div class="project-description">
             A secure, composable backend, frontend builder, and workflow engine.
           </div>
-          <img
-            src="assets/trifecta/summary2.jpg"
-            class="project-main-image"
-            alt="Trifecta Framework"
-          />
+          <div class="project-main-image-container" style="position: relative">
+            <img
+              src="assets/trifecta/summary2.jpg"
+              class="project-main-image"
+              alt="Trifecta Framework"
+            />
+            <video
+              class="project-main-video-preview"
+              src="assets/trifecta/overview.mp4"
+              muted
+              loop
+              playsinline
+              preload="auto"
+              style="
+                opacity: 0;
+                pointer-events: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 10px;
+                transition: opacity 0.3s;
+              "
+            ></video>
+          </div>
           <div style="display: none">
             <div class="project-slides">
               <div class="slide">
