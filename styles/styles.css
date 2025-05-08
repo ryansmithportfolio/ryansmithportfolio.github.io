@@ -603,3 +603,13 @@ li {
 .modal.show .modal-content {
   animation: modalFadeIn 0.3s ease forwards;
 }
+
+.project-main-video,
+.project-main-video-preview {
+  border-radius: 10px;
+  max-width: 800px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+}
