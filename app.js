@@ -65,7 +65,7 @@ $(document).ready(function () {
   }
 
   // Handle project image clicks
-  $('.project').on('click', '.project-main-image', function () {
+  $('.project').on('click', function () {
     const project = $(this).closest('.project');
     const projectId = project.attr('id');
 
@@ -102,10 +102,6 @@ $(document).ready(function () {
     }
   });
 
-  // $('.link-contact').on('click', function() {
-  //   smoothScrollTo('#about', 1000);
-  // });
-
   /* Activate the slider used to showcase individual projects */
   $('.bxslider').bxSlider({
     mode: 'fade',
@@ -124,37 +120,6 @@ $(document).ready(function () {
     $('.open').removeClass('opened');
     event.stopPropagation();
   });
-
-  // Trifecta landing page video hover logic
-  const trifectaContainer = document.querySelector(
-    '#trifecta .project-main-image-container'
-  );
-  if (trifectaContainer) {
-    const img = trifectaContainer.querySelector('.project-main-image');
-    const video = trifectaContainer.querySelector(
-      '.project-main-video-preview'
-    );
-    let videoStarted = false;
-
-    trifectaContainer.addEventListener('mouseenter', () => {
-      if (img) img.style.opacity = '0';
-      if (video) {
-        video.style.opacity = '1';
-        if (!videoStarted) {
-          video.currentTime = 0;
-          videoStarted = true;
-        }
-        video.play();
-      }
-    });
-    trifectaContainer.addEventListener('mouseleave', () => {
-      if (img) img.style.opacity = '1';
-      if (video) {
-        video.pause();
-        video.style.opacity = '0';
-      }
-    });
-  }
 
   // Back to Top button logic
   const backToTopBtn = document.getElementById('back-to-top');
