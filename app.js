@@ -37,18 +37,10 @@ $(document).ready(function () {
       const slides = [];
       project.find('.project-slides .slide').each(function () {
         const slide = $(this);
-        const videoElem = slide.find('video');
-        if (videoElem.length) {
-          slides.push({
-            video: videoElem.prop('outerHTML'),
-            title: slide.data('title') || '',
-          });
-        } else {
-          slides.push({
-            image: slide.data('image'),
-            title: slide.data('title'),
-          });
-        }
+        slides.push({
+          image: slide.data('image'),
+          title: slide.data('title'),
+        });
       });
 
       // Get project links if they exist
@@ -83,18 +75,10 @@ $(document).ready(function () {
     const slides = [];
     project.find('.project-slides .slide').each(function () {
       const slide = $(this);
-      const videoElem = slide.find('video');
-      if (videoElem.length) {
-        slides.push({
-          video: videoElem.prop('outerHTML'),
-          title: slide.data('title') || '',
-        });
-      } else {
-        slides.push({
-          image: slide.data('image'),
-          title: slide.data('title'),
-        });
-      }
+      slides.push({
+        image: slide.data('image'),
+        title: slide.data('title'),
+      });
     });
 
     // Get project links if they exist

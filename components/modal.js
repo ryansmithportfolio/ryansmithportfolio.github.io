@@ -94,16 +94,11 @@ class ProjectModal {
       const slideDiv = document.createElement('div');
       slideDiv.className = `carousel-item ${index === 0 ? 'active' : ''}`;
 
-      if (slide.video) {
-        // Render video HTML
-        slideDiv.innerHTML = slide.video;
-      } else if (slide.image) {
-        // Render image
-        const img = document.createElement('img');
-        img.src = slide.image;
-        img.className = 'd-block w-100';
-        slideDiv.appendChild(img);
-      }
+      // Render image
+      const img = document.createElement('img');
+      img.src = slide.image;
+      img.className = 'd-block w-100';
+      slideDiv.appendChild(img);
 
       // Add caption if exists
       if (slide.title) {
@@ -161,40 +156,6 @@ class ProjectModal {
       keyboard: true, // Allow keyboard navigation
       touch: true, // Allow swipe on touch devices
     });
-
-    // After carousel is initialized, handle video play/pause on slide change
-    const carouselEl = carousel;
-    if (carouselEl) {
-      function handleVideoPlayback() {
-        const items = carouselEl.querySelectorAll('.carousel-item');
-        items.forEach((item) => {
-          const video = item.querySelector('video');
-          if (video) {
-            if (item.classList.contains('active')) {
-              if (video.readyState >= 2) {
-                video.play().catch((e) => {
-                  if (e.name !== 'AbortError') console.error(e);
-                });
-              } else {
-                video.addEventListener('loadeddata', function onReady() {
-                  video.play().catch((e) => {
-                    if (e.name !== 'AbortError') console.error(e);
-                  });
-                  video.removeEventListener('loadeddata', onReady);
-                });
-              }
-            } else {
-              if (!video.paused) {
-                video.pause();
-                video.currentTime = 0;
-              }
-            }
-          }
-        });
-      }
-      carouselEl.addEventListener('slid.bs.carousel', handleVideoPlayback);
-      handleVideoPlayback();
-    }
   }
 
   close() {
