@@ -93,9 +93,6 @@
     <main aria-label="Main content">
       <div id="welcome">
         <div id="particles-js"></div>
-        <!-- <h3 class="welcome-text sub-text">
-          full stack software engineer | collaborator | 
-        </h3> -->
 
         <img class="img-circle portrait" src="./assets/ryan-smith.jpeg" />
         <div id="welcome-panel">
@@ -132,43 +129,24 @@
               A secure, composable backend, frontend builder, and workflow
               engine.
             </div>
-            <div
-              class="project-main-image-container"
-              style="position: relative"
-            >
+            <div class="project-main-image" style="position: relative">
               <img
                 src="assets/trifecta/summary2.jpg"
                 class="project-main-image"
                 alt="Trifecta Framework"
               />
-              <video
-                class="project-main-video-preview"
-                src="assets/trifecta/overview.mp4"
-                muted
-                loop
-                playsinline
-                preload="auto"
-                style="
-                  opacity: 0;
-                  pointer-events: none;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 100%;
-                  transition: opacity 0.3s;
-                "
-              ></video>
             </div>
             <div style="display: none">
               <div class="project-slides">
-                <div class="slide">
+                <div
+                  class="slide"
+                  data-title="In this sample app developed with Trifecta, after task creation, a webhook triggers an automated AI-driven workflow to provide task suggestions and relevant links, and then posts them as a comment on the task. The right image shows the drag and drop workflow builder used by the task creator on the left."
+                >
                   <video
                     class="project-main-video"
                     controls
-                    autoplay=""
-                    muted=""
-                    loop=""
+                    muted
+                    loop
                     playsinline
                     width="100%"
                   >
