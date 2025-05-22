@@ -24,10 +24,12 @@ $(document).ready(function () {
   /* Define link classes as well as destination element and duration of smooth scroll */
   $('.link-welcome').on('click', function () {
     smoothScrollTo('body', 500);
+    $('.open').removeClass('opened'); // Close menu after clicking
   });
 
   $('.link-portfolio, #down-to-projects').on('click', function () {
     smoothScrollTo('#content', 500);
+    $('.open').removeClass('opened'); // Close menu after clicking
   });
 
   // Function to open project modal
