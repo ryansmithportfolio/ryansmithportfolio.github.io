@@ -108,7 +108,7 @@ img {
 
 #content {
   position: absolute;
-  top: 92%;
+  top: 52%;
 }
 
 #projects {
@@ -186,7 +186,8 @@ img {
 .project:hover .project-main-image {
   opacity: 1;
   filter: blur(0);
-  box-shadow: rgba(56, 237, 172, 0.2) -2px 0px 15px,
+  box-shadow:
+    rgba(56, 237, 172, 0.2) -2px 0px 15px,
     rgba(150, 162, 255, 0.2) -2px 2px 5px;
 }
 
