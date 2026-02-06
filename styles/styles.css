@@ -1,5 +1,5 @@
 body {
-  display: inline-block;
+  display: block;
   height: 100%;
   /*padding-top: 80px;*/
 }
@@ -638,4 +638,142 @@ li {
   margin: 0 6px;
   object-fit: contain;
   display: block;
+}
+
+/* Responsive improvements for tablet and mobile */
+@media (max-width: 992px) {
+  #navbar {
+    height: 60px;
+  }
+
+  .portrait {
+    width: 140px;
+    margin-top: 8px;
+  }
+
+  #welcome {
+    position: relative;
+    top: 0;
+    height: auto;
+  }
+
+  #welcome-panel {
+    margin-top: -6%;
+    padding: 2%;
+  }
+
+  #content {
+    position: relative;
+    top: 0;
+    padding-top: 8px;
+  }
+
+  .project {
+    flex: 1 1 45%;
+    max-width: 45%;
+    margin: 16px;
+  }
+
+  .project-main-image {
+    height: 280px;
+  }
+
+  .project-title {
+    font-size: 18px;
+  }
+
+  .open {
+    right: 20px;
+    top: 10px;
+  }
+
+  .sub-menu {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+@media (max-width: 600px) {
+  .portrait {
+    width: 110px;
+  }
+
+  .welcome-text {
+    font-size: 18px;
+    margin-left: 8%;
+  }
+
+  .left,
+  .right {
+    margin: 0;
+    float: none;
+    display: block;
+    text-align: center;
+  }
+
+  /* Make projects stack vertically and images fluid */
+  .project {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+  }
+
+  .project-main-image {
+    height: auto;
+    max-height: 60vh;
+    width: 100%;
+    opacity: 1;
+    filter: none;
+  }
+
+  /* Put title above the image on small screens */
+  .project-title {
+    position: relative;
+    transform: none;
+    top: auto;
+    left: auto;
+    text-align: left;
+    background: transparent;
+    color: #222;
+    padding: 8px 0 0 0;
+  }
+
+  .project-description {
+    display: block;
+  }
+
+  .project .project-links {
+    display: block;
+    margin-top: 8px;
+  }
+
+  #contact {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .open {
+    width: 44px;
+    height: 44px;
+    right: 12px;
+    top: 12px;
+  }
+
+  .opened .sub-menu {
+    width: 320px;
+    height: 320px;
+    right: -120px;
+    top: -120px;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  #tech-logos img {
+    max-height: 24px;
+    margin: 0 4px;
+  }
 }
