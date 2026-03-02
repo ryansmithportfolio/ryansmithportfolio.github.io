@@ -43,10 +43,11 @@ body {
   color: black;
 }
 
-canvas {
+#particles-js canvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  z-index: 1;
-  position: fixed;
+  height: 100%;
 }
 
 img {
@@ -97,6 +98,20 @@ img {
   justify-content: center;
   padding: 72px 16px 64px;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+#particles-js {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#welcome > *:not(#particles-js) {
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-text {
@@ -147,7 +162,6 @@ img {
   position: relative;
   text-decoration: none;
   z-index: 2;
-  text-transform: uppercase;
   letter-spacing: 0.22em;
 }
 
