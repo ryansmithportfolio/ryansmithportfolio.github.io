@@ -89,7 +89,7 @@ img {
 
 #welcome {
   position: relative;
-  top: 81px;
+  /* top: 81px; */
   width: 100%;
   min-height: calc(100vh - 81px);
   display: flex;
