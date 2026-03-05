@@ -89,9 +89,9 @@ img {
 
 #welcome {
   position: relative;
-  /* top: 81px; */
+  top: 81px;
   width: 100%;
-  min-height: calc(100vh - 81px);
+  /* min-height: calc(100vh - 81px); */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,8 +193,8 @@ img {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
   background:
     radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 55%),
     radial-gradient(
@@ -207,7 +207,7 @@ img {
   z-index: 100;
   position: relative;
   padding: 56px 16px 88px;
-  gap: 24px;
+  /* gap: 24px; */
 }
 
 #down-to-projects {
@@ -225,7 +225,7 @@ img {
 }
 
 .project {
-  margin-top: 0;
+  margin: 8px 20px;
   padding: 22px 18px 24px;
   position: relative;
   border-radius: 22px;
@@ -237,6 +237,8 @@ img {
     box-shadow 0.22s ease-out,
     border-color 0.22s ease-out,
     background 0.22s ease-out;
+  flex: 1 1 calc(50% - 40px);
+  max-width: calc(50% - 40px);
 }
 
 .project:hover {
@@ -724,12 +726,15 @@ li {
 
 #tech-logos {
   width: 100%;
+  max-width: 640px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5em;
-  margin: 40px 0 20px 0;
+  flex-wrap: wrap;
+  gap: 1.25em;
+  margin: 40px auto 20px auto;
   font-family: 'Major Mono Display', monospace;
+  text-align: center;
 }
 
 #tech-logos img {
@@ -816,16 +821,6 @@ li {
     padding-top: 8px;
   }
 
-  .project {
-    flex: 1 1 45%;
-    max-width: 45%;
-    margin: 16px;
-  }
-
-  .project-main-image {
-    height: 280px;
-  }
-
   .project-title {
     font-size: 18px;
   }
@@ -859,12 +854,10 @@ li {
     text-align: center;
   }
 
-  /* Make projects stack vertically and images fluid */
   .project {
     flex: 1 1 100%;
     max-width: 100%;
-    padding: 10px;
-    margin: 12px 0;
+    margin: 8px 0;
   }
 
   .project-main-image {
@@ -899,6 +892,18 @@ li {
   #contact {
     flex-direction: column;
     gap: 12px;
+    margin-top: 24px;
+    padding: 16px 0 8px;
+  }
+
+  #contact .col-md-6 {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  #contact .col-md-6 img {
+    width: 52%;
+    max-width: 220px;
   }
 
   .open {
@@ -922,6 +927,6 @@ li {
 
   #tech-logos img {
     max-height: 24px;
-    margin: 0 4px;
+    margin: 4px 4px;
   }
 }
