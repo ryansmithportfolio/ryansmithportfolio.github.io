@@ -80,12 +80,19 @@ img {
 }
 
 #navbar .welcome-text {
-  margin: 0;
+  margin: 20px 0 0 0;
   font-family: 'Major Mono Display', monospace;
   font-size: 20px;
   letter-spacing: 0.14em;
   text-transform: lowercase;
   color: var(--text-primary);
+}
+
+.byline {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: #888;
+  margin-top: 0.3rem;
 }
 
 #welcome {
