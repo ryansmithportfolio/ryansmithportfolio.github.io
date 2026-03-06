@@ -601,6 +601,7 @@ li {
   margin: 30px 40px 15px;
   font-weight: normal;
   line-height: 1.3;
+  text-transform: lowercase;
 }
 
 .modal-description {
