@@ -835,6 +835,7 @@ li {
   }
 
   .open {
+    display: none;
     right: 20px;
     top: 10px;
   }
