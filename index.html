@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ryan Smith — Full Stack Software Engineer</title>
+    <meta
+      name="description"
+      content="Ryan Smith builds full stack products, integrations, and automation. Three practice areas, and the work behind each."
+    />
+
+    <!-- Open Graph / link preview -->
+    <meta property="og:title" content="Ryan Smith · Full Stack Software Engineer" />
+    <meta
+      property="og:description"
+      content="Ryan Smith builds full stack products, integrations, and automation. Three practice areas, and the work behind each."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ryansmithportfolio.github.io/" />
+    <meta
+      property="og:image"
+      content="https://ryansmithportfolio.github.io/assets/ryan-smith.jpeg"
+    />
+    <meta property="og:image:alt" content="Portrait of Ryan Smith" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ryan Smith · Full Stack Software Engineer" />
+    <meta
+      name="twitter:description"
+      content="Ryan Smith builds full stack products, integrations, and automation."
+    />
+    <meta
+      name="twitter:image"
+      content="https://ryansmithportfolio.github.io/assets/ryan-smith.jpeg"
+    />
+
+    <link rel="icon" type="image/jpeg" href="assets/kandinsky.jpg" />
+    <link rel="stylesheet" href="styles/landing.css" />
+  </head>
+
+  <body>
+    <header class="masthead">
+      <a class="brand" href="projects.html">
+        <svg class="brand__glyph" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <circle cx="22" cy="22" r="18" stroke-width="1.2" />
+          <circle cx="22" cy="22" r="7" stroke-width="1" />
+          <line x1="22" y1="0" x2="22" y2="8" stroke-width="1" />
+          <line x1="22" y1="36" x2="22" y2="44" stroke-width="1" />
+          <line x1="0" y1="22" x2="8" y2="22" stroke-width="1" />
+          <line x1="36" y1="22" x2="44" y2="22" stroke-width="1" />
+        </svg>
+        <span>
+          <h1 class="brand__name">Ryan Smith</h1>
+          <hr class="brand__rules" />
+        </span>
+      </a>
+
+      <nav class="masthead__nav" aria-label="Site">
+        <a class="link-caps" href="mailto:ryanthesmith@gmail.com">Contact</a>
+      </nav>
+    </header>
+
+    <main class="stage">
+      <!--
+        The dial is generated at runtime by js/wheel.js from data/site.config.js.
+        Only the static case, lens, and gradient definitions are authored here;
+        every segment, label, tick, and artifact marker is created in script.
+      -->
+      <svg
+        id="dial"
+        class="dial"
+        viewBox="0 0 1000 700"
+        preserveAspectRatio="xMidYMid meet"
+        role="group"
+        aria-label="Practice areas dial. Each segment is a practice area; each hexagon marker is a linked artifact."
+      >
+        <defs>
+          <radialGradient id="ground" cx="50%" cy="48%" r="78%">
+            <stop class="stop-ground-top" offset="0%" />
+            <stop class="stop-ground-bottom" offset="100%" />
+          </radialGradient>
+
+          <radialGradient id="well" cx="50%" cy="42%" r="70%">
+            <stop class="stop-well-top" offset="0%" />
+            <stop class="stop-well-bottom" offset="100%" />
+          </radialGradient>
+
+          <linearGradient id="case" x1="0" y1="0" x2="1" y2="1">
+            <stop class="stop-case-light" offset="0%" />
+            <stop class="stop-case-mid" offset="45%" />
+            <stop class="stop-case-dark" offset="100%" />
+          </linearGradient>
+
+          <radialGradient id="lensvig" cx="50%" cy="50%" r="72%">
+            <stop class="stop-vignette" offset="58%" stop-opacity="0" />
+            <stop class="stop-vignette" offset="100%" stop-opacity="0.85" />
+          </radialGradient>
+
+          <clipPath id="frame">
+            <rect width="1000" height="700" />
+          </clipPath>
+
+          <clipPath id="lens">
+            <circle cx="500" cy="352" r="103" />
+          </clipPath>
+        </defs>
+
+        <!-- Mount points, filled by js/wheel.js in paint order. -->
+        <g id="dial-backdrop" clip-path="url(#frame)" aria-hidden="true"></g>
+        <g id="dial-case" aria-hidden="true"></g>
+        <g id="dial-segments"></g>
+        <g id="dial-lens" aria-hidden="true"></g>
+        <g id="dial-artifacts"></g>
+      </svg>
+    </main>
+
+    <footer class="colophon">
+      <p class="colophon__text">Asheville, NC</p>
+      <div class="colophon__center">
+        <p class="colophon__text">&copy; 2026 Ryan Smith</p>
+        <a class="link-caps" href="projects.html">Projects</a>
+      </div>
+      <a class="link-caps" href="assets/ryan-smith-resume-2025-3.pdf">R&eacute;sum&eacute; (PDF)</a>
+    </footer>
+
+    <script type="module" src="js/wheel.js"></script>
+  </body>
+</html>
