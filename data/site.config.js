@@ -26,13 +26,13 @@ export const config = {
     {
       id: 'collaborate',
       label: 'Collaborate',
-      subtitle: 'Across teams, across time zones.',
+      subtitle: 'Across teams & time zones.',
       weight: 2,
       color: '#4E6178',
       bevelColor: '#8B9AB2',
-      href: 'projects/decision-tree/index.html',
+      href: 'projects.html#decision-tree',
       artifacts: [
-        { name: 'Decision Tree', href: 'projects/decision-tree/index.html' },
+        { name: 'Decision Tree', href: 'projects.html#decision-tree' },
         { name: 'Experealization', href: 'projects.html#experealization' },
       ],
     },
@@ -56,15 +56,15 @@ export const config = {
       weight: 1.1,
       color: '#A08256',
       bevelColor: '#D6B888',
-      href: 'assets/ryan-smith-scheduled-reports.pdf',
+      href: 'projects.html#scheduled-reports',
       artifacts: [
         {
           name: 'Scheduled Reports (PDF)',
-          href: 'assets/ryan-smith-scheduled-reports.pdf',
+          href: 'projects.html#scheduled-reports',
         },
         {
           name: 'Sanity Check — live app',
-          href: 'https://sanity-check-lyart.vercel.app',
+          href: 'projects.html#sanity-check',
         },
       ],
     },
