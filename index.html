@@ -1,27 +1,20 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Ryan Smith, Full Stack Software Engineer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <title>Ryan Smith — Full Stack Software Engineer</title>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      name="description"
+      content="Ryan Smith builds full stack products, integrations, and automation. Three practice areas, and the work behind each."
     />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="HandheldFriendly" content="true" />
-
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"
-    />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="HandheldFriendly" content="true" />
 
     <!-- Open Graph / link preview -->
     <meta property="og:title" content="Ryan Smith · Full Stack Software Engineer" />
     <meta
       property="og:description"
-      content="Portfolio of Ryan Smith – building full stack products, integrations, and automation."
+      content="Ryan Smith builds full stack products, integrations, and automation. Three practice areas, and the work behind each."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ryansmithportfolio.github.io/" />
@@ -36,492 +29,96 @@
     <meta name="twitter:title" content="Ryan Smith · Full Stack Software Engineer" />
     <meta
       name="twitter:description"
-      content="Portfolio of Ryan Smith – building full stack products, integrations, and automation."
+      content="Ryan Smith builds full stack products, integrations, and automation."
     />
     <meta
       name="twitter:image"
       content="https://ryansmithportfolio.github.io/assets/ryan-smith.jpeg"
     />
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="components/wow/css/libs/animate.css"
-    />
-    <link rel="stylesheet" type="text/css" href="styles/styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap"
-      rel="stylesheet"
-    />
     <link rel="icon" type="image/jpeg" href="assets/kandinsky.jpg" />
+    <link rel="stylesheet" href="styles/landing.css" />
   </head>
 
   <body>
-    <nav id="navbar" aria-label="Main navigation">
-      <h1 class="welcome-text">
-        ryan smith
-        <p class="byline">build · integrate · deliver</p>
-      </h1>
-      <div class="open">
-        <span class="cls"></span>
+    <header class="masthead">
+      <a class="brand" href="projects.html">
+        <svg class="brand__glyph" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <circle cx="22" cy="22" r="18" stroke-width="1.2" />
+          <circle cx="22" cy="22" r="7" stroke-width="1" />
+          <line x1="22" y1="0" x2="22" y2="8" stroke-width="1" />
+          <line x1="22" y1="36" x2="22" y2="44" stroke-width="1" />
+          <line x1="0" y1="22" x2="8" y2="22" stroke-width="1" />
+          <line x1="36" y1="22" x2="44" y2="22" stroke-width="1" />
+        </svg>
         <span>
-          <ul class="sub-menu">
-            <li class="link-welcome"><p class="menu-text">to the top</p></li>
-            <li class="link-portfolio"><p class="menu-text">portfolio</p></li>
-            <li class="link-resume">
-              <a
-                class="menu-text"
-                href="./assets/ryan-smith-resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                >resume</a
-              >
-            </li>
-          </ul>
+          <h1 class="brand__name">Ryan Smith</h1>
+          <hr class="brand__rules" />
         </span>
-        <span class="cls"></span>
-      </div>
-    </nav>
+      </a>
 
-    <main aria-label="Main content">
-      <div id="welcome">
-        <div id="particles-js"></div>
+      <nav class="masthead__nav" aria-label="Site">
+        <a class="link-caps" href="mailto:ryanthesmith@gmail.com">Contact</a>
+      </nav>
+    </header>
 
-        <img class="img-circle portrait" src="./assets/ryan-smith.jpeg" />
-        <div id="welcome-panel">
-          <span class="welcome-text welcome-link left link-portfolio"
-            >projects</span
-          >
-          <span class="welcome-text welcome-link right link-contact">
-            <a
-              class="welcome-link"
-              href="./assets/ryan-smith-resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              >resume</a
-            >
-          </span>
-        </div>
-      </div>
+    <main class="stage">
+      <!--
+        The dial is generated at runtime by js/wheel.js from data/site.config.js.
+        Only the static case, lens, and gradient definitions are authored here;
+        every segment, label, tick, and artifact marker is created in script.
+      -->
+      <svg
+        id="dial"
+        class="dial"
+        viewBox="0 0 1000 700"
+        preserveAspectRatio="xMidYMid meet"
+        role="group"
+        aria-label="Practice areas dial. Each segment is a practice area; each hexagon marker is a linked artifact."
+      >
+        <defs>
+          <radialGradient id="well" cx="50%" cy="42%" r="70%">
+            <stop class="stop-well-top" offset="0%" />
+            <stop class="stop-well-bottom" offset="100%" />
+          </radialGradient>
 
-      <div id="content">
-        <div id="projects">
-          <div class="project col-md-6" id="sanity-check">
-            <h3 class="project-title">
-              sanity check
-              <p class="project-subtitle">
-                Validate Your Message With AI Before You Hit Send
-              </p>
-            </h3>
-            <div class="project-description">
-              Enter your message and the context behind it (it could be a URL,
-              an email, or document) and get a sanity check from AI.
-            </div>
-            <div class="project-links">
-              <a href="https://sanity-check-lyart.vercel.app" target="_blank"
-                >[ website ]</a
-              >
-            </div>
-            <div class="project-main-image" style="position: relative">
-              <img
-                src="assets/sanity-check/home.png"
-                class="project-main-image"
-                alt="Sanity Check"
-              />
-            </div>
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/sanity-check/home.png"
-                  data-title="Simply enter your message and the context behind it (it could be a URL, an email, or document) and get a sanity check from AI. It will check for sentiment, tone, correctness, and of course, grammar and typos."
-                ></div>
-              </div>
-            </div>
-          </div>
+          <linearGradient id="case" x1="0" y1="0" x2="1" y2="1">
+            <stop class="stop-case-light" offset="0%" />
+            <stop class="stop-case-mid" offset="45%" />
+            <stop class="stop-case-dark" offset="100%" />
+          </linearGradient>
 
-          <div class="project col-md-6" id="trifecta">
-            <h3 class="project-title">
-              trifecta
-              <p class="project-subtitle">
-                App Builder with AI-Powered Automation
-              </p>
-            </h3>
-            <div class="project-description">
-              A secure network consisting of a composable backend, frontend
-              builder, and workflow engine.
-            </div>
-            <div class="project-main-image" style="position: relative">
-              <img
-                src="assets/trifecta/summary2.jpg"
-                class="project-main-image"
-                alt="Trifecta Framework"
-              />
-            </div>
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/trifecta/create-task.jpg"
-                  data-title="In this sample app created with Trifecta, a user can create a new task after login. The UI is built via the drag-and-drop UI builder. A Task is an entity created with the backend builder, with associated RESTful API endpoints."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/trifecta/workflow.jpg"
-                  data-title="Once the task is created, a webhook triggers an automated workflow. In this sample, OpenAI will suggest steps to complete the new task, update the task, and send those updates to Slack."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/trifecta/task-comment.jpg"
-                  data-title="The task is updated with the generated suggestions within seconds (with relevant links)."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/trifecta/slack.jpg"
-                  data-title="Slack is informed of the task updates per the workflow spec."
-                ></div>
+          <radialGradient id="lensvig" cx="50%" cy="50%" r="72%">
+            <stop class="stop-vignette" offset="58%" stop-opacity="0" />
+            <stop class="stop-vignette" offset="100%" stop-opacity="0.85" />
+          </radialGradient>
 
-                <div
-                  class="slide"
-                  data-image="assets/trifecta/diagram.jpg"
-                  data-title="Creating a secure webhook triggers automated workflows, like AI generated task suggestions."
-                ></div>
-              </div>
-            </div>
-          </div>
+          <clipPath id="lens">
+            <circle cx="500" cy="352" r="103" />
+          </clipPath>
+        </defs>
 
-          <div class="project col-md-6" id="decision-tree">
-            <h3 class="project-title">
-              decision tree
-              <p class="project-subtitle">
-                Interactive Hierarchical Data Visualization
-              </p>
-            </h3>
-            <div class="project-description">
-              An interactive tree visualization tool built with React, Redux,
-              and D3.js.
-            </div>
-            <div class="project-links">
-              <a href="projects/decision-tree/index.html" target="_blank"
-                >[ website ]</a
-              >
-              <a
-                href="https://github.com/mtcrushmore/decision-tree"
-                target="_blank"
-                >[ github ]</a
-              >
-            </div>
-            <img
-              src="assets/decision-tree/dt-1.jpg"
-              class="project-main-image"
-              alt="Decision Tree Visualization"
-            />
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/decision-tree/dt-1.jpg"
-                  data-title="Make your own interactive tree graph."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/decision-tree/dt-2.jpg"
-                  data-title="Freely create and edit nodes to fit your needs. Mark as complete or delete, or MOVE nodes around the tree."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/decision-tree/dt-3.jpg"
-                  data-title="Collapse nodes into easy-to-view subtrees. The more subnodes, the bigger the collapsed node will be."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/decision-tree/dt-4.jpg"
-                  data-title="All interactions are redux actions, with a pre-state, dispatched action, and post-state."
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="project col-md-6" id="figma-wireframes">
-            <h3 class="project-title">
-              hi-fidelity
-              <p class="project-subtitle">E-commerce Wireframes Using Figma</p>
-            </h3>
-            <div class="project-description">
-              Part of a project to develop a loyalty program for an e-commerce
-              site.
-            </div>
-            <img
-              src="assets/product-school/figma-1.jpg"
-              class="project-main-image"
-              alt="E-commerce Wireframes"
-            />
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/product-school/figma-1.jpg"
-                  data-title="Product Listing Page"
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/product-school/figma-2.jpg"
-                  data-title="Corporate Admin Dashboard"
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/product-school/figma-3.jpg"
-                  data-title="Prototype of Landing Page & Login/Signup Workflows"
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="project col-md-6" id="immedia">
-            <h3 class="project-title">
-              immedia
-              <p class="project-subtitle">
-                Real-Time Encyclopedia & News Aggregator
-              </p>
-            </h3>
-            <div class="project-description">
-              A news, social media, and wiki aggregator that combines real-time
-              updates with Wikipedia's depth.
-            </div>
-            <div class="project-links">
-              <a
-                href="https://github.com/The-Undefineds/immedia"
-                target="_blank"
-                >[ github ]</a
-              >
-            </div>
-            <img
-              src="assets/immedia/immedia1.jpg"
-              class="project-main-image"
-              alt="Immedia Interface"
-            />
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/immedia/immedia1.jpg"
-                  data-title="A news, social media, and wiki aggregator from 10 APIs."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/immedia/immedia2.jpg"
-                  data-title="Gorgeous, interactive infographics and embedded content from the likes of Twitter and YouTube using D3.js & React."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/immedia/immedia3.jpg"
-                  data-title="A Chrome extension that embeds on all Wikipedia articles, blending Wikipedia's depth with Immedia's recency."
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="project col-md-6" id="scheduled-reports">
-            <h3 class="project-title">
-              transporter
-              <p class="project-subtitle">
-                Brief Presentation: Scheduled Reports of Sensitive Data
-              </p>
-            </h3>
-            <div class="project-description">
-              An architectural deep dive into delivering scheduled reports of
-              sensitive data to clients.
-            </div>
-            <div class="project-links">
-              <a href="assets/ryan-smith-scheduled-reports.pdf" target="_blank"
-                >[ view full pdf ]</a
-              >
-            </div>
-            <img
-              src="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg"
-              class="project-main-image"
-              alt="Scheduled Reports Architecture"
-            />
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/scheduled-reports/ryan-smith-scheduled-reports.jpg"
-                  data-title="I made this slide deck for an interview, highlighting architectural decisions to deliver scheduled reports of sensitive data to clients while working for an e-commerce company."
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="project col-md-6" id="experealization">
-            <h3 class="project-title">
-              experealization
-              <p class="project-subtitle">My Travel Blog</p>
-            </h3>
-            <div class="project-description">
-              A travel and work blog chronicling stories and photography across
-              seven countries in Southeast Asia.
-            </div>
-            <div class="project-links">
-              <a href="http://experealization.wordpress.com" target="_blank"
-                >[ website ]</a
-              >
-            </div>
-            <img
-              src="assets/experealization/exp1.jpg"
-              class="project-main-image"
-              alt="Travel Blog"
-            />
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/experealization/exp1.jpg"
-                  data-title="Travel and work blog from my nearly two years in Southeast Asia."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/experealization/exp2.jpg"
-                  data-title="Designed using Wordpress, the blog chronicles stories and photography across seven countries."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/experealization/exp3.jpg"
-                  data-title="This site sparked my interest in web design."
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="project col-md-6" id="gram">
-            <h3 class="project-title">
-              gram
-              <p class="project-subtitle">Real-Time Whiteboarding & Chat</p>
-            </h3>
-            <div class="project-description">
-              A collaborative whiteboarding and chat tool built with
-              Node/Express and Socket.io.
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/mtcrushmmore/gram" target="_blank"
-                >[ github ]</a
-              >
-            </div>
-            <img
-              src="assets/gram/gram1.jpg"
-              class="project-main-image"
-              alt="Gram Whiteboarding"
-            />
-            <div style="display: none">
-              <div class="project-slides">
-                <div
-                  class="slide"
-                  data-image="assets/gram/gram1.jpg"
-                  data-title="Gram is a real-time whiteboarding and chatting tool. When connected to the server, a user can contribute to both the whiteboarding and chat, and all users are updated in real-time. This app was built over the course of one-and-a-half workdays as part of a coding challenge."
-                ></div>
-                <div
-                  class="slide"
-                  data-image="assets/gram/gram2.jpg"
-                  data-title="To achieve this cross-browser and cross-device functionality, Gram uses Node/Express and Socket.io on the back-end, and HTML5 Canvas, jQuery, and Socket.io on the front-end."
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div id="contact" class="wow fadeInUp project">
-            <a
-              class="col-md-6"
-              href="http://linkedin.com/in/helloimryansmith"
-              alt="linkedIn"
-              class="text"
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img
-                src="assets/footer/linkedin.png"
-                width="45%"
-                alt="LinkedIn profile"
-                style="margin: -3% 0 0 5%"
-            /></a>
-            <a
-              class="col-md-6"
-              href="https://github.com/magnanim0use"
-              alt="github"
-              class="text"
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img
-                src="assets/footer/github.png"
-                width="25%"
-                alt="GitHub profile"
-                style="margin: -8% 25% 0 0"
-            /></a>
-          </div>
-          <div id="tech-logos" aria-label="Technology Proficiencies">
-            Powered By:
-            <img
-              src="assets/footer/nodejsStackedDark.svg"
-              alt="Node.js logo"
-              title="Node.js"
-            />
-            <img
-              src="assets/footer/typescript.svg"
-              alt="TypeScript logo"
-              title="TypeScript"
-            />
-            <img
-              src="assets/footer/mysql-original.svg"
-              alt="SQL logo"
-              title="SQL"
-            />
-            <img
-              src="assets/footer/react-original.svg"
-              alt="React logo"
-              title="React"
-            />
-            <img
-              src="assets/footer/ai-original.svg"
-              alt="AI/Automation logo"
-              title="AI / Automation"
-            />
-            <span title="... and so on and so forth.">...</span>
-          </div>
-        </div>
-      </div>
+        <!--
+          Mount points, filled by js/wheel.js in paint order. Segments come last
+          so that each segment link is immediately followed by its own artifact
+          markers in the DOM, which is what gives the dial its tab order.
+        -->
+        <g id="dial-backdrop" aria-hidden="true"></g>
+        <g id="dial-case" aria-hidden="true"></g>
+        <g id="dial-lens" aria-hidden="true"></g>
+        <g id="dial-segments"></g>
+      </svg>
     </main>
 
-    <button id="back-to-top" aria-label="Back to top">↑</button>
+    <footer class="colophon">
+      <p class="colophon__text">Asheville, NC</p>
+      <div class="colophon__center">
+        <p class="colophon__text">&copy; 2026 Ryan Smith</p>
+        <a class="link-caps" href="projects.html">Projects</a>
+      </div>
+      <a class="link-caps" href="assets/ryan-smith-resume-2025-3.pdf">R&eacute;sum&eacute; (PDF)</a>
+    </footer>
 
-    <!-- <script src="components/d3/d3.min.js"></script> -->
-    <script src="components/jquery/dist/jquery.min.js"></script>
-    <script src="components/wow/dist/wow.min.js"></script>
-    <script src="components/particles.js-master/particles.js"></script>
-
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="components/modal.js"></script>
-    <script src="app.js"></script>
+    <script type="module" src="js/wheel.js"></script>
   </body>
 </html>

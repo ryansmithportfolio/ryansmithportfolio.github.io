@@ -1,0 +1,488 @@
+/*
+ * Landing page styles. Independent of styles/styles.css, which belongs to
+ * projects.html and is not loaded here.
+ *
+ * Every colour in this file is declared once in :root below. There are no hex
+ * literals past that block. Per-segment colours arrive from data/site.config.js
+ * as inline custom properties (--seg-color / --seg-bevel) set by js/wheel.js,
+ * so painting still happens here via var().
+ */
+
+:root {
+  /* Field */
+  --ground-top: #182130;
+  --ground-bottom: #090e16;
+  --well-top: #151e2b;
+  --well-bottom: #080d15;
+
+  /* Instrument case */
+  --case-light: #c8d0da;
+  --case-mid: #68748b;
+  --case-dark: #39424f;
+  --dial-shadow: #050912;
+  --lens-vignette: #070c15;
+
+  /* Accent */
+  --gold: #a08b5e;
+
+  /* Type */
+  --text-primary: #d2dae4;
+  --text-muted: #8e99ac;
+
+  /* Backdrop ribbons */
+  --ribbon-green: #476e67;
+  --ribbon-blue: #4e6178;
+  --ribbon-gold: #a08256;
+
+  /* Fallbacks, used only if a segment omits color/bevelColor */
+  --seg-color: var(--case-mid);
+  --seg-bevel: var(--case-light);
+
+  /* Opacities and weights, kept here so the dial reads as one system */
+  --hairline-opacity: 0.05;
+  --spoke-opacity: 0.035;
+  --tick-opacity: 0.28;
+  --band-bevel-opacity: 0.5;
+  --band-shadow-opacity: 0.6;
+  --highlight-opacity: 0.6;
+
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 50% 48%, var(--ground-top) 0%, var(--ground-bottom) 78%),
+    var(--ground-bottom);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.masthead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2.6rem clamp(1.5rem, 6vw, 3.75rem) 0;
+  flex: 0 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand__glyph {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.brand__glyph circle,
+.brand__glyph line {
+  fill: none;
+  stroke: var(--gold);
+  vector-effect: non-scaling-stroke;
+}
+
+.brand__name {
+  margin: 0;
+  font-size: 1.0625rem; /* 17px */
+  font-weight: 400;
+  letter-spacing: 0.3125em; /* 5px at 17px */
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+/* Two rules, 1.2px over 0.6px, as in the mockup. */
+.brand__rules {
+  display: block;
+  position: relative;
+  margin: 0.55rem 0 0;
+  border: 0;
+  border-top: 1.2px solid var(--gold);
+  height: 4px;
+  width: 10.125rem; /* 162px, matching the mockup's 90 -> 252 rule */
+}
+
+.brand__rules::after {
+  content: '';
+  position: absolute;
+  inset: 3.4px 0 auto 0;
+  border-top: 0.6px solid var(--gold);
+  opacity: 0.6;
+}
+
+.masthead__nav {
+  display: flex;
+  gap: 1.75rem;
+  padding-top: 0.35rem;
+}
+
+/* ------------------------------------------------------- shared link type */
+
+.link-caps {
+  font-size: 0.65625rem; /* 10.5px */
+  letter-spacing: 0.2476em; /* 2.6px */
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.link-caps:hover,
+.link-caps:focus-visible {
+  color: var(--text-primary);
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 0.45em;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+}
+
+/* ------------------------------------------------------------------ dial */
+
+.stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 0 clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.dial {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 78vh;
+}
+
+/* Gradient stops, so the SVG <defs> take their colours from :root too. */
+.stop-well-top      { stop-color: var(--well-top); }
+.stop-well-bottom   { stop-color: var(--well-bottom); }
+.stop-case-light    { stop-color: var(--case-light); }
+.stop-case-mid      { stop-color: var(--case-mid); }
+.stop-case-dark     { stop-color: var(--case-dark); }
+.stop-vignette      { stop-color: var(--lens-vignette); }
+
+/*
+ * The backdrop, case, and lens layers are decorative and aria-hidden, so they
+ * must not intercept pointer events from the segment and marker links beneath
+ * or around them.
+ */
+#dial-backdrop,
+#dial-case,
+#dial-lens {
+  pointer-events: none;
+}
+
+/* Backdrop */
+.dial__hairline {
+  fill: none;
+  stroke: var(--case-light);
+  stroke-width: 0.6;
+  opacity: var(--hairline-opacity);
+}
+
+.dial__spoke {
+  stroke: var(--case-light);
+  stroke-width: 0.5;
+  opacity: var(--spoke-opacity);
+}
+
+.dial__ribbon--green { fill: var(--ribbon-green); opacity: 0.22; }
+.dial__ribbon--blue  { fill: var(--ribbon-blue);  opacity: 0.26; }
+.dial__ribbon--gold  { fill: var(--ribbon-gold);  opacity: 0.14; }
+
+/* Case */
+.dial__well { fill: url(#well); }
+.dial__case { fill: none; stroke: url(#case); stroke-width: 9; }
+.dial__case-inner { fill: none; stroke: var(--case-dark); stroke-width: 1.2; }
+
+.dial__tick {
+  stroke: var(--case-light);
+  stroke-width: 1;
+  opacity: var(--tick-opacity);
+}
+
+.dial__tick--major {
+  stroke: var(--gold);
+  stroke-width: 1.7;
+  opacity: 0.75;
+}
+
+.dial__tick--minor-gold {
+  stroke: var(--gold);
+  stroke-width: 0.8;
+  opacity: 0.38;
+}
+
+/* Lens */
+.dial__lens-image { opacity: 0.9; }
+.dial__lens-vignette { fill: url(#lensvig); }
+
+.dial__lens-bright {
+  stroke: var(--case-light);
+  stroke-width: 0.9;
+  opacity: 0.45;
+}
+
+.dial__lens-shade {
+  stroke: var(--lens-vignette);
+  stroke-width: 1.4;
+  opacity: 0.5;
+}
+
+/* Boundary tabs */
+.dial__tab-body {
+  fill: var(--case-dark);
+  stroke: var(--case-light);
+  stroke-width: 1;
+  opacity: 0.95;
+}
+
+.dial__tab-slot { fill: var(--well-bottom); }
+
+/* ------------------------------------------------------- segments (links) */
+
+.seg,
+.hex {
+  cursor: pointer;
+  /* Focus is drawn as SVG geometry below; Safari's outline on SVG children is
+     unreliable, so we suppress it rather than rely on it. */
+  outline: none;
+}
+
+.seg__shadow {
+  fill: none;
+  stroke: var(--dial-shadow);
+  stroke-width: 60;
+  stroke-linecap: butt;
+  opacity: var(--band-shadow-opacity);
+}
+
+.seg__bevel {
+  fill: none;
+  stroke: var(--case-mid);
+  stroke-width: 62;
+  stroke-linecap: butt;
+  opacity: var(--band-bevel-opacity);
+}
+
+.seg__band {
+  fill: none;
+  stroke: var(--seg-color);
+  stroke-width: 56;
+  stroke-linecap: butt;
+  transition:
+    stroke-width 180ms ease,
+    filter 180ms ease;
+}
+
+.seg__highlight {
+  fill: none;
+  stroke: var(--seg-bevel);
+  stroke-width: 2;
+  stroke-linecap: butt;
+  opacity: var(--highlight-opacity);
+  transition: opacity 180ms ease;
+}
+
+/* Drawn focus/hover ring, hidden until wanted. */
+.seg__ring {
+  fill: none;
+  stroke: var(--seg-bevel);
+  stroke-width: 3;
+  stroke-linecap: butt;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+/*
+ * Type sizes and tracking are published by js/wheel.js from its PLACEMENT table,
+ * because that same table drives the label-width clamping. Declaring them here
+ * as well would let the two drift and push labels out of frame.
+ */
+.seg__label {
+  fill: var(--text-primary);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  transition: fill 180ms ease;
+}
+
+.seg__subtitle {
+  fill: var(--text-muted);
+  font-size: var(--subtitle-size);
+  letter-spacing: var(--subtitle-tracking);
+  transition: fill 180ms ease;
+}
+
+/* Hover and focus-visible share one selector list so they cannot drift. */
+.seg:hover .seg__band,
+.seg:focus-visible .seg__band {
+  stroke-width: 62;
+  filter: brightness(1.18);
+}
+
+.seg:hover .seg__highlight,
+.seg:focus-visible .seg__highlight {
+  opacity: 1;
+}
+
+.seg:hover .seg__ring,
+.seg:focus-visible .seg__ring {
+  opacity: 1;
+}
+
+.seg:hover .seg__subtitle,
+.seg:focus-visible .seg__subtitle {
+  fill: var(--text-primary);
+}
+
+/* ------------------------------------------------- artifact hex markers */
+
+.hex__body {
+  fill: var(--seg-color);
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  transition:
+    fill 180ms ease,
+    stroke-width 180ms ease,
+    filter 180ms ease;
+}
+
+.hex__ring {
+  fill: none;
+  stroke: var(--seg-bevel);
+  stroke-width: 1.6;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.hex__label {
+  fill: var(--text-primary);
+  font-size: var(--marker-label-size);
+  letter-spacing: 0.6px;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.hex:hover .hex__body,
+.hex:focus-visible .hex__body {
+  stroke-width: 2;
+  filter: brightness(1.35);
+}
+
+.hex:hover .hex__ring,
+.hex:focus-visible .hex__ring {
+  opacity: 1;
+}
+
+.hex:hover .hex__label,
+.hex:focus-visible .hex__label {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.colophon {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.4rem clamp(1.5rem, 6vw, 3.75rem) 2.2rem;
+  border-top: 1px solid var(--gold);
+  margin: 0 clamp(1.5rem, 6vw, 3.75rem);
+  flex: 0 0 auto;
+}
+
+.colophon > :last-child {
+  justify-self: end;
+}
+
+.colophon__center {
+  display: flex;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.colophon .link-caps,
+.colophon__text {
+  font-size: 0.65625rem;
+  letter-spacing: 0.1524em; /* 1.6px */
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------ narrow view */
+
+@media (max-width: 720px) {
+  .masthead {
+    padding-top: 1.75rem;
+  }
+
+  .brand {
+    gap: 1rem;
+  }
+
+  .brand__name {
+    font-size: 0.9375rem;
+    letter-spacing: 0.22em;
+  }
+
+  .brand__rules {
+    width: 8rem;
+  }
+
+  .dial {
+    max-height: none;
+  }
+
+  .colophon {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .colophon > :last-child {
+    justify-self: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seg__band,
+  .seg__highlight,
+  .seg__ring,
+  .seg__label,
+  .seg__subtitle,
+  .hex__body,
+  .hex__ring,
+  .hex__label,
+  .link-caps {
+    transition: none;
+  }
+}
