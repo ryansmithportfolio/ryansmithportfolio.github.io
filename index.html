@@ -77,11 +77,6 @@
         aria-label="Practice areas dial. Each segment is a practice area; each hexagon marker is a linked artifact."
       >
         <defs>
-          <radialGradient id="ground" cx="50%" cy="48%" r="78%">
-            <stop class="stop-ground-top" offset="0%" />
-            <stop class="stop-ground-bottom" offset="100%" />
-          </radialGradient>
-
           <radialGradient id="well" cx="50%" cy="42%" r="70%">
             <stop class="stop-well-top" offset="0%" />
             <stop class="stop-well-bottom" offset="100%" />
@@ -98,21 +93,20 @@
             <stop class="stop-vignette" offset="100%" stop-opacity="0.85" />
           </radialGradient>
 
-          <clipPath id="frame">
-            <rect width="1000" height="700" />
-          </clipPath>
-
           <clipPath id="lens">
             <circle cx="500" cy="352" r="103" />
           </clipPath>
         </defs>
 
-        <!-- Mount points, filled by js/wheel.js in paint order. -->
-        <g id="dial-backdrop" clip-path="url(#frame)" aria-hidden="true"></g>
+        <!--
+          Mount points, filled by js/wheel.js in paint order. Segments come last
+          so that each segment link is immediately followed by its own artifact
+          markers in the DOM, which is what gives the dial its tab order.
+        -->
+        <g id="dial-backdrop" aria-hidden="true"></g>
         <g id="dial-case" aria-hidden="true"></g>
-        <g id="dial-segments"></g>
         <g id="dial-lens" aria-hidden="true"></g>
-        <g id="dial-artifacts"></g>
+        <g id="dial-segments"></g>
       </svg>
     </main>
 

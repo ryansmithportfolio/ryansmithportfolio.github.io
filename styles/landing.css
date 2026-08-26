@@ -113,15 +113,23 @@ body {
   line-height: 1.1;
 }
 
+/* Two rules, 1.2px over 0.6px, as in the mockup. */
 .brand__rules {
   display: block;
-  margin-top: 0.55rem;
+  position: relative;
+  margin: 0.55rem 0 0;
   border: 0;
   border-top: 1.2px solid var(--gold);
-  padding-bottom: 2.8px;
-  border-bottom: 0.6px solid var(--gold);
+  height: 4px;
   width: 10.125rem; /* 162px, matching the mockup's 90 -> 252 rule */
-  opacity: 0.85;
+}
+
+.brand__rules::after {
+  content: '';
+  position: absolute;
+  inset: 3.4px 0 auto 0;
+  border-top: 0.6px solid var(--gold);
+  opacity: 0.6;
 }
 
 .masthead__nav {
@@ -170,14 +178,23 @@ body {
 }
 
 /* Gradient stops, so the SVG <defs> take their colours from :root too. */
-.stop-ground-top    { stop-color: var(--ground-top); }
-.stop-ground-bottom { stop-color: var(--ground-bottom); }
 .stop-well-top      { stop-color: var(--well-top); }
 .stop-well-bottom   { stop-color: var(--well-bottom); }
 .stop-case-light    { stop-color: var(--case-light); }
 .stop-case-mid      { stop-color: var(--case-mid); }
 .stop-case-dark     { stop-color: var(--case-dark); }
 .stop-vignette      { stop-color: var(--lens-vignette); }
+
+/*
+ * The backdrop, case, and lens layers are decorative and aria-hidden, so they
+ * must not intercept pointer events from the segment and marker links beneath
+ * or around them.
+ */
+#dial-backdrop,
+#dial-case,
+#dial-lens {
+  pointer-events: none;
+}
 
 /* Backdrop */
 .dial__hairline {
@@ -223,7 +240,18 @@ body {
 /* Lens */
 .dial__lens-image { opacity: 0.9; }
 .dial__lens-vignette { fill: url(#lensvig); }
-.dial__lens-rim { fill: none; stroke: url(#case); stroke-width: 6; }
+
+.dial__lens-bright {
+  stroke: var(--case-light);
+  stroke-width: 0.9;
+  opacity: 0.45;
+}
+
+.dial__lens-shade {
+  stroke: var(--lens-vignette);
+  stroke-width: 1.4;
+  opacity: 0.5;
+}
 
 /* Boundary tabs */
 .dial__tab-body {
@@ -290,18 +318,23 @@ body {
   transition: opacity 180ms ease;
 }
 
+/*
+ * Type sizes and tracking are published by js/wheel.js from its PLACEMENT table,
+ * because that same table drives the label-width clamping. Declaring them here
+ * as well would let the two drift and push labels out of frame.
+ */
 .seg__label {
   fill: var(--text-primary);
-  font-size: 13.5px;
-  letter-spacing: 3.4px;
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   transition: fill 180ms ease;
 }
 
 .seg__subtitle {
   fill: var(--text-muted);
-  font-size: 10.5px;
-  letter-spacing: 0.8px;
+  font-size: var(--subtitle-size);
+  letter-spacing: var(--subtitle-tracking);
   transition: fill 180ms ease;
 }
 
@@ -349,7 +382,7 @@ body {
 
 .hex__label {
   fill: var(--text-primary);
-  font-size: 9.5px;
+  font-size: var(--marker-label-size);
   letter-spacing: 0.6px;
   opacity: 0;
   transition: opacity 180ms ease;
@@ -426,20 +459,6 @@ body {
 
   .dial {
     max-height: none;
-  }
-
-  /* js/wheel.js scales SVG type up in compact mode; these keep it in step. */
-  .dial--compact .seg__label {
-    font-size: 19px;
-    letter-spacing: 4px;
-  }
-
-  .dial--compact .seg__subtitle {
-    font-size: 14px;
-  }
-
-  .dial--compact .hex__label {
-    font-size: 13px;
   }
 
   .colophon {
