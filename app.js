@@ -104,12 +104,6 @@ $(document).ready(function () {
     }
   });
 
-  /* Activate the slider used to showcase individual projects */
-  $('.bxslider').bxSlider({
-    mode: 'fade',
-    captions: true,
-  });
-
   /* Defines classes of nav-bar elements during click events */
   $('.open').on('click', function (event) {
     $(this).addClass('opened');

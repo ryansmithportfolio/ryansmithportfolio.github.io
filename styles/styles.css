@@ -357,14 +357,6 @@ img {
   margin-top: 5%;
 }
 
-.contact-text {
-  font-family: 'Raleway', sans-serif;
-  color: var(--text-primary);
-  position: absolute;
-  margin: 20px;
-  margin-top: -5%;
-}
-
 #about {
   background: url('http://maintenance.io/wp-content/uploads/2014/09/Blurred-Background1.jpg');
   position: relative;

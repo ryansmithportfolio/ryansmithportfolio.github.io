@@ -186,7 +186,7 @@ function createModalContent(data) {
   }
 
   const sliderContainer = $('<div class="slider-container"></div>');
-  const slider = $('<ul class="bxslider"></ul>');
+  const slider = $('<ul class="modal-slider"></ul>');
 
   data.slides.forEach((slide) => {
     const slideItem = $('<li></li>');
