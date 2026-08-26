@@ -26,14 +26,14 @@ export const config = {
     {
       id: 'collaborate',
       label: 'Collaborate',
-      subtitle: 'Two enterprise orgs, one data model',
+      subtitle: 'Cross functional, across teams and time zones.',
       weight: 2,
       color: '#4E6178',
       bevelColor: '#8B9AB2',
       href: 'projects.html#gram',
       artifacts: [
-        { name: 'Gram — real-time whiteboard', href: 'projects.html#gram' },
         { name: 'Immedia — 10-API aggregator', href: 'projects.html#immedia' },
+        { name: 'Experialization', href: 'projects.html#experealization' },
       ],
     },
     {
@@ -58,8 +58,14 @@ export const config = {
       bevelColor: '#D6B888',
       href: 'projects.html#sanity-check',
       artifacts: [
-        { name: 'Sanity Check — live app', href: 'https://sanity-check-lyart.vercel.app' },
-        { name: 'Scheduled Reports (PDF)', href: 'assets/ryan-smith-scheduled-reports.pdf' },
+        {
+          name: 'Sanity Check — live app',
+          href: 'https://sanity-check-lyart.vercel.app',
+        },
+        {
+          name: 'Scheduled Reports (PDF)',
+          href: 'assets/ryan-smith-scheduled-reports.pdf',
+        },
       ],
     },
   ],
