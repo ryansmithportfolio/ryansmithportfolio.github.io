@@ -478,6 +478,199 @@ body {
   margin: 0;
 }
 
+/* --------------------------------------------------------- project detail */
+
+/*
+ * Two things are styled below, and the split is deliberate. `.detail` is the
+ * card itself: it makes no assumption about being in a modal and would carry
+ * over unchanged to a standalone /p/<slug> page. `.overlay` is only the shell
+ * that currently holds it, and is the part that goes away on that day.
+ *
+ * No new colours. Everything here draws from the :root tokens already used by
+ * the dial, so the card reads as the same instrument.
+ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.overlay.is-open {
+  opacity: 1;
+}
+
+/* Beats the display:flex above, which would otherwise defeat [hidden]. */
+.overlay[hidden] {
+  display: none;
+}
+
+.overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--dial-shadow);
+  opacity: 0.82;
+}
+
+.overlay__panel {
+  position: relative;
+  width: min(38rem, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  /* The lens well, enlarged: same gradient pair as the dial centre. */
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      var(--well-top) 0%,
+      var(--well-bottom) 76%
+    ),
+    var(--well-bottom);
+  border: 1px solid var(--gold);
+  box-shadow: 0 26px 70px var(--dial-shadow);
+  transform: translateY(8px);
+  transition: transform 200ms ease;
+}
+
+.overlay.is-open .overlay__panel {
+  transform: translateY(0);
+}
+
+/*
+ * The panel is focused on open so the dialog and its title are announced before
+ * any control. That focus is programmatic, so :focus-visible will not normally
+ * match it and no ring is drawn -- which is what we want. The rule exists for
+ * the keyboard user who tabs back around to the panel itself.
+ */
+.overlay__panel:focus-visible {
+  outline: 1px solid var(--case-light);
+  outline-offset: -5px;
+}
+
+.overlay__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.overlay__close:hover {
+  color: var(--text-primary);
+}
+
+.overlay__close:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 2px;
+  color: var(--text-primary);
+}
+
+/* Hold the page still behind the overlay. */
+body.has-overlay {
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------ detail card */
+
+.detail__lens {
+  margin: 0 0 0.9rem;
+  font-size: 0.65625rem; /* 10.5px, as .link-caps */
+  letter-spacing: 0.2476em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail__title {
+  margin: 0;
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+/* The masthead's gold rule, at card scale. */
+.detail__title::after {
+  content: '';
+  display: block;
+  width: 6rem;
+  margin-top: 0.7rem;
+  border-top: 1.2px solid var(--gold);
+}
+
+.detail__subtitle {
+  margin: 0.85rem 0 0;
+  font-size: 0.8125rem; /* 13px */
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail__figure {
+  margin: 1.5rem 0 0;
+}
+
+.detail__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--case-dark);
+}
+
+.detail__summary {
+  margin: 1.5rem 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+/* Only reachable with placeholders enabled; the landing page passes false. */
+.detail__placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.detail__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  margin: 1.75rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--case-dark);
+  list-style: none;
+}
+
+.detail__links-item {
+  margin: 0;
+}
+
+/*
+ * .link-caps suppresses its outline in favour of an underline, which is right in
+ * the masthead but too quiet for the only controls in a modal. Restore a real
+ * ring here; this sits later in the file, so it wins at equal specificity.
+ */
+.detail__link:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 0.35em;
+}
+
 /* ------------------------------------------------------------ narrow view */
 
 @media (max-width: 720px) {
@@ -512,6 +705,19 @@ body {
   .colophon > :last-child {
     justify-self: center;
   }
+
+  .overlay {
+    /* Edge to edge, so a 375px viewport spends its width on the content. */
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .overlay__panel {
+    width: 100%;
+    max-height: none;
+    border-width: 1px 0 0;
+    padding: 2.5rem 1.25rem 2rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -523,7 +729,15 @@ body {
   .hex__body,
   .hex__ring,
   .hex__label,
-  .link-caps {
+  .link-caps,
+  .overlay,
+  .overlay__panel,
+  .overlay__close {
     transition: none;
+  }
+
+  /* No slide-in either; the panel is simply where it lands. */
+  .overlay__panel {
+    transform: none;
   }
 }

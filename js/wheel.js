@@ -13,9 +13,20 @@
  * Colour never appears here as a literal. Per-segment colours from the config
  * are written onto each group as the custom properties --seg-color and
  * --seg-bevel; styles/landing.css does all the painting through var().
+ *
+ * Beyond drawing, this file is only a wiring point for the detail view: it
+ * points each marker at #/p/<slug> and hands the router and the overlay to each
+ * other in initProjectDetail. The view itself lives in js/project-view.js.
  */
 
 import config from '../data/site.config.js';
+import { buildIndex } from './projects.js';
+import {
+  createProjectRouter,
+  hashForSlug,
+  renderProjectDetail,
+} from './project-view.js';
+import { createProjectOverlay } from './project-overlay.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -499,13 +510,20 @@ function buildArtifactLinks(entry, place, spot) {
   return artifacts.map((artifact, i) => {
     const cx = spot.firstX + i * place.markerPitch;
 
+    // Markers point at the addressable detail view, not at the long-form page.
+    // artifact.href is the write-up, which the detail view offers as a link
+    // out; only a record with no slug falls back to pointing straight at it.
+    const href = artifact.slug ? hashForSlug(artifact.slug) : artifact.href;
+
     const link = svg('a', {
       class: 'hex',
-      href: artifact.href,
+      href,
       tabindex: 0,
+      'data-slug': artifact.slug || null,
+      'data-lens': segment.id,
       'aria-label': `${artifact.name} — ${segment.label}`,
     });
-    if (isExternal(artifact.href)) {
+    if (isExternal(href)) {
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
     }
@@ -586,6 +604,55 @@ function render(root, compact) {
   }
 }
 
+/* ------------------------------------------------------ detail view wiring */
+
+/**
+ * Connects the dial to the addressable detail view.
+ *
+ * The dial opens nothing itself. Every marker is an ordinary link to
+ * #/p/<slug>, so the browser owns the navigation and Back and Forward work
+ * without help. The router only reports what the fragment currently says, and
+ * the overlay does as it is told. That is why a cold load on a project URL
+ * behaves identically to a click on its marker.
+ */
+function initProjectDetail(root) {
+  const index = buildIndex(config);
+  if (index.projects.length === 0) return;
+
+  // Resolved by slug on demand rather than captured when the card opens: a
+  // breakpoint flip re-renders every marker, so the element that was clicked
+  // can easily be detached by the time focus needs to return to it. Compared by
+  // attribute rather than by selector so an odd slug needs no escaping.
+  const markerFor = (slug) =>
+    Array.from(root.querySelectorAll('.hex')).find(
+      (hex) => hex.getAttribute('data-slug') === slug,
+    ) || null;
+
+  const overlay = createProjectOverlay({
+    onRequestClose: () => router.close(),
+  });
+
+  const router = createProjectRouter({
+    index,
+    onOpen: (project) => {
+      overlay.open(
+        renderProjectDetail(project, { placeholders: false }),
+        () => markerFor(project.slug),
+      );
+    },
+    onClose: () => overlay.close(),
+    onMissing: (slug) => {
+      // Nothing to show and nothing to tear down; the dial is already on screen
+      // and stays usable. The bad fragment is left in the address bar on
+      // purpose, so a mistyped URL is visible rather than silently rewritten.
+      console.warn(`[projects] no project for slug "${slug}".`);
+      overlay.close();
+    },
+  });
+
+  router.start();
+}
+
 function init() {
   const root = document.getElementById('dial');
   if (!root) return;
@@ -601,6 +668,8 @@ function init() {
   } else {
     media.addListener(onChange);
   }
+
+  initProjectDetail(root);
 }
 
 init();
