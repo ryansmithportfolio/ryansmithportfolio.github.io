@@ -27,6 +27,7 @@ import {
   renderProjectDetail,
 } from './project-view.js';
 import { createProjectOverlay } from './project-overlay.js';
+import { createTitleSweep } from './title-sweep.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -87,9 +88,16 @@ const RIBBON_OVERHANG = 1400;
 const COMPACT_QUERY = '(max-width: 720px)';
 
 /**
- * Label and marker placement. Compact pulls the label ring in and trades up in
- * type size (styles/landing.css bumps the matching font-size under
- * .dial--compact) so the dial stays readable when the SVG is scaled down.
+ * Label, title, and marker placement, one entry per breakpoint.
+ *
+ * The two entries are not the same layout at two sizes: wide arranges the lens
+ * blocks radially, compact lists them under the dial. computePlacements picks
+ * between them on `stacked`, and each entry only carries the fields its own
+ * layout reads.
+ *
+ * What they share is that every line is positioned from the project counts and
+ * never from how many titles happen to be visible, so the reveal in
+ * js/title-sweep.js cannot move anything in either layout.
  */
 const PLACEMENT = {
   wide: {
@@ -97,31 +105,63 @@ const PLACEMENT = {
     labelRadius: 300,
     labelSize: 13.5,
     labelTracking: 3.4,
-    subtitleSize: 10.5,
-    subtitleTracking: 0.8,
-    subtitleOffset: 22,
-    markerOffset: 30,
+    titleOffset: 20,
+    titleLeading: 13,
+    markerGap: 18,
     markerRadius: 14,
     markerPitch: 32,
     markerLabelSize: 9.5,
   },
-  // Compact keeps the radial composition but trades type size down so nothing
-  // overlaps the dial. See the note in README-less form: portrait cannot fit
-  // readable type beside a 400-unit dial, so this is legible-ish, not legible.
+  /*
+   * Compact keeps the dial and gives up the radial title arrangement.
+   *
+   * The old compact layout kept the ring and paid for it in type size: titles
+   * landed at about 4.3 rendered pixels on a 375-wide viewport, which is present
+   * but not readable, and the sweep turned that from a passing hover state into
+   * the resting one. Radial cannot be rescued here -- see the note on
+   * computePlacements for the arithmetic -- so the frame becomes a portrait
+   * window on the dial and the lenses list down the space underneath, which the
+   * old 1000x700 frame was letterboxing away.
+   *
+   * The frame is a window, not a move: the dial is still drawn around CENTRE, and
+   * frame is centred on it horizontally. Width is what fixes the scale here --
+   * styles/landing.css gives the compact dial an intrinsic height, so the frame
+   * is free to be taller than the viewport and the page scrolls. That is the
+   * whole reason 44px rows are affordable: squeezing the list into one screen
+   * would make the scale height-bound at about 0.44 and shrink the dial by a
+   * third to pay for the taller rows.
+   */
   compact: {
-    frame: FULL_FRAME,
-    labelRadius: 300,
-    labelSize: 20,
+    stacked: true,
+    frame: { x: 240, y: 72, width: 520, height: 1160 },
+    labelSize: 18,
     labelTracking: 3.6,
-    subtitleSize: 13,
-    subtitleTracking: 0.8,
-    subtitleOffset: 26,
-    markerOffset: 34,
-    markerRadius: 18,
-    markerPitch: 42,
-    markerLabelSize: 12,
+    /** First title's baseline below the lens label's. */
+    titleOffset: 30,
+    /**
+     * Row pitch, and so the height of a row's hit area. 64 units at the compact
+     * scale of 0.69 is a 44px target; the marker and the type stay the size they
+     * look best at and only the target grows.
+     */
+    titleLeading: 64,
+    /** Gap between one lens block and the next. */
+    blockGap: 22,
+    /** Space between a marker and the title it belongs to. */
+    markerTitleGap: 12,
+    /** Where the list starts, clear of the dial's outer case. */
+    stackTop: 611,
+    markerRadius: 13,
+    markerLabelSize: 17,
   },
 };
+
+/**
+ * Letterspacing on a project title, matching .hex__label in
+ * styles/landing.css. Width estimation has to agree with what is painted or the
+ * frame clamping goes wrong, so the number is duplicated deliberately and both
+ * copies say so.
+ */
+const TITLE_TRACKING = 0.6;
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -388,17 +428,30 @@ function buildLens(mount) {
 /* ---------------------------------------------------------------- segments */
 
 /**
- * Where a segment's label block and marker row sit. Both derive from the
- * segment's mid-angle: the label block is placed on the mid-angle ray, and the
- * marker row hangs off the label block rather than getting its own radius. That
- * way the two can never overlap however the weights, the label lengths, or the
- * frame clamping fall out.
+ * Where each lens's label, its project titles, and its markers sit.
+ *
+ * Two layouts, chosen by place.stacked, because one shape cannot serve both
+ * viewports. Radial puts each lens block on its mid-angle ray, which is the
+ * composition the dial is for. Portrait cannot have it: reaching readable type
+ * there needs about 30 viewBox units, and the longest title is then 429 units
+ * wide against 285 units of margin beside the dial -- and shrinking the frame to
+ * raise the scale only takes more margin away. So compact drops the radial
+ * arrangement for the titles and lists the lenses down the empty space under the
+ * dial, where a line has the full frame width to itself.
+ *
+ * Both layouts derive every line from the project counts rather than from what
+ * is currently visible, so js/title-sweep.js can never move anything.
  */
-function computePlacement(entry, place) {
+
+/** One lens block placed on its mid-angle ray. */
+function radialSpot(entry, place, maxCount) {
   const { segment, mid } = entry;
   const { frame } = place;
   const anchor = anchorFor(mid);
   const ray = polar(place.labelRadius, mid);
+
+  const artifacts = segment.artifacts || [];
+  const count = artifacts.length;
 
   const labelWidth = estimateTextWidth(
     segment.label,
@@ -406,34 +459,39 @@ function computePlacement(entry, place) {
     place.labelTracking,
     true,
   );
-  const subtitleWidth = estimateTextWidth(
-    segment.subtitle,
-    place.subtitleSize,
-    place.subtitleTracking,
-    false,
+  // The titles share the label's x and anchor, so the block is as wide as its
+  // widest line whether or not that line is currently visible.
+  const titleWidths = artifacts.map((artifact) =>
+    estimateTextWidth(artifact.name || '', place.markerLabelSize, TITLE_TRACKING, false),
   );
-  const boxWidth = Math.max(labelWidth, subtitleWidth);
+  const boxWidth = Math.max(labelWidth, ...titleWidths, 0);
 
   const x = round(clampAnchoredX(ray.x, boxWidth, anchor, frame));
 
   const top = frame.y + FRAME_INSET;
   const bottom = frame.y + frame.height - FRAME_INSET;
 
-  // Reserve room for the label, the subtitle under it, and the marker row.
-  const blockHeight = place.subtitleOffset + place.markerOffset + place.markerRadius;
+  // The marker row is offset by the busiest lens's line count, not this lens's,
+  // so all four rows sit at the same distance below their label instead of the
+  // one-project lens riding a line higher than its neighbours.
+  const titleBlock = place.titleOffset + Math.max(0, maxCount - 1) * place.titleLeading;
+  const blockHeight = titleBlock + place.markerGap + place.markerRadius;
   const y = round(clamp(ray.y, top + place.labelSize, bottom - blockHeight));
-  const subtitleY = round(y + place.subtitleOffset);
 
-  // Markers sit under the subtitle, or above the label if there is no room below.
-  const belowY = subtitleY + place.markerOffset;
-  const fitsBelow = belowY + place.markerRadius <= bottom;
-  const markerY = round(
-    fitsBelow
-      ? belowY
-      : Math.max(top + place.markerRadius, y - place.labelSize - place.markerOffset),
+  const titleYs = artifacts.map((_, i) =>
+    round(y + place.titleOffset + i * place.titleLeading),
   );
 
-  const count = (segment.artifacts || []).length;
+  // y is already clamped so the whole block fits; this clamp is only a guard
+  // against a pathological frame.
+  const markerY = round(
+    clamp(
+      y + titleBlock + place.markerGap,
+      top + place.markerRadius,
+      bottom - place.markerRadius,
+    ),
+  );
+
   const rowWidth = Math.max(0, count - 1) * place.markerPitch;
   let firstX;
   if (anchor === 'start') firstX = x + place.markerRadius;
@@ -441,13 +499,90 @@ function computePlacement(entry, place) {
   else firstX = x - rowWidth / 2;
 
   // Keep the whole row in frame without disturbing the label.
-  firstX = clamp(
-    firstX,
-    frame.x + FRAME_INSET + place.markerRadius,
-    frame.x + frame.width - FRAME_INSET - place.markerRadius - rowWidth,
+  firstX = round(
+    clamp(
+      firstX,
+      frame.x + FRAME_INSET + place.markerRadius,
+      frame.x + frame.width - FRAME_INSET - place.markerRadius - rowWidth,
+    ),
   );
 
-  return { anchor, x, y, subtitleY, markerY, firstX: round(firstX) };
+  return {
+    anchor,
+    x,
+    y,
+    titleX: x,
+    titleAnchor: anchor,
+    titleYs,
+    markerPos: artifacts.map((_, i) => ({
+      cx: round(firstX + i * place.markerPitch),
+      cy: markerY,
+    })),
+  };
+}
+
+/**
+ * All lens blocks as a list under the dial, each row a marker beside its title.
+ *
+ * Sequential rather than independent, so it is computed for the whole layout at
+ * once: each block starts where the previous one ended. Putting the marker
+ * beside its own title also settles who owns which name, which a stack of titles
+ * over a row of markers leaves to inference.
+ */
+function stackedSpots(layout, place) {
+  const { frame } = place;
+  const left = round(frame.x + FRAME_INSET);
+  const titleX = round(left + place.markerRadius * 2 + place.markerTitleGap);
+
+  let cursor = place.stackTop;
+  return layout.map((entry) => {
+    const artifacts = entry.segment.artifacts || [];
+    const rowTop = cursor + place.titleOffset;
+
+    const titleYs = artifacts.map((_, i) => round(rowTop + i * place.titleLeading));
+    const spot = {
+      anchor: 'start',
+      x: left,
+      y: round(cursor),
+      titleX,
+      titleAnchor: 'start',
+      titleYs,
+      /*
+       * A target per row, spanning the full text column rather than just the
+       * marker. A 13-unit hexagon is about 17 rendered pixels on a phone, which
+       * is not something to ask a thumb to find. Sized from titleLeading so the
+       * rows tile exactly, touching without overlapping, and offset up from the
+       * baseline so the type sits inside rather than on the edge.
+       */
+      hits: titleYs.map((titleY) => ({
+        x: left,
+        y: round(titleY - place.titleLeading * 0.72),
+        width: round(frame.x + frame.width - FRAME_INSET - left),
+        height: place.titleLeading,
+      })),
+      // Nudged off the text baseline so the hexagon reads as centred on the
+      // line rather than sitting on it.
+      markerPos: titleYs.map((titleY) => ({
+        cx: round(left + place.markerRadius),
+        cy: round(titleY - place.markerLabelSize * 0.34),
+      })),
+    };
+
+    // Advance by the reserved lines, never by however many are visible. One
+    // line minimum so an empty lens still takes up its label.
+    cursor = rowTop + Math.max(1, artifacts.length) * place.titleLeading + place.blockGap;
+    return spot;
+  });
+}
+
+/** Placements for every lens, in layout order. */
+function computePlacements(layout, place) {
+  if (place.stacked) return stackedSpots(layout, place);
+  const maxCount = layout.reduce(
+    (most, entry) => Math.max(most, (entry.segment.artifacts || []).length),
+    0,
+  );
+  return layout.map((entry) => radialSpot(entry, place, maxCount));
 }
 
 function buildSegmentLink(entry, place, spot) {
@@ -458,7 +593,7 @@ function buildSegmentLink(entry, place, spot) {
     id: `seg-${segment.id}`,
     href: segment.href || 'projects.html',
     tabindex: 0,
-    'aria-label': `${segment.label}. ${segment.subtitle}`,
+    'aria-label': segment.label,
   });
   if (isExternal(segment.href || '')) {
     link.setAttribute('target', '_blank');
@@ -470,7 +605,7 @@ function buildSegmentLink(entry, place, spot) {
   if (segment.bevelColor) link.style.setProperty('--seg-bevel', segment.bevelColor);
 
   const title = svg('title');
-  title.textContent = `${segment.label} — ${segment.subtitle}`;
+  title.textContent = segment.label;
   link.append(title);
 
   const band = arcPath(R.band, start, end);
@@ -482,33 +617,23 @@ function buildSegmentLink(entry, place, spot) {
     svg('path', { d: arcPath(R.focusRing, start, end), class: 'seg__ring' }),
   );
 
-  const { anchor, x, y, subtitleY } = spot;
+  const { anchor, x, y } = spot;
 
   const label = svg('text', { x, y, 'text-anchor': anchor, class: 'seg__label' });
   label.textContent = segment.label;
 
-  const subtitle = svg('text', {
-    x,
-    y: subtitleY,
-    'text-anchor': anchor,
-    class: 'seg__subtitle',
-  });
-  subtitle.textContent = segment.subtitle;
-
-  link.append(label, subtitle);
+  link.append(label);
   return link;
 }
 
 function buildArtifactLinks(entry, place, spot) {
-  const { segment, mid } = entry;
+  const { segment } = entry;
   const artifacts = segment.artifacts || [];
   if (artifacts.length === 0) return [];
 
-  // A horizontal row of hexes hanging off the segment's label block.
-  const centreY = spot.markerY;
-
   return artifacts.map((artifact, i) => {
-    const cx = spot.firstX + i * place.markerPitch;
+    const { cx, cy } = spot.markerPos[i];
+    const hit = spot.hits ? spot.hits[i] : null;
 
     // Markers point at the addressable detail view, not at the long-form page.
     // artifact.href is the write-up, which the detail view offers as a link
@@ -534,23 +659,27 @@ function buildArtifactLinks(entry, place, spot) {
     title.textContent = artifact.name;
     link.append(title);
 
+    // First, so it sits under the marker it extends rather than over it.
+    if (hit) link.append(svg('rect', { ...hit, class: 'hex__hit' }));
+
     link.append(
       svg('polygon', {
-        points: hexPoints(cx, centreY, place.markerRadius),
+        points: hexPoints(cx, cy, place.markerRadius),
         class: 'hex__body',
       }),
       svg('polygon', {
-        points: hexPoints(cx, centreY, place.markerRadius + place.markerRadius * 0.36),
+        points: hexPoints(cx, cy, place.markerRadius + place.markerRadius * 0.36),
         class: 'hex__ring',
       }),
     );
 
-    const labelAnchor = anchorFor(mid);
-    const labelWidth = estimateTextWidth(artifact.name, place.markerLabelSize, 0.6, false);
+    // The title sits on its reserved line in the lens's block. It stays inside
+    // this <a> so the hover and focus rules in styles/landing.css keep applying
+    // to it untouched.
     const label = svg('text', {
-      x: round(clampAnchoredX(cx, labelWidth, labelAnchor, place.frame)),
-      y: round(centreY + place.markerRadius + place.markerLabelSize * 1.5),
-      'text-anchor': labelAnchor,
+      x: spot.titleX,
+      y: spot.titleYs[i],
+      'text-anchor': spot.titleAnchor,
       class: 'hex__label',
     });
     label.textContent = artifact.name;
@@ -574,8 +703,6 @@ function render(root, compact) {
   // so the two cannot drift apart.
   root.style.setProperty('--label-size', `${place.labelSize}px`);
   root.style.setProperty('--label-tracking', `${place.labelTracking}px`);
-  root.style.setProperty('--subtitle-size', `${place.subtitleSize}px`);
-  root.style.setProperty('--subtitle-tracking', `${place.subtitleTracking}px`);
   root.style.setProperty('--marker-label-size', `${place.markerLabelSize}px`);
 
   const mounts = {
@@ -595,13 +722,19 @@ function render(root, compact) {
 
   // Each segment is followed by its own artifact markers, so tab order runs
   // segment, its artifacts, next segment, rather than all arcs then all hexes.
-  for (const entry of layout) {
-    const spot = computePlacement(entry, place);
+  // Collected in the same pass, which makes the returned list clockwise from
+  // twelve by construction: lens order, and project order within a lens.
+  const spots = computePlacements(layout, place);
+  const markers = [];
+  for (const [i, entry] of layout.entries()) {
+    const spot = spots[i];
     mounts.segments.append(buildSegmentLink(entry, place, spot));
     for (const marker of buildArtifactLinks(entry, place, spot)) {
       mounts.segments.append(marker);
+      markers.push(marker);
     }
   }
+  return markers;
 }
 
 /* ------------------------------------------------------ detail view wiring */
@@ -617,7 +750,7 @@ function render(root, compact) {
  */
 function initProjectDetail(root) {
   const index = buildIndex(config);
-  if (index.projects.length === 0) return;
+  if (index.projects.length === 0) return null;
 
   // Resolved by slug on demand rather than captured when the card opens: a
   // breakpoint flip re-renders every marker, so the element that was clicked
@@ -651,6 +784,39 @@ function initProjectDetail(root) {
   });
 
   router.start();
+  return router;
+}
+
+/* ---------------------------------------------------------- title reveal */
+
+let titleSweep = null;
+let projectRouter = null;
+/** True once the titles have been revealed, however that happened. */
+let titlesRevealed = false;
+
+/**
+ * Point the sweep at the markers that are currently in the document.
+ *
+ * Called after every render, because a breakpoint flip replaces every marker and
+ * the old element references go stale. The lap only ever runs once: a re-render
+ * after the titles are up settles the new markers instead of replaying the
+ * demo, which would be motion the visitor did not ask for twice.
+ */
+function syncTitles(root, markers) {
+  if (titleSweep) titleSweep.stop();
+  titleSweep = createTitleSweep({ root, hexes: markers });
+
+  // A detail view already on screen means the visitor arrived aimed at one
+  // project. There is nothing to demonstrate, and animating behind the modal
+  // would be motion they cannot even see.
+  const detailOpen = projectRouter ? projectRouter.current() !== null : false;
+
+  if (titlesRevealed || detailOpen) {
+    titleSweep.settle();
+  } else {
+    titleSweep.start();
+  }
+  titlesRevealed = true;
 }
 
 function init() {
@@ -658,18 +824,24 @@ function init() {
   if (!root) return;
 
   const media = window.matchMedia(COMPACT_QUERY);
-  render(root, media.matches);
+  let markers = render(root, media.matches);
 
   // Only re-render when the breakpoint actually flips; nothing else depends on
   // pixel size, and re-rendering would otherwise drop focus on every resize.
-  const onChange = (event) => render(root, event.matches);
+  const onChange = (event) => {
+    markers = render(root, event.matches);
+    syncTitles(root, markers);
+  };
   if (typeof media.addEventListener === 'function') {
     media.addEventListener('change', onChange);
   } else {
     media.addListener(onChange);
   }
 
-  initProjectDetail(root);
+  // The router runs first so that a cold load on #/p/<slug> has already opened
+  // its detail view by the time the titles decide whether to sweep.
+  projectRouter = initProjectDetail(root);
+  syncTitles(root, markers);
 }
 
 init();
