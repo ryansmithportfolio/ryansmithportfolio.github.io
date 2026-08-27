@@ -63,7 +63,11 @@ body {
   font-family: var(--font-serif);
   color: var(--text-primary);
   background:
-    radial-gradient(circle at 50% 48%, var(--ground-top) 0%, var(--ground-bottom) 78%),
+    radial-gradient(
+      circle at 50% 48%,
+      var(--ground-top) 0%,
+      var(--ground-bottom) 78%
+    ),
     var(--ground-bottom);
   display: flex;
   flex-direction: column;
@@ -178,12 +182,24 @@ body {
 }
 
 /* Gradient stops, so the SVG <defs> take their colours from :root too. */
-.stop-well-top      { stop-color: var(--well-top); }
-.stop-well-bottom   { stop-color: var(--well-bottom); }
-.stop-case-light    { stop-color: var(--case-light); }
-.stop-case-mid      { stop-color: var(--case-mid); }
-.stop-case-dark     { stop-color: var(--case-dark); }
-.stop-vignette      { stop-color: var(--lens-vignette); }
+.stop-well-top {
+  stop-color: var(--well-top);
+}
+.stop-well-bottom {
+  stop-color: var(--well-bottom);
+}
+.stop-case-light {
+  stop-color: var(--case-light);
+}
+.stop-case-mid {
+  stop-color: var(--case-mid);
+}
+.stop-case-dark {
+  stop-color: var(--case-dark);
+}
+.stop-vignette {
+  stop-color: var(--lens-vignette);
+}
 
 /*
  * The backdrop, case, and lens layers are decorative and aria-hidden, so they
@@ -210,14 +226,33 @@ body {
   opacity: var(--spoke-opacity);
 }
 
-.dial__ribbon--green { fill: var(--ribbon-green); opacity: 0.22; }
-.dial__ribbon--blue  { fill: var(--ribbon-blue);  opacity: 0.26; }
-.dial__ribbon--gold  { fill: var(--ribbon-gold);  opacity: 0.14; }
+.dial__ribbon--green {
+  fill: var(--ribbon-green);
+  opacity: 0.22;
+}
+.dial__ribbon--blue {
+  fill: var(--ribbon-blue);
+  opacity: 0.26;
+}
+.dial__ribbon--gold {
+  fill: var(--ribbon-gold);
+  opacity: 0.14;
+}
 
 /* Case */
-.dial__well { fill: url(#well); }
-.dial__case { fill: none; stroke: url(#case); stroke-width: 9; }
-.dial__case-inner { fill: none; stroke: var(--case-dark); stroke-width: 1.2; }
+.dial__well {
+  fill: url(#well);
+}
+.dial__case {
+  fill: none;
+  stroke: url(#case);
+  stroke-width: 9;
+}
+.dial__case-inner {
+  fill: none;
+  stroke: var(--case-dark);
+  stroke-width: 1.2;
+}
 
 .dial__tick {
   stroke: var(--case-light);
@@ -238,8 +273,12 @@ body {
 }
 
 /* Lens */
-.dial__lens-image { opacity: 0.9; }
-.dial__lens-vignette { fill: url(#lensvig); }
+.dial__lens-image {
+  opacity: 0.9;
+}
+.dial__lens-vignette {
+  fill: url(#lensvig);
+}
 
 .dial__lens-bright {
   stroke: var(--case-light);
@@ -261,7 +300,9 @@ body {
   opacity: 0.95;
 }
 
-.dial__tab-slot { fill: var(--well-bottom); }
+.dial__tab-slot {
+  fill: var(--well-bottom);
+}
 
 /* ------------------------------------------------------- segments (links) */
 
