@@ -88,15 +88,16 @@ const RIBBON_OVERHANG = 1400;
 const COMPACT_QUERY = '(max-width: 720px)';
 
 /**
- * Label and marker placement. Compact pulls the label ring in and trades up in
- * type size (styles/landing.css bumps the matching font-size under
- * .dial--compact) so the dial stays readable when the SVG is scaled down.
+ * Label, title, and marker placement, one entry per breakpoint.
  *
- * titleOffset/titleLeading/markerGap describe the block that hangs under each
- * lens label: the lens's project titles, one per line, then the marker row.
- * Every one of those lines is laid out from the lens's project count, never from
- * how many titles happen to be visible, so the reveal in js/title-sweep.js
- * cannot move anything.
+ * The two entries are not the same layout at two sizes: wide arranges the lens
+ * blocks radially, compact lists them under the dial. computePlacements picks
+ * between them on `stacked`, and each entry only carries the fields its own
+ * layout reads.
+ *
+ * What they share is that every line is positioned from the project counts and
+ * never from how many titles happen to be visible, so the reveal in
+ * js/title-sweep.js cannot move anything in either layout.
  */
 const PLACEMENT = {
   wide: {
@@ -111,20 +112,38 @@ const PLACEMENT = {
     markerPitch: 32,
     markerLabelSize: 9.5,
   },
-  // Compact keeps the radial composition but trades type size down so nothing
-  // overlaps the dial. See the note in README-less form: portrait cannot fit
-  // readable type beside a 400-unit dial, so this is legible-ish, not legible.
+  /*
+   * Compact keeps the dial and gives up the radial title arrangement.
+   *
+   * The old compact layout kept the ring and paid for it in type size: titles
+   * landed at about 4.3 rendered pixels on a 375-wide viewport, which is present
+   * but not readable, and the sweep turned that from a passing hover state into
+   * the resting one. Radial cannot be rescued here -- see the note on
+   * computePlacements for the arithmetic -- so the frame becomes a portrait
+   * window on the dial and the lenses list down the space underneath, which the
+   * old 1000x700 frame was letterboxing away.
+   *
+   * The frame is a window, not a move: the dial is still drawn around CENTRE, and
+   * frame is centred on it horizontally. Its 520x960 aspect matches the space a
+   * 375-wide viewport actually gives the SVG, so nothing is letterboxed and the
+   * scale lands near 0.66 instead of 0.36.
+   */
   compact: {
-    frame: FULL_FRAME,
-    labelRadius: 300,
-    labelSize: 20,
+    stacked: true,
+    frame: { x: 240, y: 72, width: 520, height: 960 },
+    labelSize: 18,
     labelTracking: 3.6,
-    titleOffset: 26,
-    titleLeading: 17,
-    markerGap: 22,
-    markerRadius: 18,
-    markerPitch: 42,
-    markerLabelSize: 12,
+    /** First title's baseline below the lens label's. */
+    titleOffset: 30,
+    titleLeading: 30,
+    /** Gap between one lens block and the next. */
+    blockGap: 22,
+    /** Space between a marker and the title it belongs to. */
+    markerTitleGap: 12,
+    /** Where the list starts, clear of the dial's outer case. */
+    stackTop: 611,
+    markerRadius: 13,
+    markerLabelSize: 17,
   },
 };
 
@@ -401,13 +420,23 @@ function buildLens(mount) {
 /* ---------------------------------------------------------------- segments */
 
 /**
- * Where a segment's label block and marker row sit. Both derive from the
- * segment's mid-angle: the label block is placed on the mid-angle ray, and the
- * marker row hangs off the label block rather than getting its own radius. That
- * way the two can never overlap however the weights, the label lengths, or the
- * frame clamping fall out.
+ * Where each lens's label, its project titles, and its markers sit.
+ *
+ * Two layouts, chosen by place.stacked, because one shape cannot serve both
+ * viewports. Radial puts each lens block on its mid-angle ray, which is the
+ * composition the dial is for. Portrait cannot have it: reaching readable type
+ * there needs about 30 viewBox units, and the longest title is then 429 units
+ * wide against 285 units of margin beside the dial -- and shrinking the frame to
+ * raise the scale only takes more margin away. So compact drops the radial
+ * arrangement for the titles and lists the lenses down the empty space under the
+ * dial, where a line has the full frame width to itself.
+ *
+ * Both layouts derive every line from the project counts rather than from what
+ * is currently visible, so js/title-sweep.js can never move anything.
  */
-function computePlacement(entry, place) {
+
+/** One lens block placed on its mid-angle ray. */
+function radialSpot(entry, place, maxCount) {
   const { segment, mid } = entry;
   const { frame } = place;
   const anchor = anchorFor(mid);
@@ -425,12 +454,7 @@ function computePlacement(entry, place) {
   // The titles share the label's x and anchor, so the block is as wide as its
   // widest line whether or not that line is currently visible.
   const titleWidths = artifacts.map((artifact) =>
-    estimateTextWidth(
-      artifact.name || '',
-      place.markerLabelSize,
-      TITLE_TRACKING,
-      false,
-    ),
+    estimateTextWidth(artifact.name || '', place.markerLabelSize, TITLE_TRACKING, false),
   );
   const boxWidth = Math.max(labelWidth, ...titleWidths, 0);
 
@@ -439,10 +463,10 @@ function computePlacement(entry, place) {
   const top = frame.y + FRAME_INSET;
   const bottom = frame.y + frame.height - FRAME_INSET;
 
-  // Reserve the label, one line per project, and the marker row under them.
-  // Derived from count, so a lens with one project reserves one line and the
-  // dial never reflows as titles fade in.
-  const titleBlock = place.titleOffset + Math.max(0, count - 1) * place.titleLeading;
+  // The marker row is offset by the busiest lens's line count, not this lens's,
+  // so all four rows sit at the same distance below their label instead of the
+  // one-project lens riding a line higher than its neighbours.
+  const titleBlock = place.titleOffset + Math.max(0, maxCount - 1) * place.titleLeading;
   const blockHeight = titleBlock + place.markerGap + place.markerRadius;
   const y = round(clamp(ray.y, top + place.labelSize, bottom - blockHeight));
 
@@ -450,10 +474,14 @@ function computePlacement(entry, place) {
     round(y + place.titleOffset + i * place.titleLeading),
   );
 
-  // y is already clamped so the whole block fits, so the row cannot leave the
-  // frame; the clamp is kept only as a guard against a pathological frame.
+  // y is already clamped so the whole block fits; this clamp is only a guard
+  // against a pathological frame.
   const markerY = round(
-    clamp(y + titleBlock + place.markerGap, top + place.markerRadius, bottom - place.markerRadius),
+    clamp(
+      y + titleBlock + place.markerGap,
+      top + place.markerRadius,
+      bottom - place.markerRadius,
+    ),
   );
 
   const rowWidth = Math.max(0, count - 1) * place.markerPitch;
@@ -463,13 +491,77 @@ function computePlacement(entry, place) {
   else firstX = x - rowWidth / 2;
 
   // Keep the whole row in frame without disturbing the label.
-  firstX = clamp(
-    firstX,
-    frame.x + FRAME_INSET + place.markerRadius,
-    frame.x + frame.width - FRAME_INSET - place.markerRadius - rowWidth,
+  firstX = round(
+    clamp(
+      firstX,
+      frame.x + FRAME_INSET + place.markerRadius,
+      frame.x + frame.width - FRAME_INSET - place.markerRadius - rowWidth,
+    ),
   );
 
-  return { anchor, x, y, titleYs, markerY, firstX: round(firstX) };
+  return {
+    anchor,
+    x,
+    y,
+    titleX: x,
+    titleAnchor: anchor,
+    titleYs,
+    markerPos: artifacts.map((_, i) => ({
+      cx: round(firstX + i * place.markerPitch),
+      cy: markerY,
+    })),
+  };
+}
+
+/**
+ * All lens blocks as a list under the dial, each row a marker beside its title.
+ *
+ * Sequential rather than independent, so it is computed for the whole layout at
+ * once: each block starts where the previous one ended. Putting the marker
+ * beside its own title also settles who owns which name, which a stack of titles
+ * over a row of markers leaves to inference.
+ */
+function stackedSpots(layout, place) {
+  const { frame } = place;
+  const left = round(frame.x + FRAME_INSET);
+  const titleX = round(left + place.markerRadius * 2 + place.markerTitleGap);
+
+  let cursor = place.stackTop;
+  return layout.map((entry) => {
+    const artifacts = entry.segment.artifacts || [];
+    const rowTop = cursor + place.titleOffset;
+
+    const titleYs = artifacts.map((_, i) => round(rowTop + i * place.titleLeading));
+    const spot = {
+      anchor: 'start',
+      x: left,
+      y: round(cursor),
+      titleX,
+      titleAnchor: 'start',
+      titleYs,
+      // Nudged off the text baseline so the hexagon reads as centred on the
+      // line rather than sitting on it.
+      markerPos: titleYs.map((titleY) => ({
+        cx: round(left + place.markerRadius),
+        cy: round(titleY - place.markerLabelSize * 0.34),
+      })),
+    };
+
+    // Advance by the reserved lines, never by however many are visible. One
+    // line minimum so an empty lens still takes up its label.
+    cursor = rowTop + Math.max(1, artifacts.length) * place.titleLeading + place.blockGap;
+    return spot;
+  });
+}
+
+/** Placements for every lens, in layout order. */
+function computePlacements(layout, place) {
+  if (place.stacked) return stackedSpots(layout, place);
+  const maxCount = layout.reduce(
+    (most, entry) => Math.max(most, (entry.segment.artifacts || []).length),
+    0,
+  );
+  return layout.map((entry) => radialSpot(entry, place, maxCount));
 }
 
 function buildSegmentLink(entry, place, spot) {
@@ -518,11 +610,8 @@ function buildArtifactLinks(entry, place, spot) {
   const artifacts = segment.artifacts || [];
   if (artifacts.length === 0) return [];
 
-  // A horizontal row of hexes hanging off the segment's label block.
-  const centreY = spot.markerY;
-
   return artifacts.map((artifact, i) => {
-    const cx = spot.firstX + i * place.markerPitch;
+    const { cx, cy } = spot.markerPos[i];
 
     // Markers point at the addressable detail view, not at the long-form page.
     // artifact.href is the write-up, which the detail view offers as a link
@@ -550,23 +639,22 @@ function buildArtifactLinks(entry, place, spot) {
 
     link.append(
       svg('polygon', {
-        points: hexPoints(cx, centreY, place.markerRadius),
+        points: hexPoints(cx, cy, place.markerRadius),
         class: 'hex__body',
       }),
       svg('polygon', {
-        points: hexPoints(cx, centreY, place.markerRadius + place.markerRadius * 0.36),
+        points: hexPoints(cx, cy, place.markerRadius + place.markerRadius * 0.36),
         class: 'hex__ring',
       }),
     );
 
-    // The title sits on its reserved line in the lens's block, sharing the lens
-    // label's x and anchor so the lens reads as a heading over a list. It stays
-    // inside this <a> so the hover and focus rules in styles/landing.css keep
-    // applying to it untouched.
+    // The title sits on its reserved line in the lens's block. It stays inside
+    // this <a> so the hover and focus rules in styles/landing.css keep applying
+    // to it untouched.
     const label = svg('text', {
-      x: spot.x,
+      x: spot.titleX,
       y: spot.titleYs[i],
-      'text-anchor': spot.anchor,
+      'text-anchor': spot.titleAnchor,
       class: 'hex__label',
     });
     label.textContent = artifact.name;
@@ -611,9 +699,10 @@ function render(root, compact) {
   // segment, its artifacts, next segment, rather than all arcs then all hexes.
   // Collected in the same pass, which makes the returned list clockwise from
   // twelve by construction: lens order, and project order within a lens.
+  const spots = computePlacements(layout, place);
   const markers = [];
-  for (const entry of layout) {
-    const spot = computePlacement(entry, place);
+  for (const [i, entry] of layout.entries()) {
+    const spot = spots[i];
     mounts.segments.append(buildSegmentLink(entry, place, spot));
     for (const marker of buildArtifactLinks(entry, place, spot)) {
       mounts.segments.append(marker);

@@ -427,7 +427,20 @@ body {
    */
   opacity: var(--label-opacity, 0);
   transition: opacity var(--label-fade, 180ms) ease;
+  /*
+   * Radially the titles sit over the dial's decorative layers, where a stray hit
+   * target would swallow clicks meant for an arc.
+   */
   pointer-events: none;
+}
+
+/*
+ * Stacked under the dial there is nothing behind the text to shield, and the
+ * marker alone is about a 17px hexagon on a phone -- too small to aim at. Making
+ * the title itself part of the link turns each row into a target worth tapping.
+ */
+.dial--compact .hex__label {
+  pointer-events: auto;
 }
 
 .hex:hover .hex__body,
