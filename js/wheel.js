@@ -124,18 +124,26 @@ const PLACEMENT = {
    * old 1000x700 frame was letterboxing away.
    *
    * The frame is a window, not a move: the dial is still drawn around CENTRE, and
-   * frame is centred on it horizontally. Its 520x960 aspect matches the space a
-   * 375-wide viewport actually gives the SVG, so nothing is letterboxed and the
-   * scale lands near 0.66 instead of 0.36.
+   * frame is centred on it horizontally. Width is what fixes the scale here --
+   * styles/landing.css gives the compact dial an intrinsic height, so the frame
+   * is free to be taller than the viewport and the page scrolls. That is the
+   * whole reason 44px rows are affordable: squeezing the list into one screen
+   * would make the scale height-bound at about 0.44 and shrink the dial by a
+   * third to pay for the taller rows.
    */
   compact: {
     stacked: true,
-    frame: { x: 240, y: 72, width: 520, height: 960 },
+    frame: { x: 240, y: 72, width: 520, height: 1160 },
     labelSize: 18,
     labelTracking: 3.6,
     /** First title's baseline below the lens label's. */
     titleOffset: 30,
-    titleLeading: 30,
+    /**
+     * Row pitch, and so the height of a row's hit area. 64 units at the compact
+     * scale of 0.69 is a 44px target; the marker and the type stay the size they
+     * look best at and only the target grows.
+     */
+    titleLeading: 64,
     /** Gap between one lens block and the next. */
     blockGap: 22,
     /** Space between a marker and the title it belongs to. */
@@ -539,6 +547,19 @@ function stackedSpots(layout, place) {
       titleX,
       titleAnchor: 'start',
       titleYs,
+      /*
+       * A target per row, spanning the full text column rather than just the
+       * marker. A 13-unit hexagon is about 17 rendered pixels on a phone, which
+       * is not something to ask a thumb to find. Sized from titleLeading so the
+       * rows tile exactly, touching without overlapping, and offset up from the
+       * baseline so the type sits inside rather than on the edge.
+       */
+      hits: titleYs.map((titleY) => ({
+        x: left,
+        y: round(titleY - place.titleLeading * 0.72),
+        width: round(frame.x + frame.width - FRAME_INSET - left),
+        height: place.titleLeading,
+      })),
       // Nudged off the text baseline so the hexagon reads as centred on the
       // line rather than sitting on it.
       markerPos: titleYs.map((titleY) => ({
@@ -612,6 +633,7 @@ function buildArtifactLinks(entry, place, spot) {
 
   return artifacts.map((artifact, i) => {
     const { cx, cy } = spot.markerPos[i];
+    const hit = spot.hits ? spot.hits[i] : null;
 
     // Markers point at the addressable detail view, not at the long-form page.
     // artifact.href is the write-up, which the detail view offers as a link
@@ -636,6 +658,9 @@ function buildArtifactLinks(entry, place, spot) {
     const title = svg('title');
     title.textContent = artifact.name;
     link.append(title);
+
+    // First, so it sits under the marker it extends rather than over it.
+    if (hit) link.append(svg('rect', { ...hit, class: 'hex__hit' }));
 
     link.append(
       svg('polygon', {
