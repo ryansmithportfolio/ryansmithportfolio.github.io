@@ -50,6 +50,21 @@ export const config = {
       ],
     },
     {
+      id: 'craft',
+      label: 'Craft',
+      subtitle: 'Create and curate.',
+      weight: 1.1,
+      color: '#d3745c',
+      bevelColor: '#d69088',
+      href: 'projects.html#figma-wireframes',
+      artifacts: [
+        {
+          name: 'E-commerce Wireframes (Figma)',
+          href: 'projects.html#figma-wireframes',
+        },
+      ],
+    },
+    {
       id: 'deliver',
       label: 'Deliver',
       subtitle: 'Shipped and measured',
