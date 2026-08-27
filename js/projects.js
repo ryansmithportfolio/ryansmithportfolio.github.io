@@ -1,0 +1,156 @@
+/**
+ * Builds a lookup index over data/site.config.js.
+ *
+ * The config is authored for the dial: projects are nested inside the segment
+ * that owns them. The detail view needs the opposite shape -- a flat, slug-keyed
+ * collection that still knows which lens each project belongs to. This module is
+ * the only place that translation happens.
+ *
+ * Vocabulary note: the config calls them `segments` and `artifacts` because that
+ * is what they are on the dial. Past this boundary they are lenses and projects.
+ *
+ * Nothing here throws. A malformed or half-authored record is reported to the
+ * console and then either skipped (no usable slug) or passed through thinner
+ * than intended (missing prose), because a content typo should cost a card, not
+ * the whole page.
+ */
+
+/** Fields the detail view renders as prose. Blank ones earn a warning. */
+const PROSE_FIELDS = ['title', 'subtitle', 'summary'];
+
+const isBlank = (value) => typeof value !== 'string' || value.trim() === '';
+
+/** Slugs travel in URLs and in attribute selectors, so keep them boring. */
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function warn(message) {
+  // Grouped under one prefix so a content author can filter for it.
+  console.warn(`[projects] ${message}`);
+}
+
+/**
+ * Normalize one artifact into a project record. Returns null when the record has
+ * no usable slug, since without one it can be neither addressed nor deduplicated.
+ */
+function toProject(artifact, lens, position) {
+  const where = `lens "${lens.id}", position ${position}`;
+
+  if (!artifact || typeof artifact !== 'object') {
+    warn(`${where}: not an object; skipped.`);
+    return null;
+  }
+
+  const slug = typeof artifact.slug === 'string' ? artifact.slug.trim() : '';
+  if (slug === '') {
+    warn(`${where} ("${artifact.name || 'unnamed'}"): no slug; skipped.`);
+    return null;
+  }
+  if (!SLUG_PATTERN.test(slug)) {
+    warn(
+      `${where}: slug "${slug}" is not lowercase-hyphenated; it will still ` +
+        'work but will look wrong in a URL.',
+    );
+  }
+
+  for (const field of PROSE_FIELDS) {
+    if (isBlank(artifact[field])) {
+      warn(`"${slug}": ${field} is empty.`);
+    }
+  }
+
+  // An image with no alt text is worse than no image, so drop the pair.
+  let image = isBlank(artifact.image) ? '' : artifact.image.trim();
+  const imageAlt = isBlank(artifact.imageAlt) ? '' : artifact.imageAlt.trim();
+  if (image !== '' && imageAlt === '') {
+    warn(`"${slug}": image has no imageAlt; image omitted.`);
+    image = '';
+  }
+
+  const links = (Array.isArray(artifact.links) ? artifact.links : [])
+    .filter((link) => link && !isBlank(link.label) && !isBlank(link.href))
+    .map((link) => ({ label: link.label.trim(), href: link.href.trim() }));
+
+  return {
+    slug,
+    name: isBlank(artifact.name) ? slug : artifact.name.trim(),
+    title: isBlank(artifact.title) ? '' : artifact.title.trim(),
+    subtitle: isBlank(artifact.subtitle) ? '' : artifact.subtitle.trim(),
+    summary: isBlank(artifact.summary) ? '' : artifact.summary.trim(),
+    image,
+    imageAlt,
+    links,
+    // Where the long-form write-up lives, if there is one.
+    writeUp: isBlank(artifact.href) ? '' : artifact.href.trim(),
+    lens: lens.id,
+    lensLabel: lens.label,
+  };
+}
+
+function toLens(segment, position) {
+  const id = typeof segment?.id === 'string' ? segment.id.trim() : '';
+  if (id === '') {
+    warn(`segment at position ${position}: no id; skipped.`);
+    return null;
+  }
+  return {
+    id,
+    label: isBlank(segment.label) ? id : segment.label.trim(),
+    subtitle: isBlank(segment.subtitle) ? '' : segment.subtitle.trim(),
+  };
+}
+
+/**
+ * @param {object} config the object exported by data/site.config.js
+ * @returns {{
+ *   get(slug: string): object | undefined,
+ *   forLens(lensId: string): object[],
+ *   lens(lensId: string): object | undefined,
+ *   lenses: object[],
+ *   projects: object[],
+ * }}
+ */
+export function buildIndex(config) {
+  const segments = Array.isArray(config?.segments) ? config.segments : [];
+  if (segments.length === 0) warn('config has no segments.');
+
+  const lenses = [];
+  const projects = [];
+  const bySlug = new Map();
+  const byLens = new Map();
+
+  segments.forEach((segment, segmentIndex) => {
+    const lens = toLens(segment, segmentIndex);
+    if (!lens) return;
+
+    lenses.push(lens);
+    const own = [];
+    byLens.set(lens.id, own);
+
+    const artifacts = Array.isArray(segment.artifacts) ? segment.artifacts : [];
+    artifacts.forEach((artifact, artifactIndex) => {
+      const project = toProject(artifact, lens, artifactIndex);
+      if (!project) return;
+
+      if (bySlug.has(project.slug)) {
+        warn(`duplicate slug "${project.slug}"; the later record is skipped.`);
+        return;
+      }
+
+      bySlug.set(project.slug, project);
+      projects.push(project);
+      own.push(project);
+    });
+  });
+
+  const byLensId = new Map(lenses.map((lens) => [lens.id, lens]));
+
+  return {
+    get: (slug) => bySlug.get(String(slug)),
+    forLens: (lensId) => (byLens.get(String(lensId)) || []).slice(),
+    lens: (lensId) => byLensId.get(String(lensId)),
+    lenses,
+    projects,
+  };
+}
+
+export default buildIndex;
