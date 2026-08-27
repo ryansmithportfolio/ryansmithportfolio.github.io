@@ -372,12 +372,6 @@ body {
   transition: fill 180ms ease;
 }
 
-.seg__subtitle {
-  fill: var(--text-muted);
-  font-size: var(--subtitle-size);
-  letter-spacing: var(--subtitle-tracking);
-  transition: fill 180ms ease;
-}
 
 /* Hover and focus-visible share one selector list so they cannot drift. */
 .seg:hover .seg__band,
@@ -396,10 +390,6 @@ body {
   opacity: 1;
 }
 
-.seg:hover .seg__subtitle,
-.seg:focus-visible .seg__subtitle {
-  fill: var(--text-primary);
-}
 
 /* ------------------------------------------------- artifact hex markers */
 
@@ -424,9 +414,19 @@ body {
 .hex__label {
   fill: var(--text-primary);
   font-size: var(--marker-label-size);
+  /* Kept in step with TITLE_TRACKING in js/wheel.js, which estimates the width
+     of this text to keep it inside the frame. */
   letter-spacing: 0.6px;
-  opacity: 0;
-  transition: opacity 180ms ease;
+  /*
+   * js/title-sweep.js sets --label-opacity per marker to run the opening lap,
+   * and --label-fade on the dial for the length of the crossfade. Going through
+   * custom properties rather than writing style.opacity directly is what keeps
+   * the hover rule below authoritative: an inline opacity would outrank it and
+   * silently kill the hover reveal. --label-fade is removed once the titles
+   * settle, so hover returns to its own 180ms.
+   */
+  opacity: var(--label-opacity, 0);
+  transition: opacity var(--label-fade, 180ms) ease;
   pointer-events: none;
 }
 
@@ -725,7 +725,6 @@ body.has-overlay {
   .seg__highlight,
   .seg__ring,
   .seg__label,
-  .seg__subtitle,
   .hex__body,
   .hex__ring,
   .hex__label,

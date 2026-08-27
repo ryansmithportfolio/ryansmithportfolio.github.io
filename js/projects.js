@@ -95,7 +95,6 @@ function toLens(segment, position) {
   return {
     id,
     label: isBlank(segment.label) ? id : segment.label.trim(),
-    subtitle: isBlank(segment.subtitle) ? '' : segment.subtitle.trim(),
   };
 }
 

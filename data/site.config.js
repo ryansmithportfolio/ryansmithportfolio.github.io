@@ -9,7 +9,6 @@
  * Segment fields:
  *   id          stable slug, used for element ids
  *   label       displayed outside the arc, letterspaced
- *   subtitle    one line under the label
  *   weight      relative arc share; unitless, any positive number
  *   color       arc band fill
  *   bevelColor  lighter outer highlight along the arc, and the focus ring
@@ -44,7 +43,6 @@ export const config = {
     {
       id: 'collaborate',
       label: 'Collaborate',
-      subtitle: 'Across teams & time zones.',
       weight: 2,
       color: '#4E6178',
       bevelColor: '#8B9AB2',
@@ -89,7 +87,6 @@ export const config = {
     {
       id: 'structure',
       label: 'Structure',
-      subtitle: 'Several systems, one clean line.',
       weight: 2,
       color: '#476E67',
       bevelColor: '#7FA79E',
@@ -131,7 +128,6 @@ export const config = {
     {
       id: 'craft',
       label: 'Craft',
-      subtitle: 'Create and curate.',
       weight: 1.1,
       color: '#d3745c',
       bevelColor: '#d69088',
@@ -155,7 +151,6 @@ export const config = {
     {
       id: 'deliver',
       label: 'Deliver',
-      subtitle: 'Shipped and measured',
       weight: 1.1,
       color: '#A08256',
       bevelColor: '#D6B888',
