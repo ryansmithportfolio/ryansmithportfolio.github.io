@@ -24,8 +24,17 @@ no colors, no coordinates, no HTML. Lens colors are CSS keyed off
 One change per branch.
 
 If it isn't in the stated scope, don't implement it. When you notice work
-that falls outside the scope, list it at the end of your response instead of
-doing it.
+that falls outside it, record it at the end of your response as a proposed
+issue rather than doing it.
+
+Separate what you report into three kinds, and say which is which:
+
+- **Blocking** — the stated task can't be completed correctly without this
+- **Non-blocking** — worth knowing, doesn't stop the change
+- **Out of scope** — a proposed issue for another branch
+
+Approval is per-action. My approving something once doesn't authorize it in
+other contexts or later branches.
 
 Don't reformat files you aren't otherwise changing.
 
@@ -46,10 +55,30 @@ having run it.
 
 ## Pull requests
 
-Work happens on a branch off `master` and reaches `master` only through a
-pull request I review manually.
+## Pull requests
 
-When a branch is ready for PR, draft an entry in `decisions/` recording what
-was chosen and what was rejected. The rejected options are the part with
-long-term value. Draft it for review — don't treat it as final, and don't
-record decisions you inferred from the diff rather than ones I made.
+Work happens on a branch off `master` and reaches `master` only through a
+pull request I review manually. Never merge.
+
+## Decisions
+
+`decisions/` holds architecture decision records, named
+`ADR-NNNN-short-slug.md` — four-digit sequence, then a slug saying what the
+decision was, not what kind of file it is.
+
+Write one when a real choice was made between alternatives worth naming. Most
+PRs don't need one. If there was no alternative, there was no decision.
+
+Structure:
+
+- **Context** — what forced the choice
+- **Decision** — what was chosen
+- **Alternatives rejected** — and why. This is the part with long-term value.
+- **Consequences** — what this makes easier or harder later
+
+Records are append-only. Reversing a decision means a new ADR that names the
+one it supersedes; never edit or delete the original.
+
+When you believe a branch warrants an ADR, draft it and say so. I decide
+whether it lands. Record only decisions I made — not ones you inferred from
+the diff.
