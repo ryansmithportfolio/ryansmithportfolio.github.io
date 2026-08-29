@@ -126,6 +126,16 @@ body {
   line-height: 1.1;
 }
 
+.brand__subtitle {
+  margin: 0.45rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.5625rem; /* 9px, roughly half the brand name */
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 /* Two rules, 1.2px over 0.6px, as in the mockup. */
 .brand__rules {
   display: block;
@@ -391,7 +401,6 @@ body {
   transition: fill var(--reveal-duration) ease;
 }
 
-
 /* Hover and focus-visible share one selector list so they cannot drift. */
 .seg:hover .seg__band,
 .seg:focus-visible .seg__band {
@@ -405,7 +414,6 @@ body {
 .seg:focus-visible .seg__ring {
   opacity: 1;
 }
-
 
 /* ------------------------------------------------- artifact hex markers */
 
@@ -717,17 +725,6 @@ body.has-overlay {
 
   .brand__rules {
     width: 8rem;
-  }
-
-  /*
-   * Height from the viewBox instead of from the stage, so the portrait frame can
-   * be taller than the viewport and the page simply scrolls. Constraining it to
-   * one screen instead would make the scale height-bound and shrink the dial by
-   * a third, which is a poor trade for avoiding a scrollbar on a phone.
-   */
-  .dial {
-    max-height: none;
-    height: auto;
   }
 
   .colophon {
