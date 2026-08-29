@@ -55,8 +55,6 @@ having run it.
 
 ## Pull requests
 
-## Pull requests
-
 Work happens on a branch off `master` and reaches `master` only through a
 pull request I review manually. Never merge.
 

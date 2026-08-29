@@ -46,6 +46,15 @@
   --band-shadow-opacity: 0.6;
   --highlight-opacity: 0.6;
 
+  /*
+   * Layout and timing. The dial's interaction response is one duration so the
+   * whole instrument reacts as a single system. One deliberate exception: the
+   * --label-fade fallback on .hex__label below stays a literal, because that
+   * value is a contract with js/title-sweep.js rather than a style choice.
+   */
+  --gutter-page: clamp(1.5rem, 6vw, 3.75rem);
+  --reveal-duration: 180ms;
+
   --font-serif: Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -82,7 +91,7 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: 2.6rem clamp(1.5rem, 6vw, 3.75rem) 0;
+  padding: 2.6rem var(--gutter-page) 0;
   flex: 0 0 auto;
 }
 
@@ -314,49 +323,59 @@ body {
   outline: none;
 }
 
-.seg__shadow {
+/*
+ * Every band layer is a stroked arc with flat end faces. Shared here so the five
+ * layers cannot drift apart; the hard edge is a settled decision, not a default.
+ */
+.seg__shadow,
+.seg__bevel,
+.seg__band,
+.seg__highlight,
+.seg__ring {
   fill: none;
+  stroke-linecap: butt;
+}
+
+.seg__shadow {
   stroke: var(--dial-shadow);
   stroke-width: 60;
-  stroke-linecap: butt;
   opacity: var(--band-shadow-opacity);
 }
 
 .seg__bevel {
-  fill: none;
   stroke: var(--case-mid);
   stroke-width: 62;
-  stroke-linecap: butt;
   opacity: var(--band-bevel-opacity);
 }
 
 .seg__band {
-  fill: none;
   stroke: var(--seg-color);
   stroke-width: 56;
-  stroke-linecap: butt;
   transition:
-    stroke-width 180ms ease,
-    filter 180ms ease;
+    stroke-width var(--reveal-duration) ease,
+    filter var(--reveal-duration) ease;
+}
+
+/*
+ * The bevel-stroked reveal layers. Same colour and same reveal timing across the
+ * seg and hex variants, which differ only in stroke-width -- kept below.
+ */
+.seg__highlight,
+.seg__ring,
+.hex__ring {
+  stroke: var(--seg-bevel);
+  transition: opacity var(--reveal-duration) ease;
 }
 
 .seg__highlight {
-  fill: none;
-  stroke: var(--seg-bevel);
   stroke-width: 2;
-  stroke-linecap: butt;
   opacity: var(--highlight-opacity);
-  transition: opacity 180ms ease;
 }
 
 /* Drawn focus/hover ring, hidden until wanted. */
 .seg__ring {
-  fill: none;
-  stroke: var(--seg-bevel);
   stroke-width: 3;
-  stroke-linecap: butt;
   opacity: 0;
-  transition: opacity 180ms ease;
 }
 
 /*
@@ -369,7 +388,7 @@ body {
   font-size: var(--label-size);
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
-  transition: fill 180ms ease;
+  transition: fill var(--reveal-duration) ease;
 }
 
 
@@ -381,10 +400,7 @@ body {
 }
 
 .seg:hover .seg__highlight,
-.seg:focus-visible .seg__highlight {
-  opacity: 1;
-}
-
+.seg:focus-visible .seg__highlight,
 .seg:hover .seg__ring,
 .seg:focus-visible .seg__ring {
   opacity: 1;
@@ -398,17 +414,15 @@ body {
   stroke: var(--gold);
   stroke-width: 1.4;
   transition:
-    fill 180ms ease,
-    stroke-width 180ms ease,
-    filter 180ms ease;
+    fill var(--reveal-duration) ease,
+    stroke-width var(--reveal-duration) ease,
+    filter var(--reveal-duration) ease;
 }
 
 .hex__ring {
   fill: none;
-  stroke: var(--seg-bevel);
   stroke-width: 1.6;
   opacity: 0;
-  transition: opacity 180ms ease;
 }
 
 .hex__label {
@@ -454,10 +468,7 @@ body {
 }
 
 .hex:hover .hex__ring,
-.hex:focus-visible .hex__ring {
-  opacity: 1;
-}
-
+.hex:focus-visible .hex__ring,
 .hex:hover .hex__label,
 .hex:focus-visible .hex__label {
   opacity: 1;
@@ -470,9 +481,9 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1rem;
-  padding: 1.4rem clamp(1.5rem, 6vw, 3.75rem) 2.2rem;
+  padding: 1.4rem var(--gutter-page) 2.2rem;
   border-top: 1px solid var(--gold);
-  margin: 0 clamp(1.5rem, 6vw, 3.75rem);
+  margin: 0 var(--gutter-page);
   flex: 0 0 auto;
 }
 

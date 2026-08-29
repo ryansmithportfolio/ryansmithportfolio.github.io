@@ -30,7 +30,7 @@ applies to visual elements as much as dependencies: anything decorative that
 carries no information is the first thing cut.
 
 Corollary that came up repeatedly and should be watched for: **reaching for
-borrowed visual interest instead of making a decision.** Particle mesh, floating
+borrowed visual interest instead of making a decision.** Floating
 orbs, Kandinsky reproduction, node graph without edge semantics, stock HUD
 globe — same failure each time. If an element's justification is "it looks
 neat," it hasn't earned its place.
@@ -45,20 +45,20 @@ category needs evidence. Photos prove presence, not capability.
 Three lenses, not categories. A project can appear under more than one; the
 framing changes with the lens rather than repeating the same content.
 
-| Lens | Subtitle | Artifact |
-|---|---|---|
-| **Collaborate** | Two enterprise orgs, one data model | PepsiCo CRM + Jack Link's EDI (merged as one story) |
-| **Structure** | A dozen integrations down to three lines | sy-trance |
-| **Deliver** | Shipped, then measured | Sanity Check |
+| Lens            | Subtitle                                 | Artifact                                            |
+| --------------- | ---------------------------------------- | --------------------------------------------------- |
+| **Collaborate** | Two enterprise orgs, one data model      | PepsiCo CRM + Jack Link's EDI (merged as one story) |
+| **Structure**   | A dozen integrations down to three lines | sy-trance                                           |
+| **Deliver**     | Shipped, then measured                   | Sanity Check                                        |
 
-**Rejected terms and why.** *Discover* — liked conceptually, no artifact to fill
-it. *Develop* — too narrow, reads as "writing code," drops the coordination work
-that is the actual differentiator. *Architect* — not the real title, reads as
-overclaim. *Translate* — genuinely true at three levels (teaching English in
+**Rejected terms and why.** _Discover_ — liked conceptually, no artifact to fill
+it. _Develop_ — too narrow, reads as "writing code," drops the coordination work
+that is the actual differentiator. _Architect_ — not the real title, reads as
+overclaim. _Translate_ — genuinely true at three levels (teaching English in
 Bangkok, ETL, translating between marketing and engineering), strong enough to
-revisit later, but currently unplaced. *Build · Integrate · Deliver* — the
-original tagline; generic, true of every engineer. *Composed · Traceable ·
-Trusted* — from the ModernAge mockup; describes a product's properties, not a
+revisit later, but currently unplaced. _Build · Integrate · Deliver_ — the
+original tagline; generic, true of every engineer. _Composed · Traceable ·
+Trusted_ — from the ModernAge mockup; describes a product's properties, not a
 person's work. Alliterative D-triads read as consultancy templates.
 
 **Not yet included.** Daybreak — not shipped. Goes on the site when there's a

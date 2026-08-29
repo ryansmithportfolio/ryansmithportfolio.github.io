@@ -1,7 +1,3 @@
-particlesJS.load('particles-js', './assets/particles.json', function () {
-  console.log('callback - particles.js config loaded');
-});
-
 $(document).ready(function () {
   // Initialize modal
   const projectModal = new ProjectModal();
@@ -17,7 +13,7 @@ $(document).ready(function () {
       {
         scrollTop: $(elem).offset().top,
       },
-      duration
+      duration,
     );
   };
 
