@@ -55,8 +55,6 @@ having run it.
 
 ## Pull requests
 
-## Pull requests
-
 Work happens on a branch off `master` and reaches `master` only through a
 pull request I review manually. Never merge.
 
@@ -66,9 +64,6 @@ pull request I review manually. Never merge.
 `ADR-NNNN-short-slug.md` — four-digit sequence, then a slug saying what the
 decision was, not what kind of file it is.
 
-Write one when a real choice was made between alternatives worth naming. Most
-PRs don't need one. If there was no alternative, there was no decision.
-
 Structure:
 
 - **Context** — what forced the choice
@@ -76,9 +71,7 @@ Structure:
 - **Alternatives rejected** — and why. This is the part with long-term value.
 - **Consequences** — what this makes easier or harder later
 
-Records are append-only. Reversing a decision means a new ADR that names the
-one it supersedes; never edit or delete the original.
-
-When you believe a branch warrants an ADR, draft it and say so. I decide
-whether it lands. Record only decisions I made — not ones you inferred from
-the diff.
+Records are append-only. Never modify or delete a file in `decisions/`. Records are append-only —
+this holds for corrections, clarifications, and additions, not just
+reversals. Anything that changes what a record says is a new ADR that
+names the one it supersedes.
