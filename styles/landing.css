@@ -677,6 +677,23 @@ body.has-overlay {
   color: var(--text-primary);
 }
 
+/*
+ * Gallery captions. Quieter and a step smaller than .detail__summary so a
+ * caption reads as an annotation on its image rather than as more body copy,
+ * but still sentence case -- every other muted style in this file is uppercase
+ * label type, which a four-line caption cannot survive. No new colour: this is
+ * the same --text-muted the lens line and the subtitle already use.
+ *
+ * .detail__gallery itself needs no rule. The figures inside it already carry
+ * their spacing from .detail__figure, and .detail__image is already fluid.
+ */
+.detail__caption {
+  margin: 0.65rem 0 0;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
 /* Only reachable with placeholders enabled; the landing page passes false. */
 .detail__placeholder {
   color: var(--text-muted);

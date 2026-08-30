@@ -29,6 +29,46 @@ function warn(message) {
 }
 
 /**
+ * Normalize an artifact's image collection.
+ *
+ * An image with no alt text is worse than no image, so a bad entry is dropped
+ * whole rather than rendered mute. That has a consequence worth stating: the
+ * first surviving entry is the lead, so dropping entry zero promotes entry one
+ * into the lead position. A thinner card with a different lead beats a card
+ * with an unlabelled image on it.
+ *
+ * `caption` is optional and stays empty when absent; the lead's caption is
+ * never rendered anyway. See decisions/ADR-0005.
+ */
+function toImages(value, slug) {
+  const entries = Array.isArray(value) ? value : [];
+
+  return entries
+    .map((entry, i) => {
+      if (!entry || typeof entry !== 'object') {
+        warn(`"${slug}": image ${i} is not an object; skipped.`);
+        return null;
+      }
+
+      const src = isBlank(entry.src) ? '' : entry.src.trim();
+      if (src === '') {
+        warn(`"${slug}": image ${i} has no src; skipped.`);
+        return null;
+      }
+
+      const alt = isBlank(entry.alt) ? '' : entry.alt.trim();
+      if (alt === '') {
+        warn(`"${slug}": image "${src}" has no alt; skipped.`);
+        return null;
+      }
+
+      const caption = isBlank(entry.caption) ? '' : entry.caption.trim();
+      return { src, alt, caption };
+    })
+    .filter((entry) => entry !== null);
+}
+
+/**
  * Normalize one artifact into a project record. Returns null when the record has
  * no usable slug, since without one it can be neither addressed nor deduplicated.
  */
@@ -58,13 +98,7 @@ function toProject(artifact, lens, position) {
     }
   }
 
-  // An image with no alt text is worse than no image, so drop the pair.
-  let image = isBlank(artifact.image) ? '' : artifact.image.trim();
-  const imageAlt = isBlank(artifact.imageAlt) ? '' : artifact.imageAlt.trim();
-  if (image !== '' && imageAlt === '') {
-    warn(`"${slug}": image has no imageAlt; image omitted.`);
-    image = '';
-  }
+  const images = toImages(artifact.images, slug);
 
   const links = (Array.isArray(artifact.links) ? artifact.links : [])
     .filter((link) => link && !isBlank(link.label) && !isBlank(link.href))
@@ -76,11 +110,8 @@ function toProject(artifact, lens, position) {
     title: isBlank(artifact.title) ? '' : artifact.title.trim(),
     subtitle: isBlank(artifact.subtitle) ? '' : artifact.subtitle.trim(),
     summary: isBlank(artifact.summary) ? '' : artifact.summary.trim(),
-    image,
-    imageAlt,
+    images,
     links,
-    // Where the long-form write-up lives, if there is one.
-    writeUp: isBlank(artifact.href) ? '' : artifact.href.trim(),
     lens: lens.id,
     lensLabel: lens.label,
   };

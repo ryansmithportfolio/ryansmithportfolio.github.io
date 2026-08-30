@@ -22,12 +22,10 @@
  *   href        where activating the whole segment goes
  *   artifacts   hex markers laid out along the segment's mid-angle
  *
- * Artifact fields. name, href, and listed are the three js/wheel.js reads; the
- * rest drive the detail view rendered by js/project-view.js.
+ * Artifact fields. name and listed are the two js/wheel.js reads; the rest
+ * drive the detail view rendered by js/project-view.js. Markers route to
+ * #/p/<slug> so a project is addressable on cold load.
  *   name        hex marker label, revealed on hover/focus. Short by design.
- *   href        the long-form write-up on projects.html, offered as a link out
- *               of the detail view. Not where the hex marker points -- markers
- *               route to #/p/<slug> so a project is addressable on cold load.
  *   slug        stable, URL-safe id. Must be unique across every artifact.
  *   listed      optional. false keeps the record off the dial: js/wheel.js
  *               leaves it out of the marker layout entirely, while #/p/<slug>
@@ -37,15 +35,15 @@
  *   title       detail-view heading
  *   subtitle    one line under the heading
  *   summary     the prose blurb. Sourced from projects.html; keep them in step.
- *   image       lead image, relative to the site root
- *   imageAlt    alt text for that image; required whenever `image` is set
  *   links       extra destinations, in order: [{ label, href }]
- *   images      optional, ordered walkthrough images: [{ src, alt, caption }].
- *               Migrated from the project-slides decks on projects.html, where
- *               `caption` was the slide's data-title. Separate from `image`
- *               rather than including it, because whether the lead image is
- *               also the first slide is a rendering decision. Nothing reads
- *               these yet.
+ *   images      the artifact's images, in order: [{ src, alt, caption }]. The
+ *               only image collection there is -- see decisions/ADR-0005.
+ *               images[0] is the lead: it renders above the summary, where the
+ *               old `image` field used to, and its caption is deliberately not
+ *               shown there. images[1..] stack below the summary as a gallery,
+ *               each with its caption. `alt` is required on every entry;
+ *               js/projects.js drops an entry without one. `caption` is
+ *               optional, and lead images generally have none.
  *
  * title, subtitle, and summary are the prose fields. js/projects.js warns to the
  * console when one is missing or blank rather than throwing, so a half-authored
@@ -73,15 +71,12 @@ export const config = {
       artifacts: [
         {
           name: 'Decision Tree',
-          href: 'projects.html#decision-tree',
           slug: 'decision-tree',
           title: 'Decision Tree',
           subtitle: 'Interactive Hierarchical Data Visualization',
           summary:
             'An interactive tree visualization tool built with React, Redux, ' +
             'and D3.js.',
-          image: 'assets/decision-tree/dt-1.jpg',
-          imageAlt: 'Decision Tree Visualization',
           links: [
             { label: 'Website', href: 'projects/decision-tree/index.html' },
             {
@@ -92,7 +87,7 @@ export const config = {
           images: [
             {
               src: 'assets/decision-tree/dt-1.jpg',
-              alt: 'Expanded tree graph with labelled nodes',
+              alt: 'Decision Tree Visualization',
               caption: 'Make your own interactive tree graph.',
             },
             {
@@ -120,22 +115,19 @@ export const config = {
         },
         {
           name: 'Experealization',
-          href: 'projects.html#experealization',
           slug: 'experealization',
           title: 'Experealization',
           subtitle: 'My Travel Blog',
           summary:
             'A travel and work blog chronicling stories and photography ' +
             'across seven countries in Southeast Asia.',
-          image: 'assets/experealization/exp1.jpg',
-          imageAlt: 'Travel Blog',
           links: [
             { label: 'Website', href: 'http://experealization.wordpress.com' },
           ],
           images: [
             {
               src: 'assets/experealization/exp1.jpg',
-              alt: 'Blog home page, circular post thumbnails over a sky field',
+              alt: 'Travel Blog',
               caption:
                 'Travel and work blog from my nearly two years in Southeast ' +
                 'Asia.',
@@ -156,7 +148,6 @@ export const config = {
         },
         {
           name: 'gram',
-          href: 'projects.html#gram',
           slug: 'gram',
           listed: false,
           title: 'gram',
@@ -164,15 +155,13 @@ export const config = {
           summary:
             'A collaborative whiteboarding and chat tool built with ' +
             'Node/Express and Socket.io.',
-          image: 'assets/gram/gram1.jpg',
-          imageAlt: 'Gram Whiteboarding',
           links: [
             { label: 'GitHub', href: 'https://github.com/mtcrushmore/gram' },
           ],
           images: [
             {
               src: 'assets/gram/gram1.jpg',
-              alt: 'Two browser windows sharing one whiteboard and chat log',
+              alt: 'Gram Whiteboarding',
               caption:
                 'Gram is a real-time whiteboarding and chatting tool. When ' +
                 'connected to the server, a user can contribute to both the ' +
@@ -203,15 +192,12 @@ export const config = {
       artifacts: [
         {
           name: 'Immedia — 10-API aggregator',
-          href: 'projects.html#immedia',
           slug: 'immedia',
           title: 'Immedia',
           subtitle: 'Real-Time Encyclopedia & News Aggregator',
           summary:
             'A news, social media, and wiki aggregator that combines ' +
             "real-time updates with Wikipedia's depth.",
-          image: 'assets/immedia/immedia1.jpg',
-          imageAlt: 'Immedia Interface',
           links: [
             {
               label: 'GitHub',
@@ -221,7 +207,7 @@ export const config = {
           images: [
             {
               src: 'assets/immedia/immedia1.jpg',
-              alt: 'Three columns: an events timeline, a tweet, a wiki entry',
+              alt: 'Immedia Interface',
               caption:
                 'A news, social media, and wiki aggregator from 10 APIs.',
             },
@@ -243,17 +229,18 @@ export const config = {
         },
         {
           name: 'Trifecta — workflow builder',
-          href: 'projects.html#trifecta',
           slug: 'trifecta',
           title: 'Trifecta',
           subtitle: 'App Builder with AI-Powered Automation',
           summary:
             'A secure network consisting of a composable backend, frontend ' +
             'builder, and workflow engine.',
-          image: 'assets/trifecta/summary2.jpg',
-          imageAlt: 'Trifecta Framework',
           links: [],
           images: [
+            {
+              src: 'assets/trifecta/summary2.jpg',
+              alt: 'Trifecta Framework',
+            },
             {
               src: 'assets/trifecta/create-task.jpg',
               alt: 'Add New Task form with priority, status, and description',
@@ -306,20 +293,17 @@ export const config = {
       artifacts: [
         {
           name: 'E-commerce Wireframes (Figma)',
-          href: 'projects.html#figma-wireframes',
           slug: 'figma-wireframes',
           title: 'Hi-Fidelity',
           subtitle: 'E-commerce Wireframes Using Figma',
           summary:
             'Part of a project to develop a loyalty program for an ' +
             'e-commerce site.',
-          image: 'assets/product-school/figma-1.jpg',
-          imageAlt: 'E-commerce Wireframes',
           links: [],
           images: [
             {
               src: 'assets/product-school/figma-1.jpg',
-              alt: 'Listing page with search filters and one listing card',
+              alt: 'E-commerce Wireframes',
               caption: 'Product Listing Page',
             },
             {
@@ -346,15 +330,12 @@ export const config = {
       artifacts: [
         {
           name: 'Scheduled Reports (PDF)',
-          href: 'projects.html#scheduled-reports',
           slug: 'scheduled-reports',
           title: 'Transporter',
           subtitle: 'Brief Presentation: Scheduled Reports of Sensitive Data',
           summary:
             'An architectural deep dive into delivering scheduled reports of ' +
             'sensitive data to clients.',
-          image: 'assets/scheduled-reports/ryan-smith-scheduled-reports.jpg',
-          imageAlt: 'Scheduled Reports Architecture',
           links: [
             {
               label: 'View full PDF',
@@ -364,10 +345,7 @@ export const config = {
           images: [
             {
               src: 'assets/scheduled-reports/ryan-smith-scheduled-reports.jpg',
-              alt:
-                'Architecture diagram: a MySQL platform, job runner and job ' +
-                'scheduler Lambdas, a DynamoDB config table, and an SFTP ' +
-                'server',
+              alt: 'Scheduled Reports Architecture',
               caption:
                 'I made this slide deck for an interview, highlighting ' +
                 'architectural decisions to deliver scheduled reports of ' +
@@ -378,15 +356,12 @@ export const config = {
         },
         {
           name: 'Sanity Check — live app',
-          href: 'projects.html#sanity-check',
           slug: 'sanity-check',
           title: 'Sanity Check',
           subtitle: 'Validate Your Message With AI Before You Hit Send',
           summary:
             'Enter your message and the context behind it (it could be a ' +
             'URL, an email, or document) and get a sanity check from AI.',
-          image: 'assets/sanity-check/home.png',
-          imageAlt: 'Sanity Check',
           links: [
             {
               label: 'Website',
@@ -396,9 +371,7 @@ export const config = {
           images: [
             {
               src: 'assets/sanity-check/home.png',
-              alt:
-                'Form with message and additional context fields above a ' +
-                'Sanity Check button',
+              alt: 'Sanity Check',
               caption:
                 'Simply enter your message and the context behind it (it ' +
                 'could be a URL, an email, or document) and get a sanity ' +

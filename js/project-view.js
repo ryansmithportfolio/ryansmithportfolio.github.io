@@ -54,6 +54,36 @@ function el(tag, className, text) {
   return node;
 }
 
+/**
+ * One image in its figure.
+ *
+ * `caption` is false in the lead position. The lead has never shown a caption,
+ * and several records carry one on images[0] purely because it came across from
+ * the old slide deck; rendering it there would move the summary down the card.
+ *
+ * `lazy` is likewise only true for the lead, which has carried loading and
+ * decoding hints since before the gallery existed. The stacked images take
+ * neither, so nothing about how they load is being decided here.
+ */
+function figureFor(entry, { caption = true, lazy = false } = {}) {
+  const figure = el('figure', 'detail__figure');
+
+  const image = el('img', 'detail__image');
+  image.src = entry.src;
+  image.alt = entry.alt;
+  if (lazy) {
+    image.loading = 'lazy';
+    image.decoding = 'async';
+  }
+  figure.append(image);
+
+  if (caption && !isBlank(entry.caption)) {
+    figure.append(el('figcaption', 'detail__caption', entry.caption));
+  }
+
+  return figure;
+}
+
 function linkItem(label, href) {
   const item = el('li', 'detail__links-item');
   const anchor = el('a', 'link-caps detail__link', label);
@@ -106,15 +136,11 @@ export function renderProjectDetail(project, opts = {}) {
     article.append(el('p', 'detail__subtitle detail__placeholder', 'No subtitle yet.'));
   }
 
-  if (!isBlank(project.image)) {
-    const figure = el('figure', 'detail__figure');
-    const image = el('img', 'detail__image');
-    image.src = project.image;
-    image.alt = project.imageAlt;
-    image.loading = 'lazy';
-    image.decoding = 'async';
-    figure.append(image);
-    article.append(figure);
+  // images[0] is the lead. It sits above the summary, which is where the card
+  // has always opened on a picture.
+  const images = Array.isArray(project.images) ? project.images : [];
+  if (images.length > 0) {
+    article.append(figureFor(images[0], { caption: false, lazy: true }));
   }
 
   if (!isBlank(project.summary)) {
@@ -123,13 +149,19 @@ export function renderProjectDetail(project, opts = {}) {
     article.append(el('p', 'detail__summary detail__placeholder', 'No summary yet.'));
   }
 
+  // Everything after the lead stacks below the summary, one image per row. The
+  // container is only built when there is something to put in it, so a
+  // single-image record ends at the summary rather than at an empty div.
+  if (images.length > 1) {
+    const gallery = el('div', 'detail__gallery');
+    for (const entry of images.slice(1)) gallery.append(figureFor(entry));
+    article.append(gallery);
+  }
+
   const links = Array.isArray(project.links) ? project.links : [];
-  if (links.length > 0 || !isBlank(project.writeUp)) {
+  if (links.length > 0) {
     const list = el('ul', 'detail__links');
     for (const link of links) list.append(linkItem(link.label, link.href));
-    if (!isBlank(project.writeUp)) {
-      list.append(linkItem('Full write-up', project.writeUp));
-    }
     article.append(list);
   }
 
