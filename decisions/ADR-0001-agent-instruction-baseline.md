@@ -177,17 +177,11 @@ JS bundle (zero component classes in the DOM), and bxslider plus its init call
 
 **Remaining, in order:**
 
-1. **wow.js + animate.css** — one `.wow` element, 185 CSS rules. Replace with a
-   CSS transition or a short `IntersectionObserver`, then delete both. Remove
-   the `WOW` init in `app.js` in the same commit.
-2. **Bootstrap CSS** — 10 grid hits (`container`/`row`/`col-`), zero utility
+1. **Bootstrap CSS** — 10 grid hits (`container`/`row`/`col-`), zero utility
    classes. Hand-write the grid; an afternoon, not a project.
-3. **jQuery** — 30 `$()` call sites across `app.js` (20) and `modal.js` (10).
+2. **jQuery** — 30 `$()` call sites across `app.js` (20) and `modal.js` (10).
    Biggest byte win, and the only step that can break behaviour rather than
    layout. Do it last.
-
-**Old landing** preserved as `projects.html` rather than deleted — it holds real
-work to port piece by piece.
 
 **Contact** needs a third-party handler (Formspree, Cloudflare Worker) since
 Pages has no backend. A form is also the privacy-preserving option: the address

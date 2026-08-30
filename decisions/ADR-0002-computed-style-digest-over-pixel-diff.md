@@ -17,7 +17,7 @@ CONTROL: pristine vs pristine (zero CSS change)
   FAIL  02-home-375.png   13819 px differ   max delta 8/255
 ```
 
-The same comparison with the refactor applied differed *less* — 2–3/255 across
+The same comparison with the refactor applied differed _less_ — 2–3/255 across
 8765 px. Two consecutive pristine runs were byte-identical, so the drift is
 session-scoped rather than random per capture, which is why an early baseline
 set captured on a cold renderer passed repeatedly and then began failing.
@@ -74,7 +74,7 @@ pass the noise would pass the error too.
 
 **Masking the nondeterministic region.** Rejected once the cause was understood.
 The drift is spread across the whole dial, which is the primary subject of the
-page — masking it would exclude most of what needs verifying. (Masking *was*
+page — masking it would exclude most of what needs verifying. (Masking _was_
 warranted earlier for a different cause: `particles.js` seeded particle
 positions from `Math.random()`, making that canvas unverifiable in principle.
 Removing the dependency removed the need.)
@@ -97,7 +97,7 @@ gives the same verdict in CI as locally. It also catches changes pixels cannot
 see at all: a computed value behind an occluding element, or a hover transition
 duration in a settled screenshot.
 
-Harder: it proves the *inputs* to painting are identical, not the painted result.
+Harder: it proves the _inputs_ to painting are identical, not the painted result.
 A browser bug where identical computed styles paint differently would pass. It
 cannot see anything absent from computed style or layout boxes — canvas contents,
 image decoding, or paint order between overlapping siblings. Anything driven by
@@ -105,6 +105,6 @@ JS writing custom properties is excluded by the custom-property filter and needs
 its own check.
 
 Practically: the settled state is verified and the motion is not. The title
-sweep, the overlay crossfade, and the wow.js entrances on `projects.html` remain
+sweep and the overlay crossfade on `projects.html` remain
 eye-checked, because the reduced-motion emulation that makes capture
 deterministic is what removes them from view.

@@ -2,10 +2,6 @@ $(document).ready(function () {
   // Initialize modal
   const projectModal = new ProjectModal();
 
-  /*Initialize WoW.js, allowing for smooth element transition 
-  effects when added to the class of that element*/
-  new WOW().init();
-
   /* When a link is clicked, a smooth scroll to a particular element (param 1)
   will take place with a specified duration (param 2) */
   var smoothScrollTo = function (elem, duration) {

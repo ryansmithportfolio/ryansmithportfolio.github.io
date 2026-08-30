@@ -34,7 +34,7 @@
  *               flag at all. See decisions/ADR-0004.
  *   title       detail-view heading
  *   subtitle    one line under the heading
- *   summary     the prose blurb. Sourced from projects.html; keep them in step.
+ *   summary     the prose blurb.
  *   links       extra destinations, in order: [{ label, href }]
  *   images      the artifact's images, in order: [{ src, alt, caption }]. The
  *               only image collection there is -- see decisions/ADR-0005.
@@ -67,7 +67,6 @@ export const config = {
       weight: 2,
       color: '#4E6178',
       bevelColor: '#8B9AB2',
-      href: 'projects.html#decision-tree',
       artifacts: [
         {
           name: 'Decision Tree',
@@ -188,7 +187,6 @@ export const config = {
       weight: 2,
       color: '#476E67',
       bevelColor: '#7FA79E',
-      href: 'projects.html#immedia',
       artifacts: [
         {
           name: 'Immedia — 10-API aggregator',
@@ -288,8 +286,6 @@ export const config = {
       label: 'Craft',
       weight: 1.1,
       color: '#d3745c',
-      bevelColor: '#d69088',
-      href: 'projects.html#figma-wireframes',
       artifacts: [
         {
           name: 'E-commerce Wireframes (Figma)',
@@ -326,7 +322,6 @@ export const config = {
       weight: 1.1,
       color: '#A08256',
       bevelColor: '#D6B888',
-      href: 'projects.html#scheduled-reports',
       artifacts: [
         {
           name: 'Scheduled Reports (PDF)',

@@ -69,8 +69,6 @@ const GOLD_MAJOR_STEP_DEG = 30;
 const GOLD_MINOR_STEP_DEG = 5;
 const SPOKE_STEP_DEG = 3.75;
 
-
-
 /** Keep generated text and markers this far inside the viewBox edge. */
 const FRAME_INSET = 22;
 
@@ -259,7 +257,8 @@ function clampAnchoredX(x, width, anchor, frame) {
   return clamp(x, lo + width / 2, Math.max(lo + width / 2, hi - width / 2));
 }
 
-const isExternal = (href) => /^[a-z][a-z0-9+.-]*:/i.test(href) && !href.startsWith('#');
+const isExternal = (href) =>
+  /^[a-z][a-z0-9+.-]*:/i.test(href) && !href.startsWith('#');
 
 /* ------------------------------------------------------------------- layout */
 
@@ -268,13 +267,17 @@ const isExternal = (href) => /^[a-z][a-z0-9+.-]*:/i.test(href) && !href.startsWi
  * one gap is centred on 12 o'clock regardless of segment count.
  */
 function computeLayout(segments) {
-  const weights = segments.map((s) => (Number(s.weight) > 0 ? Number(s.weight) : 0));
+  const weights = segments.map((s) =>
+    Number(s.weight) > 0 ? Number(s.weight) : 0,
+  );
   const totalWeight = weights.reduce((sum, w) => sum + w, 0);
   const available = 360 - segments.length * GAP_DEG;
 
   // Degenerate configs (no segments, or all weights zero) fall back to equal shares.
   const share = (i) =>
-    totalWeight > 0 ? weights[i] / totalWeight : 1 / Math.max(1, segments.length);
+    totalWeight > 0
+      ? weights[i] / totalWeight
+      : 1 / Math.max(1, segments.length);
 
   let cursor = START_DEG + GAP_DEG / 2;
   return segments.map((segment, i) => {
@@ -335,14 +338,31 @@ function buildCase(mount, layout) {
       transform: `translate(${round(point.x)},${round(point.y)}) rotate(${round(angle)})`,
     });
     tab.append(
-      svg('rect', { x: -8, y: -6.5, width: 16, height: 13, class: 'dial__tab-body' }),
-      svg('rect', { x: -2.5, y: -2, width: 5, height: 4, class: 'dial__tab-slot' }),
+      svg('rect', {
+        x: -8,
+        y: -6.5,
+        width: 16,
+        height: 13,
+        class: 'dial__tab-body',
+      }),
+      svg('rect', {
+        x: -2.5,
+        y: -2,
+        width: 5,
+        height: 4,
+        class: 'dial__tab-slot',
+      }),
     );
     mount.append(tab);
   }
 
   mount.append(
-    svg('circle', { cx: CENTRE.x, cy: CENTRE.y, r: R.caseRing, class: 'dial__case' }),
+    svg('circle', {
+      cx: CENTRE.x,
+      cy: CENTRE.y,
+      r: R.caseRing,
+      class: 'dial__case',
+    }),
     svg('circle', {
       cx: CENTRE.x,
       cy: CENTRE.y,
@@ -358,13 +378,23 @@ function buildCase(mount, layout) {
   for (let a = 0; a < 360; a += GOLD_MINOR_STEP_DEG) {
     if (a % GOLD_MAJOR_STEP_DEG === 0) continue;
     mount.append(
-      radialLine(R.goldMinorInner, R.goldOuter, a, 'dial__tick dial__tick--minor-gold'),
+      radialLine(
+        R.goldMinorInner,
+        R.goldOuter,
+        a,
+        'dial__tick dial__tick--minor-gold',
+      ),
     );
   }
 
   for (let a = 0; a < 360; a += GOLD_MAJOR_STEP_DEG) {
     mount.append(
-      radialLine(R.goldMajorInner, R.goldOuter, a, 'dial__tick dial__tick--major'),
+      radialLine(
+        R.goldMajorInner,
+        R.goldOuter,
+        a,
+        'dial__tick dial__tick--major',
+      ),
     );
   }
 }
@@ -391,7 +421,12 @@ function buildLens(mount) {
   image.append(imageTitle);
 
   mount.append(
-    svg('circle', { cx: CENTRE.x, cy: CENTRE.y, r: R.lensWell, class: 'dial__well' }),
+    svg('circle', {
+      cx: CENTRE.x,
+      cy: CENTRE.y,
+      r: R.lensWell,
+      class: 'dial__well',
+    }),
     svg('circle', {
       cx: CENTRE.x,
       cy: CENTRE.y,
@@ -479,7 +514,12 @@ function radialSpot(entry, place, maxCount) {
   // The titles share the label's x and anchor, so the block is as wide as its
   // widest line whether or not that line is currently visible.
   const titleWidths = artifacts.map((artifact) =>
-    estimateTextWidth(artifact.name || '', place.markerLabelSize, TITLE_TRACKING, false),
+    estimateTextWidth(
+      artifact.name || '',
+      place.markerLabelSize,
+      TITLE_TRACKING,
+      false,
+    ),
   );
   const boxWidth = Math.max(labelWidth, ...titleWidths, 0);
 
@@ -491,7 +531,8 @@ function radialSpot(entry, place, maxCount) {
   // The marker row is offset by the busiest lens's line count, not this lens's,
   // so all four rows sit at the same distance below their label instead of the
   // one-project lens riding a line higher than its neighbours.
-  const titleBlock = place.titleOffset + Math.max(0, maxCount - 1) * place.titleLeading;
+  const titleBlock =
+    place.titleOffset + Math.max(0, maxCount - 1) * place.titleLeading;
   const blockHeight = titleBlock + place.markerGap + place.markerRadius;
   const y = round(clamp(ray.y, top + place.labelSize, bottom - blockHeight));
 
@@ -556,7 +597,9 @@ function stackedSpots(layout, place) {
     const artifacts = listedArtifacts(entry.segment);
     const rowTop = cursor + place.titleOffset;
 
-    const titleYs = artifacts.map((_, i) => round(rowTop + i * place.titleLeading));
+    const titleYs = artifacts.map((_, i) =>
+      round(rowTop + i * place.titleLeading),
+    );
     const spot = {
       anchor: 'start',
       x: left,
@@ -587,7 +630,10 @@ function stackedSpots(layout, place) {
 
     // Advance by the reserved lines, never by however many are visible. One
     // line minimum so an empty lens still takes up its label.
-    cursor = rowTop + Math.max(1, artifacts.length) * place.titleLeading + place.blockGap;
+    cursor =
+      rowTop +
+      Math.max(1, artifacts.length) * place.titleLeading +
+      place.blockGap;
     return spot;
   });
 }
@@ -608,7 +654,7 @@ function buildSegmentLink(entry, place, spot) {
   const link = svg('a', {
     class: 'seg',
     id: `seg-${segment.id}`,
-    href: segment.href || 'projects.html',
+    href: segment.href,
     tabindex: 0,
     'aria-label': segment.label,
   });
@@ -619,7 +665,8 @@ function buildSegmentLink(entry, place, spot) {
 
   // Config-supplied colour enters as a custom property; CSS does the painting.
   if (segment.color) link.style.setProperty('--seg-color', segment.color);
-  if (segment.bevelColor) link.style.setProperty('--seg-bevel', segment.bevelColor);
+  if (segment.bevelColor)
+    link.style.setProperty('--seg-bevel', segment.bevelColor);
 
   const title = svg('title');
   title.textContent = segment.label;
@@ -630,13 +677,21 @@ function buildSegmentLink(entry, place, spot) {
     svg('path', { d: band, class: 'seg__shadow', transform: 'translate(0,5)' }),
     svg('path', { d: band, class: 'seg__bevel' }),
     svg('path', { d: band, class: 'seg__band' }),
-    svg('path', { d: arcPath(R.highlight, start, end), class: 'seg__highlight' }),
+    svg('path', {
+      d: arcPath(R.highlight, start, end),
+      class: 'seg__highlight',
+    }),
     svg('path', { d: arcPath(R.focusRing, start, end), class: 'seg__ring' }),
   );
 
   const { anchor, x, y } = spot;
 
-  const label = svg('text', { x, y, 'text-anchor': anchor, class: 'seg__label' });
+  const label = svg('text', {
+    x,
+    y,
+    'text-anchor': anchor,
+    class: 'seg__label',
+  });
   label.textContent = segment.label;
 
   link.append(label);
@@ -670,7 +725,8 @@ function buildArtifactLinks(entry, place, spot) {
       link.setAttribute('rel', 'noopener noreferrer');
     }
     if (segment.color) link.style.setProperty('--seg-color', segment.color);
-    if (segment.bevelColor) link.style.setProperty('--seg-bevel', segment.bevelColor);
+    if (segment.bevelColor)
+      link.style.setProperty('--seg-bevel', segment.bevelColor);
 
     const title = svg('title');
     title.textContent = artifact.name;
@@ -685,7 +741,11 @@ function buildArtifactLinks(entry, place, spot) {
         class: 'hex__body',
       }),
       svg('polygon', {
-        points: hexPoints(cx, cy, place.markerRadius + place.markerRadius * 0.36),
+        points: hexPoints(
+          cx,
+          cy,
+          place.markerRadius + place.markerRadius * 0.36,
+        ),
         class: 'hex__ring',
       }),
     );
@@ -713,7 +773,10 @@ function render(root, compact) {
   const { frame } = place;
 
   root.classList.toggle('dial--compact', compact);
-  root.setAttribute('viewBox', `${frame.x} ${frame.y} ${frame.width} ${frame.height}`);
+  root.setAttribute(
+    'viewBox',
+    `${frame.x} ${frame.y} ${frame.width} ${frame.height}`,
+  );
 
   // Type sizes live in PLACEMENT only. Publishing them as custom properties
   // keeps the stylesheet and the label-width clamping reading the same numbers,
@@ -785,9 +848,8 @@ function initProjectDetail(root) {
   const router = createProjectRouter({
     index,
     onOpen: (project) => {
-      overlay.open(
-        renderProjectDetail(project, { placeholders: false }),
-        () => markerFor(project.slug),
+      overlay.open(renderProjectDetail(project, { placeholders: false }), () =>
+        markerFor(project.slug),
       );
     },
     onClose: () => overlay.close(),

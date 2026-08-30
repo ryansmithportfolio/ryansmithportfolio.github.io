@@ -1,6 +1,5 @@
 /*
- * Landing page styles. Independent of styles/styles.css, which belongs to
- * projects.html and is not loaded here.
+ * Landing page styles.
  *
  * Every colour in this file is declared once in :root below. There are no hex
  * literals past that block. Per-segment colours arrive from data/site.config.js
