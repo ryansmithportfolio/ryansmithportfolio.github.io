@@ -428,6 +428,23 @@ function buildLens(mount) {
 /* ---------------------------------------------------------------- segments */
 
 /**
+ * The artifacts the dial draws.
+ *
+ * `listed: false` takes a record off the dial without taking it out of the
+ * config: it keeps its slug, #/p/<slug> still resolves on a cold load, and the
+ * detail view renders it identically. Absent means listed, so a record that
+ * belongs on the dial carries no flag.
+ *
+ * Filtered here, upstream of every layout function, rather than where the
+ * markers are built. The title rows, the marker positions, and the busiest-lens
+ * offset are all derived from this list by index, so skipping late would
+ * reserve a row and a marker slot for something that is never drawn -- a gap in
+ * the radial marker row and a blank line in the compact stack.
+ */
+const listedArtifacts = (segment) =>
+  (segment?.artifacts || []).filter((artifact) => artifact?.listed !== false);
+
+/**
  * Where each lens's label, its project titles, and its markers sit.
  *
  * Two layouts, chosen by place.stacked, because one shape cannot serve both
@@ -450,7 +467,7 @@ function radialSpot(entry, place, maxCount) {
   const anchor = anchorFor(mid);
   const ray = polar(place.labelRadius, mid);
 
-  const artifacts = segment.artifacts || [];
+  const artifacts = listedArtifacts(segment);
   const count = artifacts.length;
 
   const labelWidth = estimateTextWidth(
@@ -536,7 +553,7 @@ function stackedSpots(layout, place) {
 
   let cursor = place.stackTop;
   return layout.map((entry) => {
-    const artifacts = entry.segment.artifacts || [];
+    const artifacts = listedArtifacts(entry.segment);
     const rowTop = cursor + place.titleOffset;
 
     const titleYs = artifacts.map((_, i) => round(rowTop + i * place.titleLeading));
@@ -579,7 +596,7 @@ function stackedSpots(layout, place) {
 function computePlacements(layout, place) {
   if (place.stacked) return stackedSpots(layout, place);
   const maxCount = layout.reduce(
-    (most, entry) => Math.max(most, (entry.segment.artifacts || []).length),
+    (most, entry) => Math.max(most, listedArtifacts(entry.segment).length),
     0,
   );
   return layout.map((entry) => radialSpot(entry, place, maxCount));
@@ -628,7 +645,7 @@ function buildSegmentLink(entry, place, spot) {
 
 function buildArtifactLinks(entry, place, spot) {
   const { segment } = entry;
-  const artifacts = segment.artifacts || [];
+  const artifacts = listedArtifacts(segment);
   if (artifacts.length === 0) return [];
 
   return artifacts.map((artifact, i) => {
