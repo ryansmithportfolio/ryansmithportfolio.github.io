@@ -20,7 +20,7 @@
  */
 
 import config from '../data/site.config.js';
-import { buildIndex } from './projects.js';
+import { artifactsForSegment, buildIndex } from './projects.js';
 import {
   createProjectRouter,
   hashForSlug,
@@ -477,7 +477,9 @@ function buildLens(mount) {
  * the radial marker row and a blank line in the compact stack.
  */
 const listedArtifacts = (segment) =>
-  (segment?.artifacts || []).filter((artifact) => artifact?.listed !== false);
+  artifactsForSegment(config, segment).filter(
+    (artifact) => artifact?.listed !== false,
+  );
 
 /**
  * Where each lens's label, its project titles, and its markers sit.

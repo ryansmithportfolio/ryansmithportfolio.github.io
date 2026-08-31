@@ -1,10 +1,10 @@
 /**
  * Builds a lookup index over data/site.config.js.
  *
- * The config is authored for the dial: projects are nested inside the segment
- * that owns them. The detail view needs the opposite shape -- a flat, slug-keyed
- * collection that still knows which lens each project belongs to. This module is
- * the only place that translation happens.
+ * Artifact records are authored once in a top-level collection; segments refer
+ * to them by slug. The detail view needs a flat, slug-keyed collection that
+ * still knows which lens each project belongs to. This module is the only place
+ * that translation happens.
  *
  * Vocabulary note: the config calls them `segments` and `artifacts` because that
  * is what they are on the dial. Past this boundary they are lenses and projects.
@@ -129,6 +129,19 @@ function toLens(segment, position) {
   };
 }
 
+/** Resolve a segment's ordered artifact references. */
+export function artifactsForSegment(config, segment) {
+  const records =
+    config?.artifacts && typeof config.artifacts === 'object'
+      ? config.artifacts
+      : {};
+  const refs = Array.isArray(segment?.artifacts) ? segment.artifacts : [];
+
+  return refs
+    .map((slug) => records[slug])
+    .filter((artifact) => artifact && typeof artifact === 'object');
+}
+
 /**
  * @param {object} config the object exported by data/site.config.js
  * @returns {{
@@ -143,6 +156,12 @@ export function buildIndex(config) {
   const segments = Array.isArray(config?.segments) ? config.segments : [];
   if (segments.length === 0) warn('config has no segments.');
 
+  const artifactRecords =
+    config?.artifacts && typeof config.artifacts === 'object'
+      ? config.artifacts
+      : {};
+  if (Object.keys(artifactRecords).length === 0) warn('config has no artifacts.');
+
   const lenses = [];
   const projects = [];
   const bySlug = new Map();
@@ -156,7 +175,15 @@ export function buildIndex(config) {
     const own = [];
     byLens.set(lens.id, own);
 
-    const artifacts = Array.isArray(segment.artifacts) ? segment.artifacts : [];
+    const refs = Array.isArray(segment.artifacts) ? segment.artifacts : [];
+    const artifacts = artifactsForSegment(config, segment);
+    if (artifacts.length !== refs.length) {
+      refs.forEach((slug) => {
+        if (!artifactRecords[slug]) {
+          warn(`lens "${lens.id}": artifact reference "${slug}" was not found.`);
+        }
+      });
+    }
     artifacts.forEach((artifact, artifactIndex) => {
       const project = toProject(artifact, lens, artifactIndex);
       if (!project) return;
