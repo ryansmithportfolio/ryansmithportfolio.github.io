@@ -30,6 +30,21 @@ export const config = {
   centerAlt:
     'Stylized illustration of a networked globe ringed by orbital arcs, with connected nodes linking continents across a dark slate field.',
   entries: {
+    about: {
+      name: 'About',
+      slug: 'about',
+      listed: false,
+      title: 'About Me',
+      subtitle: 'Life & Works',
+      summary:
+        'I am a software developer with a focus on people, product, and principles. I also play the guitar and drums when I can.',
+      images: [
+        {
+          src: 'assets/ryan-smith.jpeg',
+          alt: 'Ryan Smith - Burma - 2014',
+        },
+      ],
+    },
     'decision-tree': {
       name: 'Decision Tree',
       slug: 'decision-tree',
@@ -314,7 +329,7 @@ export const config = {
       weight: 1.1,
       color: '#A08256',
       bevelColor: '#D6B888',
-      entries: ['scheduled-reports', 'sanity-check'],
+      entries: ['scheduled-reports', 'sanity-check', 'about'],
     },
   ],
 };
