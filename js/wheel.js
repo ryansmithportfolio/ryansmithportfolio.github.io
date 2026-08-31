@@ -838,10 +838,18 @@ function initProjectDetail(root) {
   // breakpoint flip re-renders every marker, so the element that was clicked
   // can easily be detached by the time focus needs to return to it. Compared by
   // attribute rather than by selector so an odd slug needs no escaping.
-  const markerFor = (slug) =>
-    Array.from(root.querySelectorAll('.hex')).find(
-      (hex) => hex.getAttribute('data-slug') === slug,
-    ) || null;
+  const openerFor = (slug) => {
+    const hash = hashForSlug(slug);
+    return (
+      Array.from(root.querySelectorAll('.hex')).find(
+        (hex) => hex.getAttribute('data-slug') === slug,
+      ) ||
+      Array.from(document.querySelectorAll('a[href]')).find(
+        (link) => link.getAttribute('href') === hash,
+      ) ||
+      null
+    );
+  };
 
   const overlay = createProjectOverlay({
     onRequestClose: () => router.close(),
@@ -851,7 +859,7 @@ function initProjectDetail(root) {
     index,
     onOpen: (project) => {
       overlay.open(renderProjectDetail(project, { placeholders: false }), () =>
-        markerFor(project.slug),
+        openerFor(project.slug),
       );
     },
     onClose: () => overlay.close(),

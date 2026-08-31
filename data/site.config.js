@@ -9,7 +9,6 @@
  * Top-level fields:
  *   centerImage the lens image at the dial centre, relative to the site root
  *   centerAlt   alt text for that image
- *   links       site-level destinations, in order: [{ label, href }]
  *   entries     full entry records, keyed by their unique slugs
  *   segments    the arcs, in clockwise order from twelve
  *
@@ -20,6 +19,8 @@
  * Entry fields. name and listed drive dial markers; the rest drive the
  * detail view. Markers route to #/<slug> so an entry is addressable on cold
  * load. listed: false removes a marker but retains its detail page.
+ * An entry omitted from every segment is likewise addressable, for navigation
+ * outside the dial, but has no dial marker.
  *   name, slug, listed, title, subtitle, summary
  *   links       extra destinations, in order: [{ label, href }]
  *   images      [{ src, alt, caption }], in order. images[0] is the lead; the
@@ -42,6 +43,16 @@ export const config = {
         {
           src: 'assets/ryan-smith.jpeg',
           alt: 'Ryan Smith - Burma - 2014',
+        },
+      ],
+      links: [
+        {
+          label: 'LinkedIn',
+          href: 'https://www.linkedin.com/in/helloimryansmith',
+        },
+        {
+          label: 'GitHub',
+          href: 'https://github.com/magnanim0use',
         },
       ],
     },
@@ -329,7 +340,7 @@ export const config = {
       weight: 1.1,
       color: '#A08256',
       bevelColor: '#D6B888',
-      entries: ['scheduled-reports', 'sanity-check', 'about'],
+      entries: ['scheduled-reports', 'sanity-check'],
     },
   ],
 };

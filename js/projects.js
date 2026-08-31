@@ -73,7 +73,9 @@ function toImages(value, slug) {
  * no usable slug, since without one it can be neither addressed nor deduplicated.
  */
 function toProject(entry, lens, position) {
-  const where = `lens "${lens.id}", position ${position}`;
+  const where = lens
+    ? `lens "${lens.id}", position ${position}`
+    : `unsegmented entry at position ${position}`;
 
   if (!entry || typeof entry !== 'object') {
     warn(`${where}: not an object; skipped.`);
@@ -112,8 +114,8 @@ function toProject(entry, lens, position) {
     summary: isBlank(entry.summary) ? '' : entry.summary.trim(),
     images,
     links,
-    lens: lens.id,
-    lensLabel: lens.label,
+    lens: lens?.id || '',
+    lensLabel: lens?.label || '',
   };
 }
 
@@ -166,6 +168,7 @@ export function buildIndex(config) {
   const projects = [];
   const bySlug = new Map();
   const byLens = new Map();
+  const referencedSlugs = new Set();
 
   segments.forEach((segment, segmentIndex) => {
     const lens = toLens(segment, segmentIndex);
@@ -176,6 +179,7 @@ export function buildIndex(config) {
     byLens.set(lens.id, own);
 
     const refs = Array.isArray(segment.entries) ? segment.entries : [];
+    refs.forEach((slug) => referencedSlugs.add(slug));
     const entries = entriesForSegment(config, segment);
     if (entries.length !== refs.length) {
       refs.forEach((slug) => {
@@ -197,6 +201,21 @@ export function buildIndex(config) {
       projects.push(project);
       own.push(project);
     });
+  });
+
+  Object.entries(entryRecords).forEach(([key, entry], entryIndex) => {
+    if (referencedSlugs.has(key)) return;
+
+    const project = toProject(entry, null, entryIndex);
+    if (!project) return;
+
+    if (bySlug.has(project.slug)) {
+      warn(`duplicate slug "${project.slug}"; the later record is skipped.`);
+      return;
+    }
+
+    bySlug.set(project.slug, project);
+    projects.push(project);
   });
 
   const byLensId = new Map(lenses.map((lens) => [lens.id, lens]));
