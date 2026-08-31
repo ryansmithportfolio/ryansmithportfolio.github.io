@@ -10,15 +10,15 @@
  *   centerImage the lens image at the dial centre, relative to the site root
  *   centerAlt   alt text for that image
  *   links       site-level destinations, in order: [{ label, href }]
- *   artifacts   full artifact records, keyed by their unique slugs
+ *   entries     full entry records, keyed by their unique slugs
  *   segments    the arcs, in clockwise order from twelve
  *
  * Segment fields:
  *   id, label, weight, color, bevelColor, href
- *   artifacts   ordered artifact-slug references for this segment
+ *   entries     ordered entry-slug references for this segment
  *
- * Artifact fields. name and listed drive dial markers; the rest drive the
- * detail view. Markers route to #/p/<slug> so a project is addressable on cold
+ * Entry fields. name and listed drive dial markers; the rest drive the
+ * detail view. Markers route to #/<slug> so an entry is addressable on cold
  * load. listed: false removes a marker but retains its detail page.
  *   name, slug, listed, title, subtitle, summary
  *   links       extra destinations, in order: [{ label, href }]
@@ -29,7 +29,7 @@ export const config = {
   centerImage: 'assets/logo.png',
   centerAlt:
     'Stylized illustration of a networked globe ringed by orbital arcs, with connected nodes linking continents across a dark slate field.',
-  artifacts: {
+  entries: {
     'decision-tree': {
       name: 'Decision Tree',
       slug: 'decision-tree',
@@ -291,7 +291,7 @@ export const config = {
       weight: 2,
       color: '#4E6178',
       bevelColor: '#8B9AB2',
-      artifacts: ['decision-tree', 'experealization', 'gram'],
+      entries: ['decision-tree', 'experealization', 'gram'],
     },
     {
       id: 'structure',
@@ -299,14 +299,14 @@ export const config = {
       weight: 2,
       color: '#476E67',
       bevelColor: '#7FA79E',
-      artifacts: ['immedia', 'trifecta'],
+      entries: ['immedia', 'trifecta'],
     },
     {
       id: 'craft',
       label: 'Craft',
       weight: 1.1,
       color: '#d3745c',
-      artifacts: ['figma-wireframes'],
+      entries: ['figma-wireframes'],
     },
     {
       id: 'deliver',
@@ -314,7 +314,7 @@ export const config = {
       weight: 1.1,
       color: '#A08256',
       bevelColor: '#D6B888',
-      artifacts: ['scheduled-reports', 'sanity-check'],
+      entries: ['scheduled-reports', 'sanity-check'],
     },
   ],
 };

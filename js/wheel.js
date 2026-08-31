@@ -15,12 +15,12 @@
  * --seg-bevel; styles/landing.css does all the painting through var().
  *
  * Beyond drawing, this file is only a wiring point for the detail view: it
- * points each marker at #/p/<slug> and hands the router and the overlay to each
+ * points each marker at #/<slug> and hands the router and the overlay to each
  * other in initProjectDetail. The view itself lives in js/project-view.js.
  */
 
 import config from '../data/site.config.js';
-import { artifactsForSegment, buildIndex } from './projects.js';
+import { buildIndex, entriesForSegment } from './projects.js';
 import {
   createProjectRouter,
   hashForSlug,
@@ -463,10 +463,10 @@ function buildLens(mount) {
 /* ---------------------------------------------------------------- segments */
 
 /**
- * The artifacts the dial draws.
+ * The entries the dial draws.
  *
  * `listed: false` takes a record off the dial without taking it out of the
- * config: it keeps its slug, #/p/<slug> still resolves on a cold load, and the
+ * config: it keeps its slug, #/<slug> still resolves on a cold load, and the
  * detail view renders it identically. Absent means listed, so a record that
  * belongs on the dial carries no flag.
  *
@@ -476,9 +476,9 @@ function buildLens(mount) {
  * reserve a row and a marker slot for something that is never drawn -- a gap in
  * the radial marker row and a blank line in the compact stack.
  */
-const listedArtifacts = (segment) =>
-  artifactsForSegment(config, segment).filter(
-    (artifact) => artifact?.listed !== false,
+const listedEntries = (segment) =>
+  entriesForSegment(config, segment).filter(
+    (entry) => entry?.listed !== false,
   );
 
 /**
@@ -504,8 +504,8 @@ function radialSpot(entry, place, maxCount) {
   const anchor = anchorFor(mid);
   const ray = polar(place.labelRadius, mid);
 
-  const artifacts = listedArtifacts(segment);
-  const count = artifacts.length;
+  const entries = listedEntries(segment);
+  const count = entries.length;
 
   const labelWidth = estimateTextWidth(
     segment.label,
@@ -515,9 +515,9 @@ function radialSpot(entry, place, maxCount) {
   );
   // The titles share the label's x and anchor, so the block is as wide as its
   // widest line whether or not that line is currently visible.
-  const titleWidths = artifacts.map((artifact) =>
+  const titleWidths = entries.map((entry) =>
     estimateTextWidth(
-      artifact.name || '',
+      entry.name || '',
       place.markerLabelSize,
       TITLE_TRACKING,
       false,
@@ -538,7 +538,7 @@ function radialSpot(entry, place, maxCount) {
   const blockHeight = titleBlock + place.markerGap + place.markerRadius;
   const y = round(clamp(ray.y, top + place.labelSize, bottom - blockHeight));
 
-  const titleYs = artifacts.map((_, i) =>
+  const titleYs = entries.map((_, i) =>
     round(y + place.titleOffset + i * place.titleLeading),
   );
 
@@ -574,7 +574,7 @@ function radialSpot(entry, place, maxCount) {
     titleX: x,
     titleAnchor: anchor,
     titleYs,
-    markerPos: artifacts.map((_, i) => ({
+    markerPos: entries.map((_, i) => ({
       cx: round(firstX + i * place.markerPitch),
       cy: markerY,
     })),
@@ -596,10 +596,10 @@ function stackedSpots(layout, place) {
 
   let cursor = place.stackTop;
   return layout.map((entry) => {
-    const artifacts = listedArtifacts(entry.segment);
+    const entries = listedEntries(entry.segment);
     const rowTop = cursor + place.titleOffset;
 
-    const titleYs = artifacts.map((_, i) =>
+    const titleYs = entries.map((_, i) =>
       round(rowTop + i * place.titleLeading),
     );
     const spot = {
@@ -634,7 +634,7 @@ function stackedSpots(layout, place) {
     // line minimum so an empty lens still takes up its label.
     cursor =
       rowTop +
-      Math.max(1, artifacts.length) * place.titleLeading +
+      Math.max(1, entries.length) * place.titleLeading +
       place.blockGap;
     return spot;
   });
@@ -644,7 +644,7 @@ function stackedSpots(layout, place) {
 function computePlacements(layout, place) {
   if (place.stacked) return stackedSpots(layout, place);
   const maxCount = layout.reduce(
-    (most, entry) => Math.max(most, listedArtifacts(entry.segment).length),
+    (most, entry) => Math.max(most, listedEntries(entry.segment).length),
     0,
   );
   return layout.map((entry) => radialSpot(entry, place, maxCount));
@@ -700,27 +700,27 @@ function buildSegmentLink(entry, place, spot) {
   return link;
 }
 
-function buildArtifactLinks(entry, place, spot) {
+function buildEntryLinks(entry, place, spot) {
   const { segment } = entry;
-  const artifacts = listedArtifacts(segment);
-  if (artifacts.length === 0) return [];
+  const entries = listedEntries(segment);
+  if (entries.length === 0) return [];
 
-  return artifacts.map((artifact, i) => {
+  return entries.map((item, i) => {
     const { cx, cy } = spot.markerPos[i];
     const hit = spot.hits ? spot.hits[i] : null;
 
     // Markers point at the addressable detail view, not at the long-form page.
-    // artifact.href is the write-up, which the detail view offers as a link
+    // item.href is the write-up, which the detail view offers as a link
     // out; only a record with no slug falls back to pointing straight at it.
-    const href = artifact.slug ? hashForSlug(artifact.slug) : artifact.href;
+    const href = item.slug ? hashForSlug(item.slug) : item.href;
 
     const link = svg('a', {
       class: 'hex',
       href,
       tabindex: 0,
-      'data-slug': artifact.slug || null,
+      'data-slug': item.slug || null,
       'data-lens': segment.id,
-      'aria-label': `${artifact.name} — ${segment.label}`,
+      'aria-label': `${item.name} — ${segment.label}`,
     });
     if (isExternal(href)) {
       link.setAttribute('target', '_blank');
@@ -731,7 +731,7 @@ function buildArtifactLinks(entry, place, spot) {
       link.style.setProperty('--seg-bevel', segment.bevelColor);
 
     const title = svg('title');
-    title.textContent = artifact.name;
+    title.textContent = item.name;
     link.append(title);
 
     // First, so it sits under the marker it extends rather than over it.
@@ -761,7 +761,7 @@ function buildArtifactLinks(entry, place, spot) {
       'text-anchor': spot.titleAnchor,
       class: 'hex__label',
     });
-    label.textContent = artifact.name;
+    label.textContent = item.name;
     link.append(label);
 
     return link;
@@ -802,8 +802,8 @@ function render(root, compact) {
   buildCase(mounts.case, layout);
   buildLens(mounts.lens);
 
-  // Each segment is followed by its own artifact markers, so tab order runs
-  // segment, its artifacts, next segment, rather than all arcs then all hexes.
+  // Each segment is followed by its own entry markers, so tab order runs
+  // segment, its entries, next segment, rather than all arcs then all hexes.
   // Collected in the same pass, which makes the returned list clockwise from
   // twelve by construction: lens order, and project order within a lens.
   const spots = computePlacements(layout, place);
@@ -811,7 +811,7 @@ function render(root, compact) {
   for (const [i, entry] of layout.entries()) {
     const spot = spots[i];
     mounts.segments.append(buildSegmentLink(entry, place, spot));
-    for (const marker of buildArtifactLinks(entry, place, spot)) {
+    for (const marker of buildEntryLinks(entry, place, spot)) {
       mounts.segments.append(marker);
       markers.push(marker);
     }
@@ -825,7 +825,7 @@ function render(root, compact) {
  * Connects the dial to the addressable detail view.
  *
  * The dial opens nothing itself. Every marker is an ordinary link to
- * #/p/<slug>, so the browser owns the navigation and Back and Forward work
+ * #/<slug>, so the browser owns the navigation and Back and Forward work
  * without help. The router only reports what the fragment currently says, and
  * the overlay does as it is told. That is why a cold load on a project URL
  * behaves identically to a click on its marker.
@@ -919,7 +919,7 @@ function init() {
     media.addListener(onChange);
   }
 
-  // The router runs first so that a cold load on #/p/<slug> has already opened
+  // The router runs first so that a cold load on #/<slug> has already opened
   // its detail view by the time the titles decide whether to sweep.
   projectRouter = initProjectDetail(root);
   syncTitles(root, markers);

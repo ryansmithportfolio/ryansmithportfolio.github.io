@@ -1,13 +1,13 @@
 /**
  * Builds a lookup index over data/site.config.js.
  *
- * Artifact records are authored once in a top-level collection; segments refer
+ * Entry records are authored once in a top-level collection; segments refer
  * to them by slug. The detail view needs a flat, slug-keyed collection that
  * still knows which lens each project belongs to. This module is the only place
  * that translation happens.
  *
- * Vocabulary note: the config calls them `segments` and `artifacts` because that
- * is what they are on the dial. Past this boundary they are lenses and projects.
+ * Vocabulary note: the config calls them `segments` and `entries`; past this
+ * boundary they are lenses and projects.
  *
  * Nothing here throws. A malformed or half-authored record is reported to the
  * console and then either skipped (no usable slug) or passed through thinner
@@ -29,7 +29,7 @@ function warn(message) {
 }
 
 /**
- * Normalize an artifact's image collection.
+ * Normalize an entry's image collection.
  *
  * An image with no alt text is worse than no image, so a bad entry is dropped
  * whole rather than rendered mute. That has a consequence worth stating: the
@@ -69,20 +69,20 @@ function toImages(value, slug) {
 }
 
 /**
- * Normalize one artifact into a project record. Returns null when the record has
+ * Normalize one entry into a project record. Returns null when the record has
  * no usable slug, since without one it can be neither addressed nor deduplicated.
  */
-function toProject(artifact, lens, position) {
+function toProject(entry, lens, position) {
   const where = `lens "${lens.id}", position ${position}`;
 
-  if (!artifact || typeof artifact !== 'object') {
+  if (!entry || typeof entry !== 'object') {
     warn(`${where}: not an object; skipped.`);
     return null;
   }
 
-  const slug = typeof artifact.slug === 'string' ? artifact.slug.trim() : '';
+  const slug = typeof entry.slug === 'string' ? entry.slug.trim() : '';
   if (slug === '') {
-    warn(`${where} ("${artifact.name || 'unnamed'}"): no slug; skipped.`);
+    warn(`${where} ("${entry.name || 'unnamed'}"): no slug; skipped.`);
     return null;
   }
   if (!SLUG_PATTERN.test(slug)) {
@@ -93,23 +93,23 @@ function toProject(artifact, lens, position) {
   }
 
   for (const field of PROSE_FIELDS) {
-    if (isBlank(artifact[field])) {
+    if (isBlank(entry[field])) {
       warn(`"${slug}": ${field} is empty.`);
     }
   }
 
-  const images = toImages(artifact.images, slug);
+  const images = toImages(entry.images, slug);
 
-  const links = (Array.isArray(artifact.links) ? artifact.links : [])
+  const links = (Array.isArray(entry.links) ? entry.links : [])
     .filter((link) => link && !isBlank(link.label) && !isBlank(link.href))
     .map((link) => ({ label: link.label.trim(), href: link.href.trim() }));
 
   return {
     slug,
-    name: isBlank(artifact.name) ? slug : artifact.name.trim(),
-    title: isBlank(artifact.title) ? '' : artifact.title.trim(),
-    subtitle: isBlank(artifact.subtitle) ? '' : artifact.subtitle.trim(),
-    summary: isBlank(artifact.summary) ? '' : artifact.summary.trim(),
+    name: isBlank(entry.name) ? slug : entry.name.trim(),
+    title: isBlank(entry.title) ? '' : entry.title.trim(),
+    subtitle: isBlank(entry.subtitle) ? '' : entry.subtitle.trim(),
+    summary: isBlank(entry.summary) ? '' : entry.summary.trim(),
     images,
     links,
     lens: lens.id,
@@ -129,17 +129,17 @@ function toLens(segment, position) {
   };
 }
 
-/** Resolve a segment's ordered artifact references. */
-export function artifactsForSegment(config, segment) {
+/** Resolve a segment's ordered entry references. */
+export function entriesForSegment(config, segment) {
   const records =
-    config?.artifacts && typeof config.artifacts === 'object'
-      ? config.artifacts
+    config?.entries && typeof config.entries === 'object'
+      ? config.entries
       : {};
-  const refs = Array.isArray(segment?.artifacts) ? segment.artifacts : [];
+  const refs = Array.isArray(segment?.entries) ? segment.entries : [];
 
   return refs
     .map((slug) => records[slug])
-    .filter((artifact) => artifact && typeof artifact === 'object');
+    .filter((entry) => entry && typeof entry === 'object');
 }
 
 /**
@@ -156,11 +156,11 @@ export function buildIndex(config) {
   const segments = Array.isArray(config?.segments) ? config.segments : [];
   if (segments.length === 0) warn('config has no segments.');
 
-  const artifactRecords =
-    config?.artifacts && typeof config.artifacts === 'object'
-      ? config.artifacts
+  const entryRecords =
+    config?.entries && typeof config.entries === 'object'
+      ? config.entries
       : {};
-  if (Object.keys(artifactRecords).length === 0) warn('config has no artifacts.');
+  if (Object.keys(entryRecords).length === 0) warn('config has no entries.');
 
   const lenses = [];
   const projects = [];
@@ -175,17 +175,17 @@ export function buildIndex(config) {
     const own = [];
     byLens.set(lens.id, own);
 
-    const refs = Array.isArray(segment.artifacts) ? segment.artifacts : [];
-    const artifacts = artifactsForSegment(config, segment);
-    if (artifacts.length !== refs.length) {
+    const refs = Array.isArray(segment.entries) ? segment.entries : [];
+    const entries = entriesForSegment(config, segment);
+    if (entries.length !== refs.length) {
       refs.forEach((slug) => {
-        if (!artifactRecords[slug]) {
-          warn(`lens "${lens.id}": artifact reference "${slug}" was not found.`);
+        if (!entryRecords[slug]) {
+          warn(`lens "${lens.id}": entry reference "${slug}" was not found.`);
         }
       });
     }
-    artifacts.forEach((artifact, artifactIndex) => {
-      const project = toProject(artifact, lens, artifactIndex);
+    entries.forEach((entry, entryIndex) => {
+      const project = toProject(entry, lens, entryIndex);
       if (!project) return;
 
       if (bySlug.has(project.slug)) {
