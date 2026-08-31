@@ -1,13 +1,13 @@
 /**
  * Builds a lookup index over data/site.config.js.
  *
- * The config is authored for the dial: projects are nested inside the segment
- * that owns them. The detail view needs the opposite shape -- a flat, slug-keyed
- * collection that still knows which lens each project belongs to. This module is
- * the only place that translation happens.
+ * Entry records are authored once in a top-level collection; segments refer
+ * to them by slug. The detail view needs a flat, slug-keyed collection that
+ * still knows which lens each project belongs to. This module is the only place
+ * that translation happens.
  *
- * Vocabulary note: the config calls them `segments` and `artifacts` because that
- * is what they are on the dial. Past this boundary they are lenses and projects.
+ * Vocabulary note: the config calls them `segments` and `entries`; past this
+ * boundary they are lenses and projects.
  *
  * Nothing here throws. A malformed or half-authored record is reported to the
  * console and then either skipped (no usable slug) or passed through thinner
@@ -29,7 +29,7 @@ function warn(message) {
 }
 
 /**
- * Normalize an artifact's image collection.
+ * Normalize an entry's image collection.
  *
  * An image with no alt text is worse than no image, so a bad entry is dropped
  * whole rather than rendered mute. That has a consequence worth stating: the
@@ -69,20 +69,22 @@ function toImages(value, slug) {
 }
 
 /**
- * Normalize one artifact into a project record. Returns null when the record has
+ * Normalize one entry into a project record. Returns null when the record has
  * no usable slug, since without one it can be neither addressed nor deduplicated.
  */
-function toProject(artifact, lens, position) {
-  const where = `lens "${lens.id}", position ${position}`;
+function toProject(entry, lens, position) {
+  const where = lens
+    ? `lens "${lens.id}", position ${position}`
+    : `unsegmented entry at position ${position}`;
 
-  if (!artifact || typeof artifact !== 'object') {
+  if (!entry || typeof entry !== 'object') {
     warn(`${where}: not an object; skipped.`);
     return null;
   }
 
-  const slug = typeof artifact.slug === 'string' ? artifact.slug.trim() : '';
+  const slug = typeof entry.slug === 'string' ? entry.slug.trim() : '';
   if (slug === '') {
-    warn(`${where} ("${artifact.name || 'unnamed'}"): no slug; skipped.`);
+    warn(`${where} ("${entry.name || 'unnamed'}"): no slug; skipped.`);
     return null;
   }
   if (!SLUG_PATTERN.test(slug)) {
@@ -93,27 +95,27 @@ function toProject(artifact, lens, position) {
   }
 
   for (const field of PROSE_FIELDS) {
-    if (isBlank(artifact[field])) {
+    if (isBlank(entry[field])) {
       warn(`"${slug}": ${field} is empty.`);
     }
   }
 
-  const images = toImages(artifact.images, slug);
+  const images = toImages(entry.images, slug);
 
-  const links = (Array.isArray(artifact.links) ? artifact.links : [])
+  const links = (Array.isArray(entry.links) ? entry.links : [])
     .filter((link) => link && !isBlank(link.label) && !isBlank(link.href))
     .map((link) => ({ label: link.label.trim(), href: link.href.trim() }));
 
   return {
     slug,
-    name: isBlank(artifact.name) ? slug : artifact.name.trim(),
-    title: isBlank(artifact.title) ? '' : artifact.title.trim(),
-    subtitle: isBlank(artifact.subtitle) ? '' : artifact.subtitle.trim(),
-    summary: isBlank(artifact.summary) ? '' : artifact.summary.trim(),
+    name: isBlank(entry.name) ? slug : entry.name.trim(),
+    title: isBlank(entry.title) ? '' : entry.title.trim(),
+    subtitle: isBlank(entry.subtitle) ? '' : entry.subtitle.trim(),
+    summary: isBlank(entry.summary) ? '' : entry.summary.trim(),
     images,
     links,
-    lens: lens.id,
-    lensLabel: lens.label,
+    lens: lens?.id || '',
+    lensLabel: lens?.label || '',
   };
 }
 
@@ -127,6 +129,19 @@ function toLens(segment, position) {
     id,
     label: isBlank(segment.label) ? id : segment.label.trim(),
   };
+}
+
+/** Resolve a segment's ordered entry references. */
+export function entriesForSegment(config, segment) {
+  const records =
+    config?.entries && typeof config.entries === 'object'
+      ? config.entries
+      : {};
+  const refs = Array.isArray(segment?.entries) ? segment.entries : [];
+
+  return refs
+    .map((slug) => records[slug])
+    .filter((entry) => entry && typeof entry === 'object');
 }
 
 /**
@@ -143,10 +158,17 @@ export function buildIndex(config) {
   const segments = Array.isArray(config?.segments) ? config.segments : [];
   if (segments.length === 0) warn('config has no segments.');
 
+  const entryRecords =
+    config?.entries && typeof config.entries === 'object'
+      ? config.entries
+      : {};
+  if (Object.keys(entryRecords).length === 0) warn('config has no entries.');
+
   const lenses = [];
   const projects = [];
   const bySlug = new Map();
   const byLens = new Map();
+  const referencedSlugs = new Set();
 
   segments.forEach((segment, segmentIndex) => {
     const lens = toLens(segment, segmentIndex);
@@ -156,9 +178,18 @@ export function buildIndex(config) {
     const own = [];
     byLens.set(lens.id, own);
 
-    const artifacts = Array.isArray(segment.artifacts) ? segment.artifacts : [];
-    artifacts.forEach((artifact, artifactIndex) => {
-      const project = toProject(artifact, lens, artifactIndex);
+    const refs = Array.isArray(segment.entries) ? segment.entries : [];
+    refs.forEach((slug) => referencedSlugs.add(slug));
+    const entries = entriesForSegment(config, segment);
+    if (entries.length !== refs.length) {
+      refs.forEach((slug) => {
+        if (!entryRecords[slug]) {
+          warn(`lens "${lens.id}": entry reference "${slug}" was not found.`);
+        }
+      });
+    }
+    entries.forEach((entry, entryIndex) => {
+      const project = toProject(entry, lens, entryIndex);
       if (!project) return;
 
       if (bySlug.has(project.slug)) {
@@ -170,6 +201,21 @@ export function buildIndex(config) {
       projects.push(project);
       own.push(project);
     });
+  });
+
+  Object.entries(entryRecords).forEach(([key, entry], entryIndex) => {
+    if (referencedSlugs.has(key)) return;
+
+    const project = toProject(entry, null, entryIndex);
+    if (!project) return;
+
+    if (bySlug.has(project.slug)) {
+      warn(`duplicate slug "${project.slug}"; the later record is skipped.`);
+      return;
+    }
+
+    bySlug.set(project.slug, project);
+    projects.push(project);
   });
 
   const byLensId = new Map(lenses.map((lens) => [lens.id, lens]));

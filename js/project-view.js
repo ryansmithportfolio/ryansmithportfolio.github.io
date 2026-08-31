@@ -7,14 +7,14 @@
  * document, never listens for anything, and never closes itself. Every piece of
  * modal machinery -- focus, Escape, the backdrop, the trap -- lives in
  * js/project-overlay.js instead. The point is that swapping the overlay for a
- * real /p/<slug> page should not touch this file at all.
+ * real /<slug> page should not touch this file at all.
  *
  * All text goes in through textContent. There is no innerHTML here, so a stray
  * angle bracket in the config is a stray angle bracket on screen, not markup.
  */
 
 /** Route shape. Kept in one place so the writer and the reader cannot drift. */
-const ROUTE_PREFIX = '#/p/';
+const ROUTE_PREFIX = '#/';
 
 const isBlank = (value) => typeof value !== 'string' || value.trim() === '';
 
@@ -29,7 +29,7 @@ export function hashForSlug(slug) {
 
 /**
  * Pull a slug back out of a fragment. Returns null for anything that is not a
- * project route, which includes the empty fragment and legacy anchors such as
+ * entry route, which includes the empty fragment and legacy anchors such as
  * "#contact", so those fall through to normal browser behaviour.
  */
 export function slugFromHash(hash) {
@@ -244,7 +244,7 @@ export function createProjectRouter({ index, onOpen, onClose, onMissing }) {
       if (listening) return;
       window.addEventListener('hashchange', onHashChange);
       listening = true;
-      // A cold load on #/p/<slug> is not navigation we can step back over.
+      // A cold load on #/<slug> is not navigation we can step back over.
       evaluate(false);
     },
 

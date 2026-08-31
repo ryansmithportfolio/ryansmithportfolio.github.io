@@ -68,6 +68,7 @@
       </span>
 
       <nav class="masthead__nav" aria-label="Site">
+        <a class="link-caps" href="#/about">About</a>
         <a class="link-caps">Contact</a>
       </nav>
     </header>
@@ -76,7 +77,7 @@
       <!--
         The dial is generated at runtime by js/wheel.js from data/site.config.js.
         Only the static case, lens, and gradient definitions are authored here;
-        every segment, label, tick, and artifact marker is created in script.
+        every segment, label, tick, and entry marker is created in script.
       -->
       <svg
         id="dial"
@@ -84,7 +85,7 @@
         viewBox="0 0 1000 700"
         preserveAspectRatio="xMidYMid meet"
         role="group"
-        aria-label="Practice areas dial. Each segment is a practice area; each hexagon marker is a linked artifact."
+        aria-label="Practice areas dial. Each segment is a practice area; each hexagon marker is a linked entry."
       >
         <defs>
           <radialGradient id="well" cx="50%" cy="42%" r="70%">
@@ -110,7 +111,7 @@
 
         <!--
           Mount points, filled by js/wheel.js in paint order. Segments come last
-          so that each segment link is immediately followed by its own artifact
+          so that each segment link is immediately followed by its own entry
           markers in the DOM, which is what gives the dial its tab order.
         -->
         <g id="dial-backdrop" aria-hidden="true"></g>

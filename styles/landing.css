@@ -414,7 +414,7 @@ body {
   opacity: 1;
 }
 
-/* ------------------------------------------------- artifact hex markers */
+/* ----------------------------------------------------- entry hex markers */
 
 .hex__body {
   fill: var(--seg-color);
