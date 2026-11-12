@@ -15,7 +15,6 @@
   --well-bottom: #080d15;
 
   /* Instrument case */
-  --case-light: #c8d0da;
   --case-mid: #68748b;
   --case-dark: #39424f;
   --dial-shadow: #050912;
@@ -88,7 +87,6 @@ body {
 .masthead {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 1.5rem;
   padding: 2.6rem var(--gutter-page) 0;
   flex: 0 0 auto;
