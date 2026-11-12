@@ -949,9 +949,57 @@ let titlesRevealed = false;
  * after the titles are up settles the new markers instead of replaying the
  * demo, which would be motion the visitor did not ask for twice.
  */
+/**
+ * Light one lens at rest, as if hovered, so a first-time visitor sees what an
+ * arc does before touching one. The lens is the segment marked `featured: true`
+ * in data/site.config.js, or the first segment if none is.
+ *
+ * Wide layout only, since compact draws no wires. It holds until the visitor
+ * hovers or focuses any arc or node, and after that the dial is theirs for the
+ * rest of the visit: a breakpoint flip that re-renders does not bring it back.
+ */
+let featureReleased = false;
+let releaseFeature = null;
+
+function featureLens(root) {
+  if (featureReleased || root.classList.contains('dial--compact')) return;
+
+  const segments = Array.isArray(config.segments) ? config.segments : [];
+  const target = segments.find((segment) => segment?.featured === true) || segments[0];
+  if (!target) return;
+
+  const seg = Array.from(root.querySelectorAll('.seg')).find(
+    (link) => link.id === `seg-${target.id}`,
+  );
+  const nodes = Array.from(root.querySelectorAll('.hex')).filter(
+    (hex) => hex.getAttribute('data-lens') === target.id,
+  );
+  if (!seg) return;
+
+  seg.classList.add('is-featured');
+  for (const node of nodes) node.classList.add('is-lit');
+
+  if (releaseFeature) return;
+  releaseFeature = (event) => {
+    if (!event.target.closest || !event.target.closest('.seg, .hex')) return;
+    featureReleased = true;
+    root.removeEventListener('pointerover', releaseFeature);
+    root.removeEventListener('focusin', releaseFeature);
+    releaseFeature = null;
+    for (const el of root.querySelectorAll('.seg.is-featured')) el.classList.remove('is-featured');
+    for (const el of root.querySelectorAll('.hex.is-lit')) el.classList.remove('is-lit');
+  };
+  root.addEventListener('pointerover', releaseFeature);
+  root.addEventListener('focusin', releaseFeature);
+}
+
 function syncTitles(root, markers) {
   if (titleSweep) titleSweep.stop();
-  titleSweep = createTitleSweep({ root, hexes: markers });
+  titleSweep = createTitleSweep({
+    root,
+    hexes: markers,
+    onSettle: () => featureLens(root),
+  });
 
   // A detail view already on screen means the visitor arrived aimed at one
   // project. There is nothing to demonstrate, and animating behind the modal
