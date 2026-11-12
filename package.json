@@ -1,0 +1,18 @@
+{
+  "name": "ryansmithportfolio",
+  "private": true,
+  "description": "Checks for the portfolio site. The site itself has no build step and no runtime dependencies; see decisions/ADR-0009.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint:css": "node tests/lint-css-vars.mjs",
+    "check:links": "node tests/check-links.mjs",
+    "test:smoke": "playwright test",
+    "check": "npm run lint:css && npm run check:links && npm run test:smoke"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}
