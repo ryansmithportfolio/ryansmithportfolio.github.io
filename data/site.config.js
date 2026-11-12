@@ -274,6 +274,10 @@ export const config = {
         'An architectural deep dive into delivering scheduled reports of sensitive data to clients.',
       links: [
         {
+          label: 'Read the case study',
+          href: 'projects/transporter/',
+        },
+        {
           label: 'View full PDF',
           href: 'assets/ryan-smith-scheduled-reports.pdf',
         },

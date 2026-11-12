@@ -1,0 +1,486 @@
+/*
+ * Transporter case study. Standalone page: it shares the dial's palette and
+ * serif voice but none of its stylesheets, so nothing here can move the dial.
+ * No web fonts are loaded; the stacks fall back to what the visitor has.
+ */
+
+:root {
+  --ground-top: #182130;
+  --ground-bottom: #090e16;
+  --surface: #101826;
+  --surface-raised: #16202f;
+  --rule: #222d3d;
+  --rule-strong: #2c3a50;
+  --gold: #a08b5e;
+  --gold-light: #c9b27f;
+  --text-strong: #eef2f6;
+  --text: #d2dae4;
+  --text-body: #c4cdd8;
+  --text-soft: #a9b4c3;
+  --text-muted: #8e99ac;
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--ground-top) 0, var(--ground-bottom) 640px) no-repeat,
+    var(--ground-bottom);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+a {
+  color: var(--gold-light);
+}
+
+a:hover,
+a:focus-visible {
+  color: #e3cf9f;
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 72px 32px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+}
+
+.caps {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.back {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.kicker {
+  margin: 0;
+  color: var(--gold);
+  letter-spacing: 0.22em;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(44px, 8vw, 64px);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: var(--text-strong);
+}
+
+.rule {
+  width: 72px;
+  height: 2px;
+  background: var(--gold);
+}
+
+.dek {
+  margin: 0;
+  max-width: 760px;
+  font-size: clamp(19px, 2.4vw, 22px);
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+/* ------------------------------------------------------------ at a glance */
+
+.glance {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: #2a3546;
+  border: 1px solid #2a3546;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.glance div {
+  background: var(--surface);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.glance dt {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.glance dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+/* -------------------------------------------------------------- sections */
+
+.section {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 32px;
+  row-gap: 20px;
+}
+
+.section__head {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section__body {
+  grid-column: span 8;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section--wide {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--gold);
+}
+
+.section h2,
+.section--wide h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--text-strong);
+}
+
+.section p,
+.section--wide p {
+  margin: 0;
+}
+
+.lead {
+  max-width: 760px;
+  color: var(--text-body);
+}
+
+/* Requirements list */
+.reqs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reqs li {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.reqs li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.reqs__key {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  padding-top: 3px;
+}
+
+.reqs b {
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+/* Internal bar */
+.bar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tile {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tile--wide {
+  grid-column: span 2;
+}
+
+.tile__figure {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--text-strong);
+}
+
+.tile__label {
+  font-size: 15px;
+  color: var(--text-soft);
+}
+
+/* Decisions */
+.decisions {
+  display: flex;
+  flex-direction: column;
+}
+
+.decision {
+  padding: 20px 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.decision:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.decision h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.decision p {
+  color: var(--text-soft);
+}
+
+/* Libraries */
+.libs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.lib {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid #3a3426;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lib__name {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--gold-light);
+}
+
+.lib p {
+  font-size: 15px;
+  color: var(--text-soft);
+}
+
+/* --------------------------------------------------------------- diagram */
+
+.diagram {
+  margin: 0;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: #0c131e;
+}
+
+.diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
+}
+
+.diagram figcaption {
+  padding: 0 24px 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.d-card {
+  fill: #121b2a;
+  stroke: var(--rule-strong);
+}
+
+.d-card--key {
+  fill: var(--surface-raised);
+  stroke: var(--gold);
+}
+
+.d-card--lib {
+  fill: none;
+  stroke: var(--rule-strong);
+  stroke-dasharray: 5 5;
+}
+
+.d-title {
+  fill: var(--text-strong);
+  font: 600 17px var(--font-sans);
+}
+
+.d-tech {
+  fill: var(--text-muted);
+  font: 12px var(--font-mono);
+}
+
+.d-tech--key {
+  fill: var(--gold-light);
+}
+
+.d-text {
+  fill: var(--text);
+  font: 14px var(--font-sans);
+}
+
+.d-label {
+  fill: var(--text-muted);
+  font: 13px var(--font-sans);
+}
+
+.d-label--key {
+  fill: var(--gold-light);
+}
+
+.d-arrow {
+  stroke: var(--text-muted);
+  stroke-width: 2;
+  fill: none;
+}
+
+.d-arrow--key {
+  stroke: var(--gold);
+}
+
+.d-head {
+  fill: var(--text-muted);
+}
+
+.d-head--key {
+  fill: var(--gold);
+}
+
+.d-band {
+  fill: none;
+  stroke: var(--rule);
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.foot {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+}
+
+.foot__label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.chips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips li {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  color: var(--text-body);
+}
+
+.foot__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 16px;
+}
+
+.foot__links a {
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  padding: 14px 0;
+}
+
+.foot__links .primary {
+  border-bottom: 1px solid var(--gold);
+}
+
+.foot__links .quiet {
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------------------- narrow */
+
+@media (max-width: 760px) {
+  .page {
+    padding: 48px 20px 72px;
+    gap: 56px;
+  }
+
+  .glance {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section__head,
+  .section__body {
+    grid-column: 1 / -1;
+  }
+
+  .bar,
+  .libs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tile--wide {
+    grid-column: auto;
+  }
+}
