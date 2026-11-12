@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1028 680" width="1028" height="680">
+  <title>Transporter architecture</title>
+  <style>
+    .bg { fill: #0c131e; }
+    .card { fill: #121b2a; stroke: #2c3a50; stroke-width: 1.5; }
+    .card-key { fill: #16202f; stroke: #a08b5e; stroke-width: 1.5; }
+    .card-lib { fill: none; stroke: #2c3a50; stroke-width: 1.5; stroke-dasharray: 6 6; }
+    .band { fill: none; stroke: #222d3d; stroke-width: 1.5; }
+    .t { fill: #eef2f6; font: 600 22px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    .m { fill: #8e99ac; font: 15px ui-monospace, Menlo, Consolas, monospace; }
+    .m-key { fill: #c9b27f; }
+    .x { fill: #d2dae4; font: 18px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    .l { fill: #8e99ac; font: 16px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    .l-key { fill: #c9b27f; }
+    .arrow { stroke: #8e99ac; stroke-width: 2.5; fill: none; }
+    .arrow-key { stroke: #a08b5e; }
+    .head { fill: #8e99ac; }
+    .head-key { fill: #a08b5e; }
+  </style>
+
+  <rect class="bg" width="1028" height="680"/>
+
+  <!-- arrows -->
+  <line class="arrow" x1="284" y1="128" x2="393" y2="128"/>
+  <polygon class="head" points="403,128 391,122 391,134"/>
+  <line class="arrow arrow-key" x1="624" y1="128" x2="733" y2="128"/>
+  <polygon class="head head-key" points="743,128 731,122 731,134"/>
+  <line class="arrow" x1="284" y1="408" x2="393" y2="408"/>
+  <polygon class="head" points="403,408 391,402 391,414"/>
+  <line class="arrow" x1="514" y1="328" x2="514" y2="219"/>
+  <polygon class="head" points="514,209 508,221 520,221"/>
+
+  <g text-anchor="middle">
+    <!-- delivery path -->
+    <rect class="card" x="64" y="48" width="220" height="160" rx="8"/>
+    <text class="t" x="174" y="92">Platform</text>
+    <text class="m" x="174" y="116">MySQL</text>
+    <text class="x" x="174" y="154">Orders, inventory,</text>
+    <text class="x" x="174" y="178">customer data</text>
+
+    <rect class="card-key" x="404" y="48" width="220" height="160" rx="8"/>
+    <text class="t" x="514" y="92">Job Runner</text>
+    <text class="m m-key" x="514" y="116">Lambda · scheduled</text>
+    <text class="x" x="514" y="154">Extract → Format →</text>
+    <text class="x" x="514" y="178">Encrypt → Transmit</text>
+
+    <rect class="card" x="744" y="48" width="220" height="160" rx="8"/>
+    <text class="t" x="854" y="92">Client endpoint</text>
+    <text class="m" x="854" y="116">SFTP or API</text>
+    <text class="x" x="854" y="154">Opened only with</text>
+    <text class="x" x="854" y="178">the client's key</text>
+
+    <!-- configuration path -->
+    <rect class="card" x="64" y="328" width="220" height="160" rx="8"/>
+    <text class="t" x="174" y="372">Scheduler API</text>
+    <text class="m" x="174" y="396">Lambda · API Gateway</text>
+    <text class="x" x="174" y="434">Angular UI for</text>
+    <text class="x" x="174" y="458">developers and PMs</text>
+
+    <rect class="card" x="404" y="328" width="220" height="160" rx="8"/>
+    <text class="t" x="514" y="372">Job Config</text>
+    <text class="m" x="514" y="396">DynamoDB</text>
+    <text class="x" x="514" y="426">Format, schedule,</text>
+    <text class="x" x="514" y="450">destination;</text>
+    <text class="x" x="514" y="474">AES-256 secrets</text>
+
+    <rect class="card-lib" x="744" y="328" width="220" height="160" rx="8"/>
+    <text class="t" x="854" y="372">Libraries</text>
+    <text class="m m-key" x="854" y="396">sy-trance · sy-log</text>
+    <text class="x" x="854" y="434">Transfer, encryption,</text>
+    <text class="x" x="854" y="458">structured logs</text>
+
+    <!-- arrow labels -->
+    <text class="l" x="344" y="110">Report API</text>
+    <text class="l l-key" x="684" y="110">PGP-encrypted</text>
+    <text class="l" x="344" y="390">Writes config</text>
+
+    <!-- observability -->
+    <rect class="band" x="64" y="548" width="900" height="84" rx="8"/>
+    <text class="l" x="514" y="584">Watched end to end: Slack, SignalFx and email alerts · Graylog and CloudWatch logs</text>
+    <text class="l" x="514" y="610">Jest ≥95% branch coverage · Jenkins and CircleCI</text>
+  </g>
+  <text class="l" x="526" y="274">Reads config</text>
+</svg>

@@ -112,7 +112,9 @@ function linkItem(label, href) {
 export function renderProjectDetail(project, opts = {}) {
   const { placeholders = true, idPrefix = 'project-detail', headingLevel = 2 } = opts;
 
-  const article = el('article', 'detail');
+  // Marked before the content arrives, so a wider shell is wide from the start
+  // instead of jumping when the case study lands.
+  const article = el('article', project.content ? 'detail detail--case-study' : 'detail');
   article.dataset.slug = project.slug;
   article.dataset.lens = project.lens;
 
@@ -166,6 +168,75 @@ export function renderProjectDetail(project, opts = {}) {
   }
 
   return article;
+}
+
+/* -------------------------------------------------------------- case study */
+
+/** A <dl> of term/description pairs, or null when there are none. */
+function pairList(className, items, termKey, textKey) {
+  if (items.length === 0) return null;
+  const list = el('dl', className);
+  for (const item of items) {
+    const row = el('div', `${className}-row`);
+    row.append(el('dt', `${className}-term`, item[termKey]), el('dd', `${className}-text`, item[textKey]));
+    list.append(row);
+  }
+  return list;
+}
+
+/**
+ * Build the case study a content file supplies, as a detached element.
+ *
+ * Same rules as the card: every word goes in through textContent, and nothing
+ * here knows about the modal. Section numbers are drawn by CSS counters, so the
+ * content file never carries them.
+ *
+ * @param {{glance: object[], sections: object[], stack: string[]}} caseStudy
+ *   a normalized case study from js/projects.js
+ * @param {object} [opts]
+ * @param {number} [opts.headingLevel=3] one below the card's title
+ * @returns {HTMLElement}
+ */
+export function renderCaseStudy(caseStudy, opts = {}) {
+  const { headingLevel = 3 } = opts;
+  const root = el('div', 'detail__case-study');
+
+  const glance = pairList('detail__glance', caseStudy.glance, 'label', 'value');
+  if (glance) root.append(glance);
+
+  for (const section of caseStudy.sections) {
+    const block = el('section', 'detail__section');
+    block.append(el(`h${headingLevel}`, 'detail__section-heading', section.heading));
+    if (!isBlank(section.intro)) block.append(el('p', 'detail__section-intro', section.intro));
+    if (section.figure) {
+      const figure = figureFor(section.figure);
+      figure.classList.add('detail__figure--wide');
+      block.append(figure);
+    }
+    const points = pairList('detail__points', section.points, 'term', 'text');
+    if (points) block.append(points);
+    root.append(block);
+  }
+
+  if (caseStudy.stack.length > 0) {
+    const stack = el('section', 'detail__stack');
+    stack.append(el(`h${headingLevel}`, 'detail__stack-heading', 'Stack'));
+    const list = el('ul', 'detail__stack-list');
+    for (const item of caseStudy.stack) list.append(el('li', 'detail__stack-item', item));
+    stack.append(list);
+    root.append(stack);
+  }
+
+  return root;
+}
+
+/**
+ * Put a rendered case study into a card: after the summary and gallery, before
+ * the links, so the links stay the last thing in the card.
+ */
+export function attachCaseStudy(article, caseStudyElement) {
+  const links = article.querySelector(':scope > .detail__links');
+  article.insertBefore(caseStudyElement, links);
 }
 
 /* ------------------------------------------------------------------ router */

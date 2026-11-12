@@ -269,21 +269,14 @@ export const config = {
       name: 'Scheduled Reports (PDF)',
       slug: 'scheduled-reports',
       title: 'Transporter',
-      subtitle: 'Brief Presentation: Scheduled Reports of Sensitive Data',
+      subtitle: 'E-commerce · Symphony Commerce',
       summary:
-        'An architectural deep dive into delivering scheduled reports of sensitive data to clients.',
+        "Scheduled, encrypted delivery of customer order, inventory, and session data to third-party SFTP servers or API's. A new report is set up as configuration, and every run is watched and encrypted end-to-end. Used for CRM, ERP, warehousing, and financial reporting.",
+      content: 'data/content/scheduled-reports.json',
       links: [
         {
           label: 'View full PDF',
           href: 'assets/ryan-smith-scheduled-reports.pdf',
-        },
-      ],
-      images: [
-        {
-          src: 'assets/scheduled-reports/ryan-smith-scheduled-reports.jpg',
-          alt: 'Scheduled Reports Architecture',
-          caption:
-            'I made this slide deck for an interview, highlighting architectural decisions to deliver scheduled reports of sensitive data to clients while working for an e-commerce company.',
         },
       ],
     },

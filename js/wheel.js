@@ -22,10 +22,13 @@
 import config from '../data/site.config.js';
 import { buildIndex, entriesForSegment } from './projects.js';
 import {
+  attachCaseStudy,
   createProjectRouter,
   hashForSlug,
+  renderCaseStudy,
   renderProjectDetail,
 } from './project-view.js';
+import { loadProjectContent } from './project-content.js';
 import { createProjectOverlay } from './project-overlay.js';
 import { createTitleSweep } from './title-sweep.js';
 
@@ -858,9 +861,15 @@ function initProjectDetail(root) {
   const router = createProjectRouter({
     index,
     onOpen: (project) => {
-      overlay.open(renderProjectDetail(project, { placeholders: false }), () =>
-        openerFor(project.slug),
-      );
+      const card = renderProjectDetail(project, { placeholders: false });
+      overlay.open(card, () => openerFor(project.slug));
+
+      // The card opens at once; a content file, if any, fills in when it
+      // arrives. Only if this card is still the one on screen by then.
+      loadProjectContent(project).then((caseStudy) => {
+        if (!caseStudy || !card.isConnected || router.current() !== project.slug) return;
+        attachCaseStudy(card, renderCaseStudy(caseStudy));
+      });
     },
     onClose: () => overlay.close(),
     onMissing: (slug) => {

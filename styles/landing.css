@@ -723,9 +723,154 @@ body.has-overlay {
   outline-offset: 0.35em;
 }
 
+/* ------------------------------------------------------- case study card */
+
+/*
+ * A card whose record points at a content file (decisions/ADR-0008). The shell
+ * widens for it, since a case study carries a diagram and more reading than a
+ * plain card. Still no new colours.
+ */
+.overlay__panel:has(.detail--case-study) {
+  width: min(52rem, 100%);
+}
+
+.detail__case-study {
+  counter-reset: case-section;
+}
+
+.detail__glance {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.75rem 0 0;
+  background: var(--case-dark);
+  border: 1px solid var(--case-dark);
+}
+
+.detail__glance-row {
+  padding: 0.9rem 1rem;
+  background: var(--well-bottom);
+}
+
+.detail__glance-term {
+  font-size: 0.65625rem; /* 10.5px, as .detail__lens */
+  letter-spacing: 0.2476em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail__glance-text {
+  margin: 0.35rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.detail__section {
+  margin: 2.25rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--case-dark);
+  counter-increment: case-section;
+}
+
+.detail__section-heading,
+.detail__stack-heading {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+/* Section numbers come from the counter, so the content file never holds them. */
+.detail__section-heading::before {
+  content: counter(case-section, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.detail__section-intro {
+  margin: 0.9rem 0 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+/* The diagram keeps a readable size and scrolls sideways on a phone. */
+.detail__figure--wide {
+  overflow-x: auto;
+}
+
+.detail__figure--wide .detail__image {
+  min-width: 34rem;
+}
+
+.detail__points {
+  margin: 1rem 0 0;
+}
+
+.detail__points-row {
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--case-dark);
+}
+
+.detail__points-row:last-child {
+  border-bottom: 1px solid var(--case-dark);
+}
+
+.detail__points-term {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.detail__points-text {
+  margin: 0.25rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.detail__stack {
+  margin: 2.25rem 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--case-dark);
+}
+
+.detail__stack-heading {
+  font-size: 0.65625rem;
+  letter-spacing: 0.2476em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail__stack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detail__stack-item {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--case-dark);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+}
+
 /* ------------------------------------------------------------ narrow view */
 
 @media (max-width: 720px) {
+  .detail__glance {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .masthead {
     padding-top: 1.75rem;
   }
