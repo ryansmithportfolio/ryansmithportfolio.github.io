@@ -1,0 +1,59 @@
+{
+  "glance": [
+    { "label": "Role", "value": "Built the transfer and logging libraries and associated reporting plugins." },
+    { "label": "Clients", "value": "Consumer brands on an e-commerce fulfillment platform" },
+    { "label": "Core stack", "value": "Node.js · AWS Lambda · DynamoDB · API Gateway" },
+    { "label": "Security", "value": "OpenPGP/GPG in transit · AES-256 secrets at rest" }
+  ],
+  "sections": [
+    {
+      "heading": "The problem",
+      "intro": "Brands on the platform needed regular extracts of their own business data, pushed into their own systems. Every client had somewhat bespoke needs, and data was sensitive. Security and privacy was sacrosanct.",
+      "points": [
+        { "term": "Complete data", "text": "Every report captures the order, inventory, and/or customer data the client signed up for." },
+        { "term": "Their server, not ours", "text": "Delivered to the client's secure SFTP server or API." },
+        { "term": "Their keys", "text": "Encrypted with OpenPGP or GPG, with keys usually held by the client." },
+        { "term": "Their format", "text": "XML, JSON, CSV, TSV, or XLSX, with the client's column names and file-naming rules." }
+      ]
+    },
+    {
+      "heading": "Our own bar",
+      "points": [
+        { "term": "≥ 95%", "text": "branch coverage in unit tests (Jest)" },
+        { "term": "Real time", "text": "monitoring through Slack, SignalFx, and email" },
+        { "term": "Per step", "text": "granular logging in Graylog and CloudWatch" },
+        { "term": "UI config", "text": "restricted to developers and project managers" },
+        { "term": "CI / CD", "text": "every change through Jenkins and CircleCI pipelines" }
+      ]
+    },
+    {
+      "heading": "How it works",
+      "intro": "Two Lambdas, split by job. One manages configuration and is only reachable by the team. The other runs on schedule: it reads a job's config, pulls the data, then formats, encrypts, and sends it.",
+      "figure": {
+        "src": "assets/scheduled-reports/architecture.svg",
+        "alt": "Transporter architecture. Delivery path: platform data in MySQL goes through a report API to the Job Runner Lambda, which extracts, formats, encrypts, and sends a PGP-encrypted file to the client's SFTP server or API. Configuration path: the Job Scheduler API, used by developers and project managers, writes each job's config to DynamoDB, which the Job Runner reads on every run.",
+        "caption": "Delivery path on top, configuration path below. Every step logs and alerts."
+      }
+    },
+    {
+      "heading": "Decisions that mattered",
+      "points": [
+        { "term": "Serverless, scheduled jobs", "text": "Reports run on a schedule and in bursts, so each run is a Lambda invocation rather than a server sitting idle between deliveries." },
+        { "term": "A new client is config, not code", "text": "File format, columns, naming, schedule, and destination live in one DynamoDB record per job, type-checked when they're saved." },
+        { "term": "Secrets never stored in the clear", "text": "Each job has its own credentials, and those plus its encryption keys are AES-256 encrypted before they're written. Files are PGP-encrypted to the client's key before they leave." },
+        { "term": "Least access to the controls", "text": "The scheduler API sits behind auth middleware, and only developers and project managers can configure, test, or save a job." }
+      ]
+    },
+    {
+      "heading": "What I built",
+      "points": [
+        { "term": "sy-trance", "text": "Symphony Transfer: a shared library for SFTP, FTP, and email delivery with OpenPGP encryption, reused across client integrations." },
+        { "term": "sy-log", "text": "Structured logging used by every step of the job, so a failed delivery can be traced to the exact stage and client." }
+      ]
+    }
+  ],
+  "stack": [
+    "Node.js", "AWS Lambda", "DynamoDB", "API Gateway", "IAM", "Node crypto", "OpenPGP / GPG",
+    "Angular + Redux", "Jest", "Jenkins", "CircleCI", "Graylog · CloudWatch"
+  ]
+}

@@ -68,6 +68,85 @@ function toImages(value, slug) {
     .filter((entry) => entry !== null);
 }
 
+/** A trimmed string, or '' for anything that is not non-blank text. */
+const text = (value) => (isBlank(value) ? '' : value.trim());
+
+/** A same-site, relative path to a .json file: no scheme, no leading slash, no "..". */
+const CONTENT_PATH = /^(?![a-z][a-z0-9+.-]*:)(?!\/)(?!.*\.\.)[\w./-]+\.json$/i;
+
+/**
+ * Validate an entry's optional `content` reference. See decisions/ADR-0008.
+ * Only the path is checked here; the file is fetched when its modal opens.
+ */
+function toContentPath(value, slug) {
+  if (value === undefined) return '';
+  const path = text(value);
+  if (!CONTENT_PATH.test(path)) {
+    warn(`"${slug}": content "${value}" is not a relative .json path; ignored.`);
+    return '';
+  }
+  return path;
+}
+
+/**
+ * Normalize a fetched content file into a case study. See decisions/ADR-0008.
+ *
+ * Every part is optional and every part degrades the same way as the rest of
+ * this file: a malformed piece is warned about and dropped, never thrown. The
+ * result is null when nothing usable is left, so the caller can test for a
+ * case study with a single truthiness check.
+ */
+export function normalizeCaseStudy(value, slug) {
+  if (!value || typeof value !== 'object') {
+    warn(`"${slug}": content file is not a JSON object; skipped.`);
+    return null;
+  }
+
+  const pairs = (list, field, keyName, valueName) =>
+    (Array.isArray(list) ? list : [])
+      .map((item, i) => {
+        const key = text(item?.[keyName]);
+        const val = text(item?.[valueName]);
+        if (key === '' || val === '') {
+          warn(`"${slug}": content ${field} ${i} needs ${keyName} and ${valueName}; skipped.`);
+          return null;
+        }
+        return { [keyName]: key, [valueName]: val };
+      })
+      .filter((item) => item !== null);
+
+  const glance = pairs(value.glance, 'glance', 'label', 'value');
+
+  const sections = (Array.isArray(value.sections) ? value.sections : [])
+    .map((section, i) => {
+      const heading = text(section?.heading);
+      if (heading === '') {
+        warn(`"${slug}": content section ${i} has no heading; skipped.`);
+        return null;
+      }
+      // toImages already enforces src and alt; a section holds at most one.
+      const [figure = null] = toImages(section.figure ? [section.figure] : [], slug);
+      return {
+        heading,
+        intro: text(section.intro),
+        figure,
+        points: pairs(section.points, `section "${heading}" point`, 'term', 'text'),
+      };
+    })
+    .filter((section) => section !== null);
+
+  const stack = (Array.isArray(value.stack) ? value.stack : [])
+    .map(text)
+    .filter((item) => item !== '');
+
+  if (glance.length === 0 && sections.length === 0 && stack.length === 0) {
+    warn(`"${slug}": content file has nothing renderable; skipped.`);
+    return null;
+  }
+
+  return { glance, sections, stack };
+}
+
 /**
  * Normalize one entry into a project record. Returns null when the record has
  * no usable slug, since without one it can be neither addressed nor deduplicated.
@@ -114,6 +193,7 @@ function toProject(entry, lens, position) {
     summary: isBlank(entry.summary) ? '' : entry.summary.trim(),
     images,
     links,
+    content: toContentPath(entry.content, slug),
     lens: lens?.id || '',
     lensLabel: lens?.label || '',
   };
