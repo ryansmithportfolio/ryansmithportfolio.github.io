@@ -103,15 +103,19 @@ const COMPACT_QUERY = '(max-width: 720px)';
 const PLACEMENT = {
   wide: {
     frame: FULL_FRAME,
-    labelRadius: 300,
-    labelSize: 13.5,
-    labelTracking: 3.4,
-    titleOffset: 20,
-    titleLeading: 13,
-    markerGap: 18,
-    markerRadius: 14,
-    markerPitch: 32,
-    markerLabelSize: 9.5,
+    /** Lens names are set on the band itself in this layout. */
+    labelSize: 12,
+    labelTracking: 3.2,
+    /** Radius of the ring the project nodes sit on, clear of the boundary tabs. */
+    nodeRadius: 262,
+    /** Keeps a lens's outermost nodes off the ends of its arc. */
+    nodeEdgePadDeg: 12,
+    /** Where a wire leaves the dial: just outside the focused band. */
+    wireFrom: 176,
+    /** Space between a node's outer ring and its title. */
+    titleGap: 8,
+    markerRadius: 12,
+    markerLabelSize: 11.5,
   },
   /*
    * Compact keeps the dial and gives up the radial title arrangement.
@@ -202,6 +206,9 @@ function arcPath(radius, a0, a1) {
     `A ${radius} ${radius} 0 ${largeArc} ${clockwise} ${round(to.x)} ${round(to.y)}`
   );
 }
+
+/** The same arc, drawn from a1 back to a0. */
+const arcPathReversed = (radius, a0, a1) => arcPath(radius, a1, a0);
 
 /** Radial tick as a line between two radii at one angle. */
 function radialLine(innerRadius, outerRadius, degrees, className) {
@@ -500,87 +507,74 @@ const listedEntries = (segment) =>
  * is currently visible, so js/title-sweep.js can never move anything.
  */
 
-/** One lens block placed on its mid-angle ray. */
-function radialSpot(entry, place, maxCount) {
-  const { segment, mid } = entry;
+/**
+ * One lens's projects as separate nodes fanned across its own arc.
+ *
+ * Each project gets a hex on its own ray, inside the angular span of its lens,
+ * with its title beside it on the side facing away from the dial. Because every
+ * node sits on a ray through the centre, the wire from the band to it is a
+ * straight radial line that cannot cross another lens's nodes. The lens name
+ * itself moves onto the band (see buildSegmentLink), which is what frees the
+ * space around the dial for the nodes. Positions come from the project count
+ * alone, never from what is visible, so js/title-sweep.js cannot move anything.
+ */
+function radialSpot(entry, place) {
+  const { start, sweep } = entry;
   const { frame } = place;
-  const anchor = anchorFor(mid);
-  const ray = polar(place.labelRadius, mid);
-
-  const entries = listedEntries(segment);
+  const entries = listedEntries(entry.segment);
   const count = entries.length;
 
-  const labelWidth = estimateTextWidth(
-    segment.label,
-    place.labelSize,
-    place.labelTracking,
-    true,
-  );
-  // The titles share the label's x and anchor, so the block is as wide as its
-  // widest line whether or not that line is currently visible.
-  const titleWidths = entries.map((entry) =>
-    estimateTextWidth(
-      entry.name || '',
+  // Keep nodes off the arc's ends so a node never reads as the neighbour's.
+  const pad = Math.min(place.nodeEdgePadDeg, sweep * 0.2);
+  const step = count > 0 ? (sweep - 2 * pad) / count : 0;
+  const angles = entries.map((_, i) => start + pad + (i + 0.5) * step);
+
+  const hexOuter = place.markerRadius * 1.36;
+  const nodes = angles.map((angle, i) => {
+    const centre = polar(place.nodeRadius, angle);
+    const cx = round(centre.x);
+    const cy = round(centre.y);
+    const anchor = anchorFor(angle);
+    const width = estimateTextWidth(
+      entries[i].name || '',
       place.markerLabelSize,
       TITLE_TRACKING,
       false,
-    ),
-  );
-  const boxWidth = Math.max(labelWidth, ...titleWidths, 0);
+    );
 
-  const x = round(clampAnchoredX(ray.x, boxWidth, anchor, frame));
+    // Beside the hex on the outward side; above or below it near 12 and 6.
+    let titleX = cx;
+    let titleY = cy + place.markerLabelSize * 0.35;
+    if (anchor === 'start') titleX = cx + hexOuter + place.titleGap;
+    else if (anchor === 'end') titleX = cx - hexOuter - place.titleGap;
+    else if (Math.sin((angle * Math.PI) / 180) < 0)
+      titleY = cy - hexOuter - place.titleGap * 0.6;
+    else titleY = cy + hexOuter + place.titleGap * 0.6 + place.markerLabelSize;
 
-  const top = frame.y + FRAME_INSET;
-  const bottom = frame.y + frame.height - FRAME_INSET;
+    const from = polar(place.wireFrom, angle);
+    const to = polar(place.nodeRadius - hexOuter - 3, angle);
 
-  // The marker row is offset by the busiest lens's line count, not this lens's,
-  // so all four rows sit at the same distance below their label instead of the
-  // one-project lens riding a line higher than its neighbours.
-  const titleBlock =
-    place.titleOffset + Math.max(0, maxCount - 1) * place.titleLeading;
-  const blockHeight = titleBlock + place.markerGap + place.markerRadius;
-  const y = round(clamp(ray.y, top + place.labelSize, bottom - blockHeight));
-
-  const titleYs = entries.map((_, i) =>
-    round(y + place.titleOffset + i * place.titleLeading),
-  );
-
-  // y is already clamped so the whole block fits; this clamp is only a guard
-  // against a pathological frame.
-  const markerY = round(
-    clamp(
-      y + titleBlock + place.markerGap,
-      top + place.markerRadius,
-      bottom - place.markerRadius,
-    ),
-  );
-
-  const rowWidth = Math.max(0, count - 1) * place.markerPitch;
-  let firstX;
-  if (anchor === 'start') firstX = x + place.markerRadius;
-  else if (anchor === 'end') firstX = x - place.markerRadius - rowWidth;
-  else firstX = x - rowWidth / 2;
-
-  // Keep the whole row in frame without disturbing the label.
-  firstX = round(
-    clamp(
-      firstX,
-      frame.x + FRAME_INSET + place.markerRadius,
-      frame.x + frame.width - FRAME_INSET - place.markerRadius - rowWidth,
-    ),
-  );
+    return {
+      marker: { cx, cy },
+      titleX: round(clampAnchoredX(titleX, width, anchor, frame)),
+      titleY: round(titleY),
+      titleAnchor: anchor,
+      wire: {
+        x1: round(from.x),
+        y1: round(from.y),
+        x2: round(to.x),
+        y2: round(to.y),
+      },
+    };
+  });
 
   return {
-    anchor,
-    x,
-    y,
-    titleX: x,
-    titleAnchor: anchor,
-    titleYs,
-    markerPos: entries.map((_, i) => ({
-      cx: round(firstX + i * place.markerPitch),
-      cy: markerY,
-    })),
+    onBand: true,
+    markerPos: nodes.map((node) => node.marker),
+    titleXs: nodes.map((node) => node.titleX),
+    titleYs: nodes.map((node) => node.titleY),
+    titleAnchors: nodes.map((node) => node.titleAnchor),
+    wires: nodes.map((node) => node.wire),
   };
 }
 
@@ -646,11 +640,7 @@ function stackedSpots(layout, place) {
 /** Placements for every lens, in layout order. */
 function computePlacements(layout, place) {
   if (place.stacked) return stackedSpots(layout, place);
-  const maxCount = layout.reduce(
-    (most, entry) => Math.max(most, listedEntries(entry.segment).length),
-    0,
-  );
-  return layout.map((entry) => radialSpot(entry, place, maxCount));
+  return layout.map((entry) => radialSpot(entry, place));
 }
 
 function buildSegmentLink(entry, place, spot) {
@@ -689,6 +679,11 @@ function buildSegmentLink(entry, place, spot) {
     svg('path', { d: arcPath(R.focusRing, start, end), class: 'seg__ring' }),
   );
 
+  if (spot.onBand) {
+    link.append(...bandLabel(entry, place));
+    return link;
+  }
+
   const { anchor, x, y } = spot;
 
   const label = svg('text', {
@@ -701,6 +696,37 @@ function buildSegmentLink(entry, place, spot) {
 
   link.append(label);
   return link;
+}
+
+/**
+ * The lens name set along its own band, centred on the arc.
+ *
+ * On the lower half the guide arc runs counter-clockwise so the text reads left
+ * to right instead of upside down, and the baseline moves to the other side of
+ * the band's centreline so the type sits optically centred on it either way.
+ */
+function bandLabel(entry, place) {
+  const { segment, start, end, mid } = entry;
+  const lower = Math.sin((mid * Math.PI) / 180) > 0.05;
+  const shift = place.labelSize * 0.35;
+  const radius = lower ? R.band + shift : R.band - shift;
+
+  const id = `seg-guide-${segment.id}`;
+  const guide = svg('path', {
+    id,
+    d: lower ? arcPathReversed(radius, start, end) : arcPath(radius, start, end),
+    class: 'seg__guide',
+  });
+
+  const label = svg('text', { class: 'seg__label seg__label--band' });
+  const path = svg('textPath', {
+    href: `#${id}`,
+    startOffset: '50%',
+    'text-anchor': 'middle',
+  });
+  path.textContent = segment.label;
+  label.append(path);
+  return [guide, label];
 }
 
 function buildEntryLinks(entry, place, spot) {
@@ -740,6 +766,14 @@ function buildEntryLinks(entry, place, spot) {
     // First, so it sits under the marker it extends rather than over it.
     if (hit) link.append(svg('rect', { ...hit, class: 'hex__hit' }));
 
+    // The line the lens shoots to this node. pathLength lets the stylesheet
+    // draw it out with one dash, whatever its real length.
+    if (spot.wires) {
+      link.append(
+        svg('line', { ...spot.wires[i], pathLength: 1, class: 'hex__wire' }),
+      );
+    }
+
     link.append(
       svg('polygon', {
         points: hexPoints(cx, cy, place.markerRadius),
@@ -759,9 +793,9 @@ function buildEntryLinks(entry, place, spot) {
     // this <a> so the hover and focus rules in styles/landing.css keep applying
     // to it untouched.
     const label = svg('text', {
-      x: spot.titleX,
+      x: spot.titleXs ? spot.titleXs[i] : spot.titleX,
       y: spot.titleYs[i],
-      'text-anchor': spot.titleAnchor,
+      'text-anchor': spot.titleAnchors ? spot.titleAnchors[i] : spot.titleAnchor,
       class: 'hex__label',
     });
     label.textContent = item.name;
@@ -769,6 +803,21 @@ function buildEntryLinks(entry, place, spot) {
 
     return link;
   });
+}
+
+/**
+ * While a lens's arc is hovered or focused, mark its nodes lit so their wires
+ * draw out (styles/landing.css). A class rather than a CSS sibling rule, because
+ * no selector can tie an arc to only its own nodes without naming every lens.
+ */
+function lightOnHover(segLink, nodes) {
+  const set = (on) => {
+    for (const node of nodes) node.classList.toggle('is-lit', on);
+  };
+  segLink.addEventListener('pointerenter', () => set(true));
+  segLink.addEventListener('pointerleave', () => set(false));
+  segLink.addEventListener('focus', () => set(true));
+  segLink.addEventListener('blur', () => set(false));
 }
 
 /* ---------------------------------------------------------------- assembly */
@@ -813,11 +862,11 @@ function render(root, compact) {
   const markers = [];
   for (const [i, entry] of layout.entries()) {
     const spot = spots[i];
-    mounts.segments.append(buildSegmentLink(entry, place, spot));
-    for (const marker of buildEntryLinks(entry, place, spot)) {
-      mounts.segments.append(marker);
-      markers.push(marker);
-    }
+    const segLink = buildSegmentLink(entry, place, spot);
+    const own = buildEntryLinks(entry, place, spot);
+    mounts.segments.append(segLink, ...own);
+    markers.push(...own);
+    if (spot.wires) lightOnHover(segLink, own);
   }
   return markers;
 }
