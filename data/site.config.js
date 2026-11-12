@@ -162,7 +162,7 @@ export const config = {
       ],
     },
     immedia: {
-      name: 'Immedia — 10-API aggregator',
+      name: 'Immedia — Real-Time Encyclopedia & News Aggregator',
       slug: 'immedia',
       title: 'Immedia',
       subtitle: 'Real-Time Encyclopedia & News Aggregator',
@@ -195,7 +195,7 @@ export const config = {
       ],
     },
     trifecta: {
-      name: 'Trifecta — workflow builder',
+      name: 'Trifecta — Workflow Automation & App Builder',
       slug: 'trifecta',
       title: 'Trifecta',
       subtitle: 'App Builder with AI-Powered Automation',
@@ -240,10 +240,10 @@ export const config = {
       ],
     },
     'figma-wireframes': {
-      name: 'E-commerce Wireframes (Figma)',
+      name: 'E-commerce Loyalty Program Wireframes Using Figma',
       slug: 'figma-wireframes',
       title: 'Hi-Fidelity',
-      subtitle: 'E-commerce Wireframes Using Figma',
+      subtitle: 'E-commerce Loyalty Program Wireframes Using Figma',
       summary:
         'Part of a project to develop a loyalty program for an e-commerce site.',
       links: [],
@@ -266,7 +266,7 @@ export const config = {
       ],
     },
     'scheduled-reports': {
-      name: 'Scheduled Reports (PDF)',
+      name: 'Transporter — Scheduled Reports',
       slug: 'scheduled-reports',
       title: 'Transporter',
       subtitle: 'E-commerce · Symphony Commerce',
@@ -281,7 +281,7 @@ export const config = {
       ],
     },
     'sanity-check': {
-      name: 'Sanity Check — live app',
+      name: 'Sanity Check',
       slug: 'sanity-check',
       title: 'Sanity Check',
       subtitle: 'Validate Your Message With AI Before You Hit Send',
