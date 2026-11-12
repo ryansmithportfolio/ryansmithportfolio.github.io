@@ -866,7 +866,7 @@ function render(root, compact) {
     const own = buildEntryLinks(entry, place, spot);
     mounts.segments.append(segLink, ...own);
     markers.push(...own);
-    if (spot.wires) lightOnHover(segLink, own);
+    lightOnHover(segLink, own);
   }
   return markers;
 }
