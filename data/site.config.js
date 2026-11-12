@@ -240,7 +240,7 @@ export const config = {
       ],
     },
     'figma-wireframes': {
-      name: 'E-commerce Loyalty Program Wireframes Using Figma',
+      name: 'Hi-Fidelity E-comm Wireframes',
       slug: 'figma-wireframes',
       title: 'Hi-Fidelity',
       subtitle: 'E-commerce Loyalty Program Wireframes Using Figma',
