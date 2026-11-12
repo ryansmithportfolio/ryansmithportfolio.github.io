@@ -329,6 +329,8 @@ export const config = {
     },
     {
       id: 'deliver',
+      // The lens lit on arrival, wires out, until the visitor hovers the dial.
+      featured: true,
       label: 'Deliver',
       weight: 1.1,
       color: '#A08256',

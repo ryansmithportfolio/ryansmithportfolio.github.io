@@ -63,9 +63,16 @@ const prefersReducedMotion = () =>
  * @param {Element[]} deps.hexes marker links in wheel order
  * @param {number} [deps.dwell]
  * @param {number} [deps.fade]
+ * @param {() => void} [deps.onSettle] called each time the titles come to rest
  * @returns {{ start(): void, settle(): void, stop(): void, state(): string }}
  */
-export function createTitleSweep({ root, hexes, dwell = DWELL_MS, fade = FADE_MS }) {
+export function createTitleSweep({
+  root,
+  hexes,
+  dwell = DWELL_MS,
+  fade = FADE_MS,
+  onSettle,
+}) {
   const markers = Array.from(hexes || []);
 
   /** 'idle' before anything, 'sweeping' mid-lap, 'settled' once all are up. */
@@ -139,6 +146,7 @@ export function createTitleSweep({ root, hexes, dwell = DWELL_MS, fade = FADE_MS
     for (const marker of markers) show(marker, true);
     // Hand the fade length back to the stylesheet so hover regains its own feel.
     root.style.removeProperty('--label-fade');
+    if (typeof onSettle === 'function') onSettle();
   }
 
   /**

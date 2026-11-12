@@ -15,6 +15,7 @@
   --well-bottom: #080d15;
 
   /* Instrument case */
+  --case-light: #c8d0da;
   --case-mid: #68748b;
   --case-dark: #39424f;
   --dial-shadow: #050912;
@@ -420,15 +421,18 @@ body {
 
 /* Hover and focus-visible share one selector list so they cannot drift. */
 .seg:hover .seg__band,
-.seg:focus-visible .seg__band {
+.seg:focus-visible .seg__band,
+.seg.is-featured .seg__band {
   stroke-width: 62;
   filter: brightness(1.18);
 }
 
 .seg:hover .seg__highlight,
 .seg:focus-visible .seg__highlight,
+.seg.is-featured .seg__highlight,
 .seg:hover .seg__ring,
-.seg:focus-visible .seg__ring {
+.seg:focus-visible .seg__ring,
+.seg.is-featured .seg__ring {
   opacity: 1;
 }
 
