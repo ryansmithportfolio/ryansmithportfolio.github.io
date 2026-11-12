@@ -400,6 +400,26 @@ body {
   transition: fill var(--reveal-duration) ease;
 }
 
+/* The invisible arc a band label is set along. */
+.seg__guide {
+  fill: none;
+  stroke: none;
+}
+
+/*
+ * A lens name set on its own band (wide layout). The bands differ in colour, so
+ * a thin dark outline painted under the glyphs keeps one text colour legible on
+ * all of them. Clicks pass through to the band underneath.
+ */
+.seg__label--band {
+  paint-order: stroke;
+  stroke: var(--ground-bottom);
+  stroke-opacity: 0.55;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
 /* Hover and focus-visible share one selector list so they cannot drift. */
 .seg:hover .seg__band,
 .seg:focus-visible .seg__band {
@@ -478,6 +498,41 @@ body {
 .hex:focus-visible .hex__ring,
 .hex:hover .hex__label,
 .hex:focus-visible .hex__label {
+  opacity: 1;
+}
+
+/*
+ * The line a lens shoots to each of its nodes (wide layout only). js/wheel.js
+ * gives each one pathLength="1", so a single dash of length 1 is the whole line:
+ * offset 1 hides it, offset 0 draws it out from the dial to the node.
+ */
+.hex__wire {
+  stroke: var(--seg-bevel);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    stroke-dashoffset 260ms ease-out,
+    opacity 120ms ease;
+}
+
+.hex.is-lit .hex__wire,
+.hex:hover .hex__wire,
+.hex:focus-visible .hex__wire {
+  stroke-dashoffset: 0;
+  opacity: 0.9;
+}
+
+/* A lit node answers its wire. */
+.hex.is-lit .hex__body {
+  stroke-width: 2;
+  filter: brightness(1.25);
+}
+
+.hex.is-lit .hex__label {
   opacity: 1;
 }
 
@@ -921,6 +976,7 @@ body.has-overlay {
   .hex__body,
   .hex__ring,
   .hex__label,
+  .hex__wire,
   .link-caps,
   .overlay,
   .overlay__panel,
